@@ -1,0 +1,17 @@
+[package]
+name = "personal-website"
+version = "0.1.0"
+authors = ["Krishan Wyse <kwysek@gmail.com>"]
+
+[features]
+watch = ["handlebars-iron/watch"]
+yaml = ["log4rs/yaml"]
+
+[dependencies]
+log = "*"
+log4rs = "*"
+iron = "*"
+router = "*"
+mount = "*"
+staticfile = "*"
+handlebars-iron = "*"

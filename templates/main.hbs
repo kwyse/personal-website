@@ -1,0 +1,32 @@
+<!DOCYPE html>
+<html>
+  <head>
+    <title>Krishan Wyse</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="blog, tech, technology, programming, software development, software engineering">
+    <meta name="description" content="A personal website and blog">
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
+  </head>
+  <body>
+    <nav>
+      <ul class="navbar">
+	<li class="logo"><a href="/">Home</a></li>
+	<li class="menu"><a href="/about">About</a></li>
+	<li class="menu"><a href="/blog">Blog</a></li>
+	<li class="menu"><a href="/projects">Projects</a></li>
+	<li class="menu"><a href="/contact">Contact</a></li>
+	<li class="burger menu">
+	  <a href="javascript:void(0);" onclick="toggleBurgerMenu()">&#9776;</a>
+	</li>
+      </ul>
+    </nav>
+    <main>
+      {{#block "content"}}
+      {{/block}}
+    </main>
+    <footer>
+      <p>Footer goes here</p>
+    </footer>
+    <script type="text/javascript" src="/app/js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,72 @@
+$font-stack: Helvetica, sans-serif;
+$pixel-breakpoint: 768px;
+
+$bg-color: #006699;
+$fg-color: #E3E3E3;
+$hover-color: #003366;
+
+body {
+  font: 100% $font-stack;
+  background-color: $bg-color;
+  color: $fg-color;
+}
+
+nav {
+  ul {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    list-style-type: none;
+  }
+
+  a {
+    display: inline-block;
+    color: $fg-color;
+    font-size: 1em;
+    padding: 0.5em 0.6em;
+    text-align: center;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+
+  a:hover { background-color: $hover-color; }
+
+  .logo { float: left; }
+
+  .menu { float: right; }
+  
+  .burger { display: none; }
+}
+
+@media only screen and (max-width: $pixel-breakpoint) {
+  nav ul.navbar {
+    li:not(:first-child) { display: none; }
+
+    li.burger {
+      float: right;
+      display: inline-block;
+    }
+  }
+}
+
+@media only screen and (max-width: $pixel-breakpoint) {
+  nav ul.navbar.responsive {
+    position: relative;
+
+    li {
+      display: inline;
+      float: none;
+    }
+
+    li a {
+      display: block;
+      text-align: left;
+    }
+  }
+
+  nav ul.responsive li.burger {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
