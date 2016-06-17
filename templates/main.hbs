@@ -6,25 +6,36 @@
     <meta name="keywords" content="blog, tech, technology, programming, software development, software engineering">
     <meta name="description" content="A personal website and blog">
     <link rel="stylesheet" type="text/css" href="/static/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Dosis:300' rel='stylesheet' type='text/css'>
   </head>
-  <body>
-    <nav>
-      <ul class="navbar">
-	<li class="logo"><a href="/">Home</a></li>
-	<li class="menu"><a href="/about">About</a></li>
-	<li class="menu"><a href="/blog">Blog</a></li>
-	<li class="menu"><a href="/projects">Projects</a></li>
-	<li class="menu"><a href="/contact">Contact</a></li>
-	<li class="burger menu">
-	  <a href="javascript:void(0);" onclick="toggleBurgerMenu()">&#9776;</a>
-	</li>
-      </ul>
-    </nav>
-    <main>
-      {{#block "content"}}
-      {{/block}}
+  <body class="container">
+    <header class="container-header">
+      <div class="brand">
+        <a href="/">
+          <h1>Home</h1>
+          <h2><em>On programming and everything</em></h2>
+        </a>
+      </div>
+      <nav>
+        <ul class="navbar">
+          <li class="menu"><a href="/about">About</a></li>
+          <li class="menu"><a href="/blog">Blog</a></li>
+          <li class="menu"><a href="/projects">Projects</a></li>
+          <li class="menu"><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="container-body">
+      <article class="container-content">
+        {{#block "content"}}
+        {{/block}}
+      </article>
+      <aside class="container-side container-left">
+      </aside>
+      <aside class="container-side">
+      </aside>
     </main>
-    <footer>
+    <footer class="container-footer">
       <p>Footer goes here</p>
     </footer>
     <script type="text/javascript" src="/app/js/main.js"></script>
