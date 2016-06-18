@@ -49,7 +49,7 @@ fn handle_about_page(_: &mut Request) -> IronResult<Response> {
 }
 
 fn handle_blog_page(_: &mut Request) -> IronResult<Response> {
-    unimplemented!();
+    Ok(Response::with((status::Ok, Template::new("blog", ()))))
 }
 
 fn handle_projects_page(_: &mut Request) -> IronResult<Response> {

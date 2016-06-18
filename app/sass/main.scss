@@ -10,10 +10,10 @@ $hover-color: #7690CF;
 $nav-bg-color: #48577D;
 
 $color-bg-base: #EEEEEE;
-$color-bg-content: #AAAAAA;
-$color-bg-nav: $color-bg-base;
+$color-bg-content: $color-bg-base;
+$color-bg-nav: #DDDDDD;
 $color-bg-nav-hover: #CCCEEE;
-$color-bg-footer: #BBBEEE;
+$color-bg-footer: #DDDDDD;
 $color-bg-side: #CCCCCC;
 $color-fg-content: #333EEE;
 $color-fg-nav: #222222;
@@ -26,6 +26,7 @@ $space: 10px;
 body {
   font: 100% $font-stack;
   background-color: $color-bg-base;
+  margin: 0;
 }
 
 @mixin background-size($size) {
@@ -52,18 +53,19 @@ body {
   height: 100%;
 }
 
-.container-header,
-.container-footer {
+.container-header {
   background-color: $color-bg-nav;
   flex: none;
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
 
   ul {
     list-style-type: none;
     overflow: hidden;
     display: flex;
     font-size: 1.4em;
+    flex-direction: column;
 
     a {
       display: inline-block;
@@ -77,6 +79,46 @@ body {
         border-radius: 5px;
         transition: 0.3s;
       }
+    }
+  }
+}
+
+$social-icon-size: 32px;
+
+.container-footer {
+  background-color: $color-bg-footer;
+
+  ul.social {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+
+    li {
+      background-color: $color-bg-nav-hover;
+      margin: 1em 3em;
+      padding: 1em;
+      border-radius: 50%;
+    }
+
+    a.github {
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      background: url('static/twitter-logo.svg');
+      display: block;
+      text-indent: -9999px;
+      width: $social-icon-size;
+      height: $social-icon-size;
+      background-size: $social-icon-size $social-icon-size;
+    }
+
+    .linkedin {
+      background: url('static/linkedin-logo.svg');
+      display: block;
+      text-indent: -9999px;
+      width: $social-icon-size;
+      height: $social-icon-size;
+      background-size: $social-icon-size $social-icon-size;
     }
   }
 }
@@ -102,12 +144,39 @@ body {
 .container-body {
   @extend .container-base;
   flex: 1 0 auto;
-  padding: $space;
+  justify-content: center;
+  /* padding: $space; */
 }
 
 .container-content {
   margin-top: $space;
   background-color: $color-bg-content;
+  max-width: 960px;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  flex-direction: column;
+
+  h1 {
+    font-size: 4em;
+    margin: 0.5em 0;
+  }
+
+  .profile-image {
+    width: 300px;
+    height: 300px;
+    margin: 1.5em;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-image: url('static/profile.jpg');
+  }
+
+  p {
+    padding: 1em;
+    font-size: 1.5em;
+  }
 }
 
 .container-left {
@@ -121,6 +190,18 @@ body {
 }
 
 @media only screen and (min-width: $pixel-breakpoint) {
+  .container-header {
+    flex-direction: row;
+
+    ul {
+      flex-direction: row;
+
+      a {
+        margin-right: 2em;
+      }
+    }
+  }
+
   .container-body {
     flex-direction: row;
   }
