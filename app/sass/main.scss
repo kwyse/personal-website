@@ -152,7 +152,12 @@ $social-icon-size: 32px;
     display: flex;
     justify-content: center;
     flex-direction: row;
-    padding: 20px;
+    padding: 32px 0 0 0;
+    max-width: 960px;
+    justify-content: flex-end;
+    /* align-items: flex-end; */
+    flex-grow: 1;
+    width: 100%;
     /* min-height: 8em;
      */
     ul {
@@ -161,13 +166,14 @@ $social-icon-size: 32px;
     flex-direction: row;
       list-style-type: none;
       padding: 0;
+      margin: 0;
 
       a i {
         text-align: center;
         align-items: center;
         font-size: 2em;
         background-color: $color-bg-nav-hover;
-        margin: 1em;
+        margin: 0.5em;
         padding: 10px;
         border-radius: 50%;
         transition: 0.4s;
@@ -178,18 +184,23 @@ $social-icon-size: 32px;
         }
       }
 
-      i.icon-github:hover { background-color: #000000; }
+      i.icon-github:hover { background-color: #000000; } // TODO: Add tooltip
       i.icon-linkedin:hover { background-color: #0077B5; }
       i.icon-twitter:hover { background-color: #55ACEE; }
     }
   }
 
   .credit {
-    min-width: 960px;
+    /* min-width: 960px; */
     max-width: 960px;
+    /* margin: 16px; */
     /* display: flex; */
-    /* justify-content: stretch; */
-    float: left;
+    /* justify-content: flex-end; */
+    /* align-items: flex-end; */
+    /* flex-grow: 1; */
+    /* flex-direction: column; */
+    width: 95%;
+    /* float: left; */
     /* align-items: flex-start; */
     /* flex-direction: column; */
     /* align-items: center; */
@@ -198,9 +209,14 @@ $social-icon-size: 32px;
        flex-grow: 3;
        } */
     p {
-      flex-grow: 1;
-      margin: 10px 5px;
+      margin: 0;
+      padding: 10px 0;
+      /* flex-grow: 1; */
+      /* margin: 10px 5px; */
+      /* flex-basis: 50%; */
     }
+
+    // TODO: Is CC image skrunken?
   }
 }
 
