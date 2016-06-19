@@ -130,7 +130,7 @@ body {
       &:hover, &:focus {
         background-color: $color-bg-nav-hover;
         border-radius: 5px;
-        transition: 0.3s;
+        transition: 0.3s; // TODO: make this a mixin
       }
     }
   }
@@ -140,29 +140,58 @@ $social-icon-size: 32px;
 
 .container-footer {
   background-color: $color-bg-footer;
+  padding: 20px;
 
   ul.social {
     list-style-type: none;
     display: flex;
     justify-content: center;
 
-    li {
+    a i {
+      text-align: center;
+      align-items: center;
+      font-size: 2em;
       background-color: $color-bg-nav-hover;
-      margin: 1em 3em;
-      padding: 1em;
+      margin: 1em;
+      padding: 10px;
       border-radius: 50%;
+      transition: 0.4s;
+      color: #EEEEEE;
+      &:hover {
+        transition: 0.4s;
+
+      }
     }
 
+    i.icon-github:hover { background-color: #000000; }
+    i.icon-linkedin:hover { background-color: #0077B5; }
+    i.icon-twitter:hover { background-color: #55ACEE; }
+
     a.github {
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-size: cover;
-      background: url('static/twitter-logo.svg');
-      display: block;
+      display: inline-block;
       text-indent: -9999px;
       width: $social-icon-size;
       height: $social-icon-size;
-      background-size: $social-icon-size $social-icon-size;
+      background: url('static/twitter-logo.svg');
+      background-size: $social-icon-size;
+      background-color: $color-bg-nav-hover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      margin: 1em 3em;
+      padding: 1em;
+      border-radius: 50%;
+      transition: 0.4s;
+        font-color: #EEEEEE;
+        fill: #EEEEEE;
+        color: #EEEEEE;
+
+      &:hover {
+        transition: 0.4s;
+        background-color: #1111EE;
+        font-color: #EEEEEE;
+        fill: #EEEEEE;
+        color: #EEEEEE;
+      }
     }
 
     .linkedin {
