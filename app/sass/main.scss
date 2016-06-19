@@ -140,70 +140,70 @@ $social-icon-size: 32px;
 
 .container-footer {
   background-color: $color-bg-footer;
-  padding: 20px;
-
-  ul.social {
-    list-style-type: none;
+  /* padding: 20px; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 168px;
+  /* flex-grow: 1;
+   */
+  .social {
     display: flex;
     justify-content: center;
+    flex-direction: row;
+    padding: 20px;
+    /* min-height: 8em;
+     */
+    ul {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+      list-style-type: none;
+      padding: 0;
 
-    a i {
-      text-align: center;
-      align-items: center;
-      font-size: 2em;
-      background-color: $color-bg-nav-hover;
-      margin: 1em;
-      padding: 10px;
-      border-radius: 50%;
-      transition: 0.4s;
-      color: #EEEEEE;
-      &:hover {
+      a i {
+        text-align: center;
+        align-items: center;
+        font-size: 2em;
+        background-color: $color-bg-nav-hover;
+        margin: 1em;
+        padding: 10px;
+        border-radius: 50%;
         transition: 0.4s;
-
-      }
-    }
-
-    i.icon-github:hover { background-color: #000000; }
-    i.icon-linkedin:hover { background-color: #0077B5; }
-    i.icon-twitter:hover { background-color: #55ACEE; }
-
-    a.github {
-      display: inline-block;
-      text-indent: -9999px;
-      width: $social-icon-size;
-      height: $social-icon-size;
-      background: url('static/twitter-logo.svg');
-      background-size: $social-icon-size;
-      background-color: $color-bg-nav-hover;
-      background-repeat: no-repeat;
-      background-position: center center;
-      margin: 1em 3em;
-      padding: 1em;
-      border-radius: 50%;
-      transition: 0.4s;
-        font-color: #EEEEEE;
-        fill: #EEEEEE;
         color: #EEEEEE;
+        &:hover {
+          transition: 0.4s;
 
-      &:hover {
-        transition: 0.4s;
-        background-color: #1111EE;
-        font-color: #EEEEEE;
-        fill: #EEEEEE;
-        color: #EEEEEE;
+        }
       }
-    }
 
-    .linkedin {
-      background: url('static/linkedin-logo.svg');
-      display: block;
-      text-indent: -9999px;
-      width: $social-icon-size;
-      height: $social-icon-size;
-      background-size: $social-icon-size $social-icon-size;
+      i.icon-github:hover { background-color: #000000; }
+      i.icon-linkedin:hover { background-color: #0077B5; }
+      i.icon-twitter:hover { background-color: #55ACEE; }
+    }
+  }
+
+  .credit {
+    min-width: 960px;
+    max-width: 960px;
+    /* display: flex; */
+    /* justify-content: stretch; */
+    float: left;
+    /* align-items: flex-start; */
+    /* flex-direction: column; */
+    /* align-items: center; */
+    /* flex-direction: column; */
+    /* p {
+       flex-grow: 3;
+       } */
+    p {
+      flex-grow: 1;
+      margin: 10px 5px;
     }
   }
 }
+
 
 .brand {
   padding: 0.5em;
