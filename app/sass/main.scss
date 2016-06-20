@@ -145,7 +145,7 @@ $social-icon-size: 32px;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  min-height: 168px;
+  min-height: 128px;
   /* flex-grow: 1;
    */
   .social {
@@ -171,10 +171,10 @@ $social-icon-size: 32px;
       a i {
         text-align: center;
         align-items: center;
-        font-size: 2em;
+        font-size: 1.5em;
         background-color: $color-bg-nav-hover;
         margin: 0.5em;
-        padding: 10px;
+        padding: 8px;
         border-radius: 50%;
         transition: 0.4s;
         color: #EEEEEE;
