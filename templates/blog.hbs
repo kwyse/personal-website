@@ -1,5 +1,11 @@
 {{# partial "content" }}
   <h1>This is the blog page!</h1>
+
+  <p>There are {{post_count}} posts for your viewing pleasure!</p>
+  {{#each posts}}
+    <h1>{{title}}</h1>
+    {{{body}}}
+  {{/each}}
 {{/partial}}
 
 {{> main}}

@@ -6,6 +6,7 @@ extern crate router;
 extern crate mount;
 extern crate staticfile;
 extern crate handlebars_iron;
+extern crate hoedown;
 
 use std::path::Path;
 use iron::prelude::*;
@@ -49,7 +50,38 @@ fn handle_about_page(_: &mut Request) -> IronResult<Response> {
 }
 
 fn handle_blog_page(_: &mut Request) -> IronResult<Response> {
-    Ok(Response::with((status::Ok, Template::new("blog", ()))))
+    use std::fs::File;
+    use std::fs::read_dir;
+    use std::path::Path;
+    use std::collections::HashMap;
+    use hoedown::{ Html, Markdown, Render };
+    use hoedown::renderer::html::Flags;
+
+    let posts = read_dir(Path::new("posts/")).expect("Reading dir");
+    let mut posts_to_render: Vec<HashMap<String, String>> = Vec::new();
+
+    for directory_entry in posts {
+        let post = directory_entry.expect("Iterating through directory entries");
+        let post_os_path = post.path();
+        let post_path = post_os_path.as_path();
+
+        let file = File::open(post_path).expect("Reading post from disk");
+        let post_as_markdown = Markdown::read_from(file);
+        let post_title = post.file_name().into_string().expect("Converting post title to string");
+        let mut html_renderer = Html::new(Flags::empty(), 0);
+        let post_as_html = html_renderer.render(&post_as_markdown).to_str().expect("Converting post contents to string").to_string();
+
+        let mut post_object = HashMap::new();
+        post_object.insert("title".to_string(), post_title);
+        post_object.insert("body".to_string(), post_as_html);
+        posts_to_render.push(post_object);
+    }
+
+    let mut template_data: HashMap<String, Vec<HashMap<String, String>>> = HashMap::new();
+    template_data.insert("posts".to_string(), posts_to_render);
+    info!("Rendering: {:?}", template_data);
+
+    Ok(Response::with((status::Ok, Template::new("blog", template_data))))
 }
 
 fn handle_projects_page(_: &mut Request) -> IronResult<Response> {
