@@ -4,10 +4,12 @@
   <p>There are {{post_count}} posts for your viewing pleasure!</p>
   {{#each posts}}
     <hr>
-    <h2>{{title}}</h2>
-    <em>By {{author}}</em>
-    <em>{{date}}</em>
-    <p>{{summary}}</p>
+    <a href="/blog/{{path}}">
+      <h2>{{title}}</h2>
+      <em>By {{author}}</em>
+      <em>{{date}}</em>
+      <p>{{summary}}</p>
+    </a>
   {{/each}}
 {{/partial}}
 

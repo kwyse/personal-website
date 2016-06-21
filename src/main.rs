@@ -24,7 +24,8 @@ fn main() {
     let mut router = Router::new();
     router.get("/", handle_landing_page);
     router.get("/about", handle_about_page);
-    router.get("/blog", handle_blog_page);
+    router.get("/blog", handle_blog_menu_page);
+    router.get("/blog/:post", handle_blog_post_page);
     router.get("/projects", handle_projects_page);
     router.get("/contact", handle_contact_page);
 
@@ -49,7 +50,7 @@ fn handle_about_page(_: &mut Request) -> IronResult<Response> {
     unimplemented!();
 }
 
-fn handle_blog_page(_: &mut Request) -> IronResult<Response> {
+fn handle_blog_menu_page(_: &mut Request) -> IronResult<Response> {
     use std::fs::File;
     use std::fs::read_dir;
     use std::path::Path;
@@ -76,7 +77,7 @@ fn handle_blog_page(_: &mut Request) -> IronResult<Response> {
         let contents_only = contents_and_metadata.next().unwrap();
         post_as_markdown.contents = hoedown::Buffer::from(contents_only);
 
-        info!("NEW META {:?}\nAnd COUNT {:?}", metadata, metadata_entry_count);
+        // info!("NEW META {:?}\nAnd COUNT {:?}", metadata, metadata_entry_count);
 
         let post_title = post.file_name().into_string().expect("Converting post title to string");
         let mut html_renderer = Html::new(Flags::empty(), 0);
@@ -95,9 +96,49 @@ fn handle_blog_page(_: &mut Request) -> IronResult<Response> {
 
     let mut template_data: HashMap<String, Vec<HashMap<String, String>>> = HashMap::new();
     template_data.insert("posts".to_string(), posts_to_render);
-    debug!("Rendering: {:?}", template_data);
+    // debug!("Rendering: {:?}", template_data);
 
-    Ok(Response::with((status::Ok, Template::new("blog", template_data))))
+    Ok(Response::with((status::Ok, Template::new("blog_list", template_data))))
+}
+
+fn handle_blog_post_page(request: &mut Request) -> IronResult<Response> {
+    use std::fs::File;
+    use std::fs::read_dir;
+    use std::path::Path;
+    use std::collections::HashMap;
+    use hoedown::{ Html, Markdown, Render };
+    use hoedown::renderer::html::Flags;
+
+    let ref post = request.extensions.get::<Router>().unwrap().find("post").unwrap_or("/");
+    let mut data = HashMap::new();
+
+    let posts = read_dir(Path::new("posts/")).expect("Reading dir");
+    let mut paths_to_content: HashMap<String, String> = HashMap::new();
+
+    for directory_entry in posts {
+        let post = directory_entry.expect("Iterating through directory entries");
+        let post_os_path = post.path();
+        let post_path = post_os_path.as_path();
+
+        let file = File::open(post_path).expect("Reading post from disk");
+        let mut post_as_markdown = Markdown::read_from(file);
+        let metadata = get_metadata(&mut post_as_markdown);
+
+        let contents_with_metadata = post_as_markdown.contents.to_str().unwrap().to_string();
+        let mut contents_and_metadata = contents_with_metadata.splitn(2, "\n\n");
+        let metadata_only = contents_and_metadata.next().unwrap();
+        let contents_only = contents_and_metadata.next().unwrap();
+        post_as_markdown.contents = hoedown::Buffer::from(contents_only);
+
+        let mut html_renderer = Html::new(Flags::empty(), 0);
+        let post_as_html = html_renderer.render(&post_as_markdown).to_str().expect("Converting post contents to string").to_string();
+        paths_to_content.insert(metadata.get(&String::from("path")).expect("path").clone(), post_as_html);
+    }
+
+    let not_found = String::from("Not found");
+    let content = paths_to_content.get(&String::from(*post)).unwrap_or(&not_found).clone();
+    data.insert(String::from("post"), content);
+    Ok(Response::with((status::Ok, Template::new("blog_post", data))))
 }
 
 fn get_metadata(document: &mut hoedown::Markdown) -> ::std::collections::HashMap<String, String> {
@@ -119,7 +160,7 @@ fn get_metadata(document: &mut hoedown::Markdown) -> ::std::collections::HashMap
         }
     }
     // info!("REMAINING {:?}", contents.to_str().unwrap());
-    debug!(" METADATA IS {:?}", metadata);
+    // debug!(" METADATA IS {:?}", metadata);
     metadata
 }
 
