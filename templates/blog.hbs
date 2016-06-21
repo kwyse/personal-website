@@ -3,8 +3,11 @@
 
   <p>There are {{post_count}} posts for your viewing pleasure!</p>
   {{#each posts}}
-    <h1>{{title}}</h1>
-    {{{body}}}
+    <hr>
+    <h2>{{title}}</h2>
+    <em>By {{author}}</em>
+    <em>{{date}}</em>
+    <p>{{summary}}</p>
   {{/each}}
 {{/partial}}
 

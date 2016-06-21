@@ -70,6 +70,12 @@ fn handle_blog_page(_: &mut Request) -> IronResult<Response> {
         let metadata = get_metadata(&mut post_as_markdown);
         let metadata_entry_count = metadata.len();
 
+        let contents_with_metadata = post_as_markdown.contents.to_str().unwrap().to_string();
+        let mut contents_and_metadata = contents_with_metadata.splitn(2, "\n\n");
+        // let metadata_only = contents_and_metadata.next().unwrap();
+        let contents_only = contents_and_metadata.next().unwrap();
+        post_as_markdown.contents = hoedown::Buffer::from(contents_only);
+
         info!("NEW META {:?}\nAnd COUNT {:?}", metadata, metadata_entry_count);
 
         let post_title = post.file_name().into_string().expect("Converting post title to string");
@@ -77,7 +83,11 @@ fn handle_blog_page(_: &mut Request) -> IronResult<Response> {
         let post_as_html = html_renderer.render(&post_as_markdown).to_str().expect("Converting post contents to string").to_string();
 
         let mut post_object = HashMap::new();
-        post_object.insert("title".to_string(), post_title);
+        post_object.insert(String::from("title"), metadata.get(&String::from("title")).expect("title").clone());
+        post_object.insert(String::from("author"), metadata.get(&String::from("author")).expect("author").clone());
+        post_object.insert(String::from("date"), metadata.get(&String::from("date")).expect("date").clone());
+        post_object.insert(String::from("path"), metadata.get(&String::from("path")).expect("path").clone());
+        post_object.insert(String::from("summary"), metadata.get(&String::from("summary")).expect("summary").clone());
         post_object.insert("body".to_string(), post_as_html);
         posts_to_render.push(post_object);
 
@@ -95,7 +105,7 @@ fn get_metadata(document: &mut hoedown::Markdown) -> ::std::collections::HashMap
     use std::io::BufReader;
     use std::collections::HashMap;
     let ref mut contents = document.contents;
-    let reader = BufReader::new(contents);
+    let ref mut reader = BufReader::new(contents);
     let mut metadata: HashMap<String, String> = HashMap::new();
     for l in reader.lines() {
         let line = l.expect("Iterating through metadata");
@@ -103,11 +113,12 @@ fn get_metadata(document: &mut hoedown::Markdown) -> ::std::collections::HashMap
             break;
         } else {
             let mut key_value = line.split(':');
-            let key = key_value.next().expect("Assigning key");
-            let value = key_value.next().expect("Assigning value").trim().to_string();
+            let key = key_value.next().expect("Assigning key").to_lowercase();
+            let value = key_value.next().expect("Assigning value").trim();
             metadata.insert(key.to_string(), value.to_string());
         }
     }
+    // info!("REMAINING {:?}", contents.to_str().unwrap());
     debug!(" METADATA IS {:?}", metadata);
     metadata
 }
