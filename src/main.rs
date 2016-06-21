@@ -66,7 +66,12 @@ fn handle_blog_page(_: &mut Request) -> IronResult<Response> {
         let post_path = post_os_path.as_path();
 
         let file = File::open(post_path).expect("Reading post from disk");
-        let post_as_markdown = Markdown::read_from(file);
+        let mut post_as_markdown = Markdown::read_from(file);
+        let metadata = get_metadata(&mut post_as_markdown);
+        let metadata_entry_count = metadata.len();
+
+        info!("NEW META {:?}\nAnd COUNT {:?}", metadata, metadata_entry_count);
+
         let post_title = post.file_name().into_string().expect("Converting post title to string");
         let mut html_renderer = Html::new(Flags::empty(), 0);
         let post_as_html = html_renderer.render(&post_as_markdown).to_str().expect("Converting post contents to string").to_string();
@@ -75,13 +80,36 @@ fn handle_blog_page(_: &mut Request) -> IronResult<Response> {
         post_object.insert("title".to_string(), post_title);
         post_object.insert("body".to_string(), post_as_html);
         posts_to_render.push(post_object);
+
     }
 
     let mut template_data: HashMap<String, Vec<HashMap<String, String>>> = HashMap::new();
     template_data.insert("posts".to_string(), posts_to_render);
-    info!("Rendering: {:?}", template_data);
+    debug!("Rendering: {:?}", template_data);
 
     Ok(Response::with((status::Ok, Template::new("blog", template_data))))
+}
+
+fn get_metadata(document: &mut hoedown::Markdown) -> ::std::collections::HashMap<String, String> {
+    use std::io::BufRead;
+    use std::io::BufReader;
+    use std::collections::HashMap;
+    let ref mut contents = document.contents;
+    let reader = BufReader::new(contents);
+    let mut metadata: HashMap<String, String> = HashMap::new();
+    for l in reader.lines() {
+        let line = l.expect("Iterating through metadata");
+        if line.is_empty() {
+            break;
+        } else {
+            let mut key_value = line.split(':');
+            let key = key_value.next().expect("Assigning key");
+            let value = key_value.next().expect("Assigning value").trim().to_string();
+            metadata.insert(key.to_string(), value.to_string());
+        }
+    }
+    debug!(" METADATA IS {:?}", metadata);
+    metadata
 }
 
 fn handle_projects_page(_: &mut Request) -> IronResult<Response> {
