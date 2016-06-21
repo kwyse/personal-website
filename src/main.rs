@@ -10,8 +10,9 @@ extern crate hoedown;
 
 use std::path::Path;
 use iron::prelude::*;
+use iron::AfterMiddleware;
 use iron::status;
-use router::Router;
+use router::{ Router, NoRoute };
 use mount::Mount;
 use staticfile::Static;
 use handlebars_iron::{ HandlebarsEngine, DirectorySource, Template };
@@ -31,6 +32,7 @@ fn main() {
 
     let mut chain = Chain::new(router);
     chain.link_after(template_engine);
+    chain.link_after(PageNotFound);
 
     let mut mounts = Mount::new();
     mounts.mount("/", chain);
@@ -135,7 +137,7 @@ fn handle_blog_post_page(request: &mut Request) -> IronResult<Response> {
         paths_to_content.insert(metadata.get(&String::from("path")).expect("path").clone(), post_as_html);
     }
 
-    let not_found = String::from("Not found");
+    let not_found = String::from("Blog post not found");
     let content = paths_to_content.get(&String::from(*post)).unwrap_or(&not_found).clone();
     data.insert(String::from("post"), content);
     Ok(Response::with((status::Ok, Template::new("blog_post", data))))
@@ -170,4 +172,18 @@ fn handle_projects_page(_: &mut Request) -> IronResult<Response> {
 
 fn handle_contact_page(_: &mut Request) -> IronResult<Response> {
     unimplemented!();
+}
+
+struct PageNotFound;
+
+impl AfterMiddleware for PageNotFound {
+    fn catch(&self, _: &mut Request, error: IronError) -> IronResult<Response> {
+        info!("Page not found!");
+
+        if let Some(_) = error.error.downcast::<NoRoute>() {
+            Ok(Response::with((status::NotFound, "Page not found")))
+        } else {
+            Err(error)
+        }
+    }
 }
