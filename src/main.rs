@@ -52,53 +52,125 @@ fn handle_about_page(_: &mut Request) -> IronResult<Response> {
     unimplemented!();
 }
 
-fn handle_blog_menu_page(_: &mut Request) -> IronResult<Response> {
+enum MetadataField {
+    Title,
+    Author,
+    Date,
+    Path,
+    Summary,
+}
+
+#[derive(Debug)]
+struct Metadata {
+    title: Option<String>,
+    author: Option<String>,
+    date: Option<String>,
+    path: Option<String>,
+    summary: Option<String>,
+}
+
+use std::collections::HashMap;
+
+#[derive(Debug)]
+struct BlogPost {
+    pub metadata: Metadata,
+    pub body: String,
+    // pub met: HashMap<MetadataField, String>,
+    pub met2: HashMap<String, String>,
+}
+
+impl BlogPost {
+    fn new() -> Self {
+        BlogPost {
+            metadata: Metadata::new(),
+            body: String::new(),
+            // met: HashMap::new(),
+            met2: HashMap::new(),
+        }
+    }
+}
+
+impl Metadata {
+    fn new() -> Self {
+        Metadata {
+            title: None,
+            author: None,
+            date: None,
+            path: None,
+            summary: None,
+        }
+    }
+}
+
+impl BlogPost {
+    fn from_file<P: AsRef<Path>>(file_path: P) -> Result<BlogPost> {
+        use std::fs::File;
+        use std::io::BufReader;
+        use std::io::BufRead;
+        use std::io::Read;
+
+        let file = try!(File::open(file_path));
+        let mut reader = BufReader::new(file);
+        let mut buffer = String::new();
+        let mut post = BlogPost::new();
+        while try!(reader.read_line(&mut buffer)) > 0 {
+            {
+                let mut parts = buffer.splitn(2, ':');
+                let first = parts.next().unwrap_or("");
+                if first.len() > 0 && first.split_whitespace().count() == 1 {
+                    let second = String::from(parts.next().unwrap_or("").trim());
+                    post.met2.insert(String::from(first.to_lowercase()), second);
+                } else {
+                    break;
+                }
+            }
+            buffer.clear();
+        }
+
+        reader.read_to_string(&mut buffer).unwrap_or(0);
+        post.body = buffer;
+        Ok(post)
+    }
+}
+
+use std::io::Result;
+
+fn get_file_contents<P: AsRef<Path>>(file_path: P) -> Result<String> {
     use std::fs::File;
+    use std::io::Read;
+
+    let mut file = try!(File::open(file_path));
+    let mut contents = String::new();
+    try!(file.read_to_string(&mut contents));
+    Ok(contents)
+}
+
+fn get_blog_posts() -> Result<Vec<BlogPost>> {
     use std::fs::read_dir;
-    use std::path::Path;
-    use std::collections::HashMap;
-    use hoedown::{ Html, Markdown, Render };
-    use hoedown::renderer::html::Flags;
+    use std::path::PathBuf;
 
-    let posts = read_dir(Path::new("posts/")).expect("Reading dir");
-    let mut posts_to_render: Vec<HashMap<String, String>> = Vec::new();
+    let mut posts: Vec<BlogPost> = Vec::new();
+    let file_paths: Vec<PathBuf> = try!(read_dir("posts/")).map(|path| path.unwrap().path()).collect();
+    for file_path in file_paths {
+        // let contents = try!(get_file_contents(file_path));
+        // parse_blog_post(file_path);
+        posts.push(try!(BlogPost::from_file(file_path)));
+    }
 
-    for directory_entry in posts {
-        let post = directory_entry.expect("Iterating through directory entries");
-        let post_os_path = post.path();
-        let post_path = post_os_path.as_path();
+    info!("{:?}", posts);
+    Ok(posts)
+}
 
-        let file = File::open(post_path).expect("Reading post from disk");
-        let mut post_as_markdown = Markdown::read_from(file);
-        let metadata = get_metadata(&mut post_as_markdown);
-        let metadata_entry_count = metadata.len();
+fn handle_blog_menu_page(_: &mut Request) -> IronResult<Response> {
+    let posts = get_blog_posts().unwrap_or(Vec::new());
+    let mut post_list: Vec<HashMap<String, String>> = Vec::new();
 
-        let contents_with_metadata = post_as_markdown.contents.to_str().unwrap().to_string();
-        let mut contents_and_metadata = contents_with_metadata.splitn(2, "\n\n");
-        // let metadata_only = contents_and_metadata.next().unwrap();
-        let contents_only = contents_and_metadata.next().unwrap();
-        post_as_markdown.contents = hoedown::Buffer::from(contents_only);
-
-        // info!("NEW META {:?}\nAnd COUNT {:?}", metadata, metadata_entry_count);
-
-        let post_title = post.file_name().into_string().expect("Converting post title to string");
-        let mut html_renderer = Html::new(Flags::empty(), 0);
-        let post_as_html = html_renderer.render(&post_as_markdown).to_str().expect("Converting post contents to string").to_string();
-
-        let mut post_object = HashMap::new();
-        post_object.insert(String::from("title"), metadata.get(&String::from("title")).expect("title").clone());
-        post_object.insert(String::from("author"), metadata.get(&String::from("author")).expect("author").clone());
-        post_object.insert(String::from("date"), metadata.get(&String::from("date")).expect("date").clone());
-        post_object.insert(String::from("path"), metadata.get(&String::from("path")).expect("path").clone());
-        post_object.insert(String::from("summary"), metadata.get(&String::from("summary")).expect("summary").clone());
-        post_object.insert("body".to_string(), post_as_html);
-        posts_to_render.push(post_object);
-
+    for post in posts {
+        post_list.push(post.met2);
     }
 
     let mut template_data: HashMap<String, Vec<HashMap<String, String>>> = HashMap::new();
-    template_data.insert("posts".to_string(), posts_to_render);
-    // debug!("Rendering: {:?}", template_data);
+    template_data.insert(String::from("posts"), post_list);
 
     Ok(Response::with((status::Ok, Template::new("blog_list", template_data))))
 }
@@ -108,38 +180,29 @@ fn handle_blog_post_page(request: &mut Request) -> IronResult<Response> {
     use std::fs::read_dir;
     use std::path::Path;
     use std::collections::HashMap;
-    use hoedown::{ Html, Markdown, Render };
+    use hoedown::{ Html, Markdown, Render, Buffer };
     use hoedown::renderer::html::Flags;
 
-    let ref post = request.extensions.get::<Router>().unwrap().find("post").unwrap_or("/");
+    let ref post_path = request.extensions.get::<Router>().unwrap().find("post").unwrap_or("/");
     let mut data = HashMap::new();
 
-    let posts = read_dir(Path::new("posts/")).expect("Reading dir");
     let mut paths_to_content: HashMap<String, String> = HashMap::new();
+    let posts = get_blog_posts().unwrap_or(Vec::new());
 
-    for directory_entry in posts {
-        let post = directory_entry.expect("Iterating through directory entries");
-        let post_os_path = post.path();
-        let post_path = post_os_path.as_path();
-
-        let file = File::open(post_path).expect("Reading post from disk");
-        let mut post_as_markdown = Markdown::read_from(file);
-        let metadata = get_metadata(&mut post_as_markdown);
-
-        let contents_with_metadata = post_as_markdown.contents.to_str().unwrap().to_string();
-        let mut contents_and_metadata = contents_with_metadata.splitn(2, "\n\n");
-        let metadata_only = contents_and_metadata.next().unwrap();
-        let contents_only = contents_and_metadata.next().unwrap();
-        post_as_markdown.contents = hoedown::Buffer::from(contents_only);
-
-        let mut html_renderer = Html::new(Flags::empty(), 0);
-        let post_as_html = html_renderer.render(&post_as_markdown).to_str().expect("Converting post contents to string").to_string();
-        paths_to_content.insert(metadata.get(&String::from("path")).expect("path").clone(), post_as_html);
+    for post in posts {
+        let key = post.met2.get("path").unwrap().clone();
+        paths_to_content.insert(key, post.body);
     }
 
     let not_found = String::from("Blog post not found");
-    let content = paths_to_content.get(&String::from(*post)).unwrap_or(&not_found).clone();
-    data.insert(String::from("post"), content);
+    let content = paths_to_content.get(&String::from(*post_path)).unwrap_or(&not_found).clone();
+    let c: &str = &content;
+    let buffer: Buffer = Buffer::from(c);
+    let post_as_markdown = Markdown::from(buffer);
+    let mut html_renderer = Html::new(Flags::empty(), 0);
+    let post_as_html = html_renderer.render(&post_as_markdown).to_str().expect("Converting post contents to string").to_string();
+
+    data.insert(String::from("post"), post_as_html);
     Ok(Response::with((status::Ok, Template::new("blog_post", data))))
 }
 
