@@ -268,7 +268,7 @@ $social-icon-size: 32px;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
-    background-image: url('static/profile.jpg');
+    background-image: url('profile.jpg');
     /* @include animation('fade-in 5.5s ease-in 3s 1 alternate') */
     @include animation('fade-in 2s ease-in 0.5s');
   }
