@@ -1,14 +1,9 @@
 {{# partial "content" }}
-  <h1>This is the blog page!</h1>
-
   <p class="info">{{info}}</p>
-  <p>There are {{post_count}} posts for your viewing pleasure!</p>
   {{#each posts}}
-    <hr>
-    <a href="/blog/{{path}}">
+    <a href="/blog/{{path}}" class="post-listing">
       <h2>{{title}}</h2>
-      <em>By {{author}}</em>
-      <em>{{date}}</em>
+      <em class="date">{{date}}</em>
       <p>{{summary}}</p>
     </a>
   {{/each}}

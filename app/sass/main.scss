@@ -1,101 +1,35 @@
-$font-stack: 'Dosis', sans-serif;
-$pixel-breakpoint: 768px;
-/* $pixel-breakpoint: 300px;
- */
-/* $bg-color: #006699; */
-$bg-color: #43464C;
-/* $fg-color: #E3E3E3; */
-$fg-color: #D3DCF2;
-$hover-color: #7690CF;
-$nav-bg-color: #48577D;
+@import 'mixin';
 
-$color-bg-base: #EEEEEE;
-$color-bg-content: $color-bg-base;
-$color-bg-nav: #DDDDDD;
-$color-bg-nav-hover: #CCCEEE;
-$color-bg-footer: #DDDDDD;
-$color-bg-side: #CCCCCC;
-$color-fg-content: #333EEE;
-$color-fg-nav: #222222;
-$color-fg-nav-hover: #333EEE;
-$color-fg-footer: #333EEE;
-$color-fg-side: #333EEE;
+$font-stack-heading: 'Raleway', sans-serif;
+$font-stack-body: 'Dosis', sans-serif;
+$pixel-breakpoint: 768px;
 
 $space: 10px;
+$profile-pic-size: 240px;
+$social-icon-size: 32px;
+
+$color-bg-base: #EEEEEE;
+$color-bg-base-hover: #DDDDDD;
+$color-bg-content: $color-bg-base;
+$color-bg-nav: #024959;
+$color-bg-nav-hover: #037E8C;
+$color-bg-footer: $color-bg-nav;
+$color-bg-side: #CCCCCC;
+$color-fg-base: #3E423A;
+$color-fg-content: #FCFFF5;
+$color-fg-nav: #EEEEEE;
+$color-fg-nav-hover: #333EEE;
+$color-fg-footer: $color-bg-base;
+$color-fg-side: #333EEE;
 
 body {
-  font: 100% $font-stack;
+  h1, h2, h3 { font: 100% $font-stack-heading; }
+  p { font: 100% $font-stack-body; }
+
+  color: $color-fg-base;
   background-color: $color-bg-base;
   margin: 0;
 }
-
-@mixin background-size($size) {
-  -webkit-background-size: size;
-  -moz-background-size: size;
-  -o-background-size: size;
-  background-size: size;
-}
-
-@mixin border-radius($radius) {
-  -webkit-border-radius: radius;
-  -moz-border-radius: radius;
-  -o-border-radius: radius;
-  border-radius: radius;
-}
-
-@mixin animation($animate...) {
-  $max: length($animate);
-  $animations: '';
-
-  @for $i from 1 through $max {
-    $animations: #{ $animations + nth($animate, $i) };
-
-    @if $i < $max {
-      $animations: #{ $animations + ", " };
-    }
-  }
-
-  opacity: 0;
-  -webkit-animation: $animations;
-  -moz-animation: $animations;
-  -ms-animation: $animations;
-  -o-animation: $animations;
-  animation: $animations;
-
-  -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
-  -ms-animation-fill-mode: forwards;
-  -o-animation-fill-mode: forwards;
-  animation-fill-mode: forwards;
-}
-
-@mixin keyframes($animationName) {
-  @-webkit-keyframes #{ $animationName } {
-    @content;
-  }
-
-  @-moz-keyframes #{ $animationName } {
-    @content;
-  }
-
-  @-ms-keyframes #{ $animationName } {
-    @content;
-  }
-
-  @-o-keyframes #{ $animationName } {
-    @content;
-  }
-
-  @keyframes #{ $animationName } {
-    @content;
-  }
-}
-
-@include keyframes(fade-in) {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
 .container-base {
   display: flex;
   flex-direction: column;
@@ -111,14 +45,17 @@ body {
   flex: none;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   flex-direction: column;
 
   ul {
     list-style-type: none;
     overflow: hidden;
     display: flex;
-    font-size: 1.4em;
+    font-size: 1.8em;
     flex-direction: column;
+    margin: 5px;
+    padding: 0;
 
     a {
       display: inline-block;
@@ -126,44 +63,39 @@ body {
       text-decoration: none;
       padding: 0.7em 1em;
       color: $color-fg-nav;
+      transition: 0.3s; // TODO: make this a mixin
+      border-radius: 20%;
 
       &:hover, &:focus {
         background-color: $color-bg-nav-hover;
-        border-radius: 5px;
         transition: 0.3s; // TODO: make this a mixin
       }
     }
   }
 }
 
-$social-icon-size: 32px;
-
 .container-footer {
   background-color: $color-bg-footer;
-  /* padding: 20px; */
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   min-height: 128px;
-  /* flex-grow: 1;
-   */
+
   .social {
     display: flex;
     justify-content: center;
-    flex-direction: row;
-    padding: 32px 0 0 0;
+    flex-direction: column;
+    padding: 16px 0 0 0;
     max-width: 960px;
     justify-content: flex-end;
-    /* align-items: flex-end; */
     flex-grow: 1;
     width: 100%;
-    /* min-height: 8em;
-     */
+
     ul {
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
+      display: flex;
+      justify-content: center;
+      flex-direction: row;
       list-style-type: none;
       padding: 0;
       margin: 0;
@@ -177,11 +109,9 @@ $social-icon-size: 32px;
         padding: 8px;
         border-radius: 50%;
         transition: 0.4s;
-        color: #EEEEEE;
-        &:hover {
-          transition: 0.4s;
+        color: $color-bg-base;
 
-        }
+        &:hover { transition: 0.4s; }
       }
 
       i.icon-github:hover { background-color: #000000; } // TODO: Add tooltip
@@ -191,51 +121,33 @@ $social-icon-size: 32px;
   }
 
   .credit {
-    /* min-width: 960px; */
     max-width: 960px;
-    /* margin: 16px; */
-    /* display: flex; */
-    /* justify-content: flex-end; */
-    /* align-items: flex-end; */
-    /* flex-grow: 1; */
-    /* flex-direction: column; */
     width: 95%;
-    /* float: left; */
-    /* align-items: flex-start; */
-    /* flex-direction: column; */
-    /* align-items: center; */
-    /* flex-direction: column; */
-    /* p {
-       flex-grow: 3;
-       } */
+    color: $color-fg-footer;
+    font-size: 0.9rem;
+    margin: 15px 0 0 0;
+
+    a { color: $color-fg-footer; }
+
     p {
       margin: 0;
       padding: 10px 0;
-      /* flex-grow: 1; */
-      /* margin: 10px 5px; */
-      /* flex-basis: 50%; */
     }
-
-    // TODO: Is CC image skrunken?
   }
 }
 
-
 .brand {
-  padding: 0.5em;
+  padding: 5px;
+  width: 280px;
 
   a {
     display: inline-block;
     text-align: center;
     text-decoration: none;
+    color: $color-fg-nav;
 
-    h1 {
-      font-size: 2em;
-    }
-
-    h2 {
-      font-size: 0.8em;
-    }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1rem; }
   }
 }
 
@@ -243,51 +155,60 @@ $social-icon-size: 32px;
   @extend .container-base;
   flex: 1 0 auto;
   justify-content: center;
-  /* padding: $space; */
 }
 
 .container-content {
-  margin-top: $space;
-  background-color: $color-bg-content;
   max-width: 960px;
   display: flex;
-  /* justify-content: center; */
   align-items: center;
   flex-direction: column;
 
   h1 {
-    font-size: 4em;
+    font-size: 2em;
     margin: 0.5em 0;
   }
 
   .profile-image {
-    width: 300px;
-    height: 300px;
-    margin: 1.5em;
+    width: $profile-pic-size;
+    height: $profile-pic-size;
+    margin: 0.5em;
     border-radius: 50%;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
     background-image: url('profile.jpg');
-    /* @include animation('fade-in 5.5s ease-in 3s 1 alternate') */
     @include animation('fade-in 2s ease-in 0.5s');
   }
 
-  p {
-    padding: 0em;
-    font-size: 1.5em;
+  .blurb { 
+    padding: 0 20px;
+    font-size: 1.4rem;
     @include animation('fade-in 1.5s ease-in 1.5s');
   }
-}
 
-.container-left {
-  order: -1;
-}
+  a.post-listing {
+    width: 80%;
+    text-decoration: none;
+    transition: 0.3s;
+    color: $color-fg-base;
+    padding: 1rem;
+    margin: 1rem;
 
-.container-side {
-  padding: 1em;
-  /* border-radius: 3px; */
-  background-color: $color-bg-side;
+    h2 {
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    .date {
+      text-align: right; // TODO: Find out why this doesn't work
+    }
+
+    &:hover {
+      background-color: $color-bg-base-hover;
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+  }
 }
 
 @media only screen and (min-width: $pixel-breakpoint) {
@@ -303,6 +224,17 @@ $social-icon-size: 32px;
     }
   }
 
+  .container-footer {
+    .social {
+      flex-direction: row;
+      padding: 32px 0 0 0;
+    }
+
+    .credit {
+      margin: 0;
+    }
+  }
+
   .container-body {
     flex-direction: row;
   }
@@ -311,10 +243,6 @@ $social-icon-size: 32px;
     flex: 1;
     padding: 0 $space;
     margin: 0;
-  }
-
-  .container-side {
-    flex: 0 0 12em;
   }
 }
 
