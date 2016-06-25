@@ -52,15 +52,25 @@ impl BlogPost {
         post.body = buffer;
         Ok(post)
     }
+
+    pub fn get_body_as_html(&self) -> String {
+        use hoedown::{ Html, Markdown, Render };
+        use hoedown::renderer::html::Flags;
+
+        let mut renderer = Html::new(Flags::empty(), 0);
+        renderer.render(&Markdown::new(&self.body))
+            .to_str().unwrap_or("Unable to render Markdown body")
+            .to_string()
+    }
 }
 
 pub fn read_posts_from_disk() -> Result<Vec<BlogPost>> {
     use std::fs::read_dir;
-    use std::path::PathBuf;
 
+    let dir_entries = try!(read_dir("posts/"));
     let mut posts: Vec<BlogPost> = Vec::new();
-    let file_paths: Vec<PathBuf> = try!(read_dir("posts/")).map(|path| path.unwrap().path()).collect();
-    for file_path in file_paths {
+    for entry in dir_entries {
+        let file_path = try!(entry).path();
         posts.push(try!(BlogPost::from_file(file_path)));
     }
 

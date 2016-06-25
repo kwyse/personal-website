@@ -7,6 +7,7 @@ extern crate mount;
 extern crate staticfile;
 extern crate handlebars_iron;
 extern crate hoedown;
+extern crate rustc_serialize;
 
 mod blog;
 mod route;
