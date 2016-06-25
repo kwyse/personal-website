@@ -1,0 +1,66 @@
+@mixin background-size($size) {
+  -webkit-background-size: size;
+  -moz-background-size: size;
+  -o-background-size: size;
+  background-size: size;
+}
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: radius;
+  -moz-border-radius: radius;
+  -o-border-radius: radius;
+  border-radius: radius;
+}
+
+@mixin animation($animate...) {
+  $max: length($animate);
+  $animations: '';
+
+  @for $i from 1 through $max {
+    $animations: #{ $animations + nth($animate, $i) };
+
+    @if $i < $max {
+      $animations: #{ $animations + ", " };
+    }
+  }
+
+  opacity: 0;
+  -webkit-animation: $animations;
+  -moz-animation: $animations;
+  -ms-animation: $animations;
+  -o-animation: $animations;
+  animation: $animations;
+
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  -ms-animation-fill-mode: forwards;
+  -o-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+
+@mixin keyframes($animationName) {
+  @-webkit-keyframes #{ $animationName } {
+    @content;
+  }
+
+  @-moz-keyframes #{ $animationName } {
+    @content;
+  }
+
+  @-ms-keyframes #{ $animationName } {
+    @content;
+  }
+
+  @-o-keyframes #{ $animationName } {
+    @content;
+  }
+
+  @keyframes #{ $animationName } {
+    @content;
+  }
+}
+
+@include keyframes(fade-in) {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
