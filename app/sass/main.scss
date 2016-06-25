@@ -191,11 +191,12 @@ body {
     text-decoration: none;
     transition: 0.3s;
     color: $color-fg-base;
-    padding: 1rem;
-    margin: 1rem;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 1rem;
+    font-size: 1.2rem;
 
     h2 {
-      font-size: 2rem;
+      font-size: 2.5rem;
       text-align: center;
     }
 
@@ -208,6 +209,18 @@ body {
       border-radius: 10px;
       transition: 0.3s;
     }
+  }
+
+  .post {
+    text-align: left;
+
+    .title { font-size: 2.5rem; }
+    .date { text-align: right; }
+    p { font-size: 1.5rem; }
+
+    h1 { font-size: 1.9rem; }
+    h2 { font-size: 1.7rem; }
+    h3 { font-size: 1.5rem; }
   }
 }
 
