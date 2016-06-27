@@ -1,7 +1,7 @@
 @import 'mixin';
 
-$font-stack-heading: 'Bungee Inline', sans-serif;
-$font-stack-body: 'Dosis', sans-serif;
+$font-stack-heading: 'Bungee', sans-serif;
+$font-stack-body: 'Lato', sans-serif;
 $pixel-breakpoint: 768px;
 
 $space: 10px;
@@ -9,13 +9,14 @@ $profile-pic-size: 240px;
 $social-icon-size: 32px;
 
 $color-bg-base: #E3E3E3;
+$color-bg-base-side: #BBBBBB;
 $color-bg-base-hover: #DDDDDD;
 $color-bg-content: $color-bg-base;
-$color-bg-nav: #5E6B7D;
+$color-bg-nav: #225378;
 $color-bg-nav-hover: #999999;
 $color-bg-footer: $color-bg-nav;
 $color-bg-side: #CCCCCC;
-$color-fg-base: #E4E4E4;
+$color-fg-base: #3E3E3E;
 $color-fg-content: #FCFFF5;
 $color-fg-nav: #B3B3B3;
 $color-fg-nav-hover: #333EEE;
@@ -28,8 +29,9 @@ body {
 
   color: $color-fg-base;
   background-color: $color-bg-base;
+  background: -webkit-linear-gradient(left, $color-bg-base-side, $color-bg-base, $color-bg-base-side);
   margin: 0;
-  background-image: url("bg.png");
+  /* background-image: url("bg.png"); */
   background-repeat: repeat;
   margin: 0;
   padding: 0;
@@ -51,7 +53,7 @@ body {
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.75);
 
   ul {
     list-style-type: none;
@@ -119,6 +121,14 @@ nav {
     margin: 0.5em 0;
   }
 
+  hr {
+    display: block;
+    clear: both;
+    height: 1px;
+    width: 96%;
+    /* background-color: #333333; */
+  }
+
   .profile-image {
     width: $profile-pic-size;
     height: $profile-pic-size;
@@ -129,9 +139,11 @@ nav {
     background-size: cover;
     background-image: url('profile.jpg');
     @include animation('fade-in 2s ease-in 0.5s');
+    /* box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.75); */
   }
 
   .blurb { 
+    line-height: 50px;
     padding: 0 10px;
     font-size: 1.8rem;
     text-align: center;
@@ -142,7 +154,7 @@ nav {
     display: flex;
     flex-direction: column;
     margin: 30px;
-    padding: 16px 0 0 0;
+    /* padding: 16px 0 0 0; */
     max-width: 960px;
     flex-grow: 1;
     width: 100%;
