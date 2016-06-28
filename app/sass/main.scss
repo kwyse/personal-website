@@ -1,6 +1,6 @@
 @import 'mixin';
 
-$font-stack-heading: 'Raleway', sans-serif;
+$font-stack-heading: 'Bungee Inline', sans-serif;
 $font-stack-body: 'Dosis', sans-serif;
 $pixel-breakpoint: 768px;
 
@@ -8,16 +8,16 @@ $space: 10px;
 $profile-pic-size: 240px;
 $social-icon-size: 32px;
 
-$color-bg-base: #EEEEEE;
+$color-bg-base: #E3E3E3;
 $color-bg-base-hover: #DDDDDD;
 $color-bg-content: $color-bg-base;
-$color-bg-nav: #024959;
-$color-bg-nav-hover: #037E8C;
+$color-bg-nav: #5E6B7D;
+$color-bg-nav-hover: #999999;
 $color-bg-footer: $color-bg-nav;
 $color-bg-side: #CCCCCC;
-$color-fg-base: #3E423A;
+$color-fg-base: #E4E4E4;
 $color-fg-content: #FCFFF5;
-$color-fg-nav: #EEEEEE;
+$color-fg-nav: #B3B3B3;
 $color-fg-nav-hover: #333EEE;
 $color-fg-footer: $color-bg-base;
 $color-fg-side: #333EEE;
@@ -29,6 +29,10 @@ body {
   color: $color-fg-base;
   background-color: $color-bg-base;
   margin: 0;
+  background-image: url("bg.png");
+  background-repeat: repeat;
+  margin: 0;
+  padding: 0;
 }
 .container-base {
   display: flex;
@@ -47,6 +51,7 @@ body {
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
+  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
 
   ul {
     list-style-type: none;
@@ -74,69 +79,15 @@ body {
   }
 }
 
-.container-footer {
-  background-color: $color-bg-footer;
+nav {
+  width: 100%;
+  max-width: 960px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  flex-direction: column;
-  min-height: 128px;
-
-  .social {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    padding: 16px 0 0 0;
-    max-width: 960px;
-    justify-content: flex-end;
-    flex-grow: 1;
-    width: 100%;
-
-    ul {
-      display: flex;
-      justify-content: center;
-      flex-direction: row;
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-
-      a i {
-        text-align: center;
-        align-items: center;
-        font-size: 1.5em;
-        background-color: $color-bg-nav-hover;
-        margin: 0.5em;
-        padding: 8px;
-        border-radius: 50%;
-        transition: 0.4s;
-        color: $color-bg-base;
-
-        &:hover { transition: 0.4s; }
-      }
-
-      i.icon-github:hover { background-color: #000000; } // TODO: Add tooltip
-      i.icon-linkedin:hover { background-color: #0077B5; }
-      i.icon-twitter:hover { background-color: #55ACEE; }
-    }
-  }
-
-  .credit {
-    max-width: 960px;
-    width: 95%;
-    color: $color-fg-footer;
-    font-size: 0.9rem;
-    margin: 15px 0 0 0;
-
-    a { color: $color-fg-footer; }
-
-    p {
-      margin: 0;
-      padding: 10px 0;
-    }
-  }
 }
 
 .brand {
+  margin: 0;
   padding: 5px;
   width: 280px;
 
@@ -146,7 +97,7 @@ body {
     text-decoration: none;
     color: $color-fg-nav;
 
-    h1 { font-size: 2rem; }
+    h1 { font-size: 2rem; margin: 2px; }
     h2 { font-size: 1rem; }
   }
 }
@@ -164,7 +115,7 @@ body {
   flex-direction: column;
 
   h1 {
-    font-size: 2em;
+    font-size: 2.5em;
     margin: 0.5em 0;
   }
 
@@ -181,52 +132,60 @@ body {
   }
 
   .blurb { 
-    padding: 0 20px;
-    font-size: 1.4rem;
+    padding: 0 10px;
+    font-size: 1.8rem;
+    text-align: center;
     @include animation('fade-in 1.5s ease-in 1.5s');
   }
 
-  a.post-listing {
-    width: 80%;
-    text-decoration: none;
-    transition: 0.3s;
-    color: $color-fg-base;
-    padding: 0.5rem 1rem;
-    margin: 0.5rem 1rem;
-    font-size: 1.2rem;
+  .social {
+    display: flex;
+    flex-direction: column;
+    margin: 30px;
+    padding: 16px 0 0 0;
+    max-width: 960px;
+    flex-grow: 1;
+    width: 100%;
 
-    h2 {
-      font-size: 2.5rem;
-      text-align: center;
+    ul {
+      display: flex;
+      justify-content: center;
+      flex-direction: row;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+
+      a i {
+        text-align: center;
+        align-items: center;
+        font-size: 2em;
+        background-color: $color-bg-nav-hover;
+        margin: 0.5em;
+        padding: 8px;
+        border-radius: 50%;
+        transition: 0.4s;
+        color: $color-bg-base;
+
+        &:hover { transition: 0.4s; }
+      }
+
+      i.icon-github:hover { background-color: #000000; } // TODO: Add tooltip
+      i.icon-linkedin:hover { background-color: #0077B5; }
+      i.icon-twitter:hover { background-color: #55ACEE; }
     }
-
-    .date {
-      text-align: right; // TODO: Find out why this doesn't work
-    }
-
-    &:hover {
-      background-color: $color-bg-base-hover;
-      border-radius: 10px;
-      transition: 0.3s;
-    }
-  }
-
-  .post {
-    text-align: left;
-
-    .title { font-size: 2.5rem; }
-    .date { text-align: right; }
-    p { font-size: 1.5rem; }
-
-    h1 { font-size: 1.9rem; }
-    h2 { font-size: 1.7rem; }
-    h3 { font-size: 1.5rem; }
   }
 }
 
 @media only screen and (min-width: $pixel-breakpoint) {
   .container-header {
     flex-direction: row;
+    justify-content: center;
+
+    .brand {
+      padding: 10px 0 0 5px;
+    }
+
+    nav { display: block; }
 
     ul {
       flex-direction: row;
@@ -258,4 +217,3 @@ body {
     margin: 0;
   }
 }
-
