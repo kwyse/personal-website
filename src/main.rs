@@ -1,6 +1,7 @@
 #[macro_use]
 extern crate log;
-extern crate log4rs;
+extern crate fern;
+extern crate chrono;
 extern crate iron;
 extern crate router;
 extern crate mount;
@@ -22,6 +23,8 @@ use handlebars_iron::HandlebarsEngine;
 const PORT: u16 = 42451;
 
 fn main() {
+    init_logger();
+
     let routes = add_routes();
     let mounts = add_mounts(routes);
     let mut chain = Chain::new(mounts);
@@ -30,11 +33,25 @@ fn main() {
     chain.link_after(templates);
     chain.link_after(PageNotFound);
 
-    log4rs::init_file("config/log4rs.yml", Default::default()).expect("Attempting to intialize logger");
-
     let url: &str = &format!("localhost:{}", PORT);
     info!("Server started on {}", url);
     Iron::new(chain).http(url).unwrap();
+}
+
+fn init_logger() {
+    use chrono::UTC;
+    use fern::{ DispatchConfig, OutputConfig };
+    use log::LogLevelFilter;
+
+    let logger_config = DispatchConfig {
+        format: Box::new(|msg, level, _| {
+            format!("{} [{}] | {}", UTC::now().format("[%Y-%m-%d %H:%M:%S]"), level, msg)
+        }),
+        output: vec![OutputConfig::stdout(), OutputConfig::file("output.log")],
+        level: LogLevelFilter::Trace,
+    };
+
+    fern::init_global_logger(logger_config, LogLevelFilter::Info).expect("Attempting to initialize global logger");
 }
 
 fn add_routes() -> Router {
