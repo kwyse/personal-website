@@ -20,7 +20,7 @@ use mount::Mount;
 use router::Router;
 use handlebars_iron::HandlebarsEngine;
 
-const PORT: u16 = 42451;
+const DEFAULT_PORT: &'static str = "42451";
 
 fn main() {
     init_logger();
@@ -33,7 +33,7 @@ fn main() {
     chain.link_after(templates);
     chain.link_after(PageNotFound);
 
-    let url: &str = &format!("localhost:{}", PORT);
+    let url: &str = &format!("localhost:{}", get_server_port());
     info!("Server started on {}", url);
     Iron::new(chain).http(url).unwrap();
 }
@@ -81,6 +81,14 @@ fn add_templates() -> HandlebarsEngine {
     template_engine.add(Box::new(DirectorySource::new("templates/", ".hbs")));
     template_engine.reload().expect("Attempting to load Handlebars tempaltes");
     template_engine
+}
+
+fn get_server_port() -> u16 {
+    use std::env;
+
+    env::var("PORT")
+        .unwrap_or(String::from(DEFAULT_PORT))
+        .parse().expect("Attempting to parse server port number")
 }
 
 struct PageNotFound;
