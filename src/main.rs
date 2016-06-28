@@ -33,7 +33,7 @@ fn main() {
     chain.link_after(templates);
     chain.link_after(PageNotFound);
 
-    let url: &str = &format!("localhost:{}", get_server_port());
+    let url: &str = &format!("0.0.0.0:{}", get_server_port());
     info!("Server started on {}", url);
     Iron::new(chain).http(url).unwrap();
 }
