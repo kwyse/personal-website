@@ -2,6 +2,7 @@
 name = "personal-website"
 version = "0.1.0"
 authors = ["Krishan Wyse <kwysek@gmail.com>"]
+build = "build.rs"
 
 [dependencies]
 log = "*"
@@ -14,6 +15,9 @@ staticfile = "*"
 handlebars-iron = "*"
 hoedown = "*"
 rustc-serialize = "*"
+
+[build-dependencies]
+sass-rs = "*"
 
 [target.heroku]
 version = "nightly"
