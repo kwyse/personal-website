@@ -59,8 +59,9 @@ fn add_routes() -> Router {
 
     let mut router = Router::new();
     router.get("/", handle_landing_page);
-    // router.get("/blog", handle_blog_list_page);
-    // router.get("/blog/:post", handle_blog_post_page);
+    router.get("/about", handle_about_page);
+    router.get("/blog", handle_blog_list_page);
+    router.get("/blog/:post", handle_blog_post_page);
     router
 }
 

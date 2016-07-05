@@ -110,6 +110,7 @@ nav {
 .container-content {
   max-width: 960px;
   display: flex;
+  flex: 1;
   align-items: center;
   flex-direction: column;
 
@@ -183,6 +184,71 @@ nav {
   }
 }
 
+.container-footer {
+  background-color: $color-bg-footer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 128px;
+  width: 100%;
+
+  .social {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 16px 0 0 0;
+    max-width: 960px;
+    justify-content: flex-end;
+    flex-grow: 1;
+    width: 100%;
+
+    ul {
+      display: flex;
+      justify-content: center;
+      flex-direction: row;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+
+      a i {
+        text-align: center;
+        align-items: center;
+        font-size: 1.5em;
+        background-color: $color-bg-nav-hover;
+        margin: 0.5em;
+        padding: 8px;
+        border-radius: 50%;
+        transition: 0.4s;
+        color: $color-bg-base;
+
+        &:hover { transition: 0.4s; }
+      }
+
+      i.icon-github:hover { background-color: #000000; } // TODO: Add tooltip
+      i.icon-linkedin:hover { background-color: #0077B5; }
+      i.icon-twitter:hover { background-color: #55ACEE; }
+    }
+  }
+
+  .credit {
+    max-width: 960px;
+    width: 95%;
+    color: $color-fg-footer;
+    font-size: 0.9rem;
+    margin: 15px 0 0 0;
+
+    a {
+      color: $color-fg-footer;
+    }
+
+    p {
+      margin: 0;
+      padding: 10px 0;
+    }
+  }
+}
+
 @media only screen and (min-width: $pixel-breakpoint) {
   .container-header {
     display: flex;
@@ -224,12 +290,12 @@ nav {
   }
 
   .container-body {
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
   }
 
   .container-content {
-    flex: 1;
+    width: 960px;
     padding: 0 $space;
     margin: 0;
 

@@ -11,6 +11,10 @@ pub fn handle_landing_page(_: &mut Request) -> IronResult<Response> {
     handle_with_template("landing", ())
 }
 
+pub fn handle_about_page(_: &mut Request) -> IronResult<Response> {
+    handle_with_template("about", ())
+}
+
 pub fn handle_blog_list_page(_: &mut Request) -> IronResult<Response> {
     use blog::Metadata;
 
