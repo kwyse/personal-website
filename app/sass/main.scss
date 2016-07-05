@@ -8,8 +8,8 @@ $space: 10px;
 $profile-pic-size: 240px;
 $social-icon-size: 32px;
 
-$color-bg-base: #E3E3E3;
-$color-bg-base-side: #BBBBBB;
+$color-bg-base: #F3F3F3;
+$color-bg-base-side: #DDDDDD;
 $color-bg-base-hover: #DDDDDD;
 $color-bg-content: $color-bg-base;
 $color-bg-nav: #225378;
@@ -19,62 +19,59 @@ $color-bg-side: #CCCCCC;
 $color-fg-base: #3E3E3E;
 $color-fg-content: #FCFFF5;
 $color-fg-nav: #B3B3B3;
-$color-fg-nav-hover: #333EEE;
+$color-fg-nav-hover: #DDDDDD;
 $color-fg-footer: $color-bg-base;
 $color-fg-side: #333EEE;
 
 body {
-  h1, h2, h3 { font: 100% $font-stack-heading; }
-  p { font: 100% $font-stack-body; }
+  h1, h2, h3 {
+    font: 100% $font-stack-heading;
+  }
+
+  p {
+    font: 100% $font-stack-body;
+  }
 
   color: $color-fg-base;
-  background-color: $color-bg-base;
+  margin: 0;
   background: -webkit-linear-gradient(left, $color-bg-base-side, $color-bg-base, $color-bg-base-side);
-  margin: 0;
-  /* background-image: url("bg.png"); */
-  background-repeat: repeat;
-  margin: 0;
-  padding: 0;
-}
-.container-base {
-  display: flex;
-  flex-direction: column;
 }
 
 .container {
-  @extend .container-base;
+  display: flex;
+  flex-direction: column;
   height: 100%;
 }
 
 .container-header {
   background-color: $color-bg-nav;
-  flex: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: column;
   box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.75);
+
+  a {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    color: $color-fg-nav;
+    margin: 0 10px;
+    padding: 10px;
+  }
 
   ul {
     list-style-type: none;
     overflow: hidden;
     display: flex;
-    font-size: 1.8em;
-    flex-direction: column;
-    margin: 5px;
+    justify-content: space-between;
+    margin: 0;
     padding: 0;
+    width: 100%;
 
     a {
-      display: inline-block;
-      text-align: center;
-      text-decoration: none;
-      padding: 0.7em 1em;
+      font: 150% $font-stack-heading;
       color: $color-fg-nav;
       transition: 0.3s; // TODO: make this a mixin
-      border-radius: 20%;
 
       &:hover, &:focus {
-        background-color: $color-bg-nav-hover;
+        color: $color-fg-nav-hover;
         transition: 0.3s; // TODO: make this a mixin
       }
     }
@@ -85,29 +82,29 @@ nav {
   width: 100%;
   max-width: 960px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .brand {
   margin: 0;
-  padding: 5px;
-  width: 280px;
 
   a {
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
-    color: $color-fg-nav;
+    h1 {
+      font-size: 2rem;
+      margin: 2px;
+    }
 
-    h1 { font-size: 2rem; margin: 2px; }
-    h2 { font-size: 1rem; }
+    h2 {
+      font-size: 1rem;
+    }
   }
 }
 
 .container-body {
-  @extend .container-base;
+  display: flex;
   flex: 1 0 auto;
-  justify-content: center;
+  flex-direction: column;
 }
 
 .container-content {
@@ -117,21 +114,20 @@ nav {
   flex-direction: column;
 
   h1 {
-    font-size: 2.5em;
-    margin: 0.5em 0;
+    font-size: 2.1em;
+    margin: 15px 0 0 0;
   }
 
   hr {
     display: block;
     clear: both;
     height: 1px;
-    width: 96%;
-    /* background-color: #333333; */
+    width: 90%;
   }
 
   .profile-image {
-    width: $profile-pic-size;
-    height: $profile-pic-size;
+    width: 180px;
+    height: 180px;
     margin: 0.5em;
     border-radius: 50%;
     background-repeat: no-repeat;
@@ -139,13 +135,13 @@ nav {
     background-size: cover;
     background-image: url('profile.jpg');
     @include animation('fade-in 2s ease-in 0.5s');
-    /* box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.75); */
   }
 
   .blurb { 
-    line-height: 50px;
+    line-height: 25px;
+    margin: 10px 0;
     padding: 0 10px;
-    font-size: 1.8rem;
+    font-size: 1.2rem;
     text-align: center;
     @include animation('fade-in 1.5s ease-in 1.5s');
   }
@@ -154,7 +150,6 @@ nav {
     display: flex;
     flex-direction: column;
     margin: 30px;
-    /* padding: 16px 0 0 0; */
     max-width: 960px;
     flex-grow: 1;
     width: 100%;
@@ -190,6 +185,7 @@ nav {
 
 @media only screen and (min-width: $pixel-breakpoint) {
   .container-header {
+    display: flex;
     flex-direction: row;
     justify-content: center;
 
@@ -197,13 +193,21 @@ nav {
       padding: 10px 0 0 5px;
     }
 
-    nav { display: block; }
+    nav {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
 
     ul {
       flex-direction: row;
+      justify-content: flex-end;
+      width: auto;
+      align-items: center;
 
       a {
-        margin-right: 2em;
+        text-align: center;
+        margin-right: 10px;
       }
     }
   }
@@ -221,11 +225,31 @@ nav {
 
   .container-body {
     flex-direction: row;
+    justify-content: center;
   }
 
   .container-content {
     flex: 1;
     padding: 0 $space;
     margin: 0;
+
+    h1 {
+      margin-top: 30px;
+    }
+
+    hr {
+      width: 95%;
+      margin: 20px 0;
+    }
+
+    .profile-image {
+      width: 220px;
+      height: 220px;
+    }
+
+    .blurb { 
+      line-height: 45px;
+      font-size: 1.5rem;
+    }
   }
 }
