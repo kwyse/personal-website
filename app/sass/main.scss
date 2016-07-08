@@ -46,6 +46,7 @@ body {
 .container-header {
   background-color: $color-bg-nav;
   box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.75);
+  min-height: 128px;
 
   a {
     display: inline-block;
@@ -113,6 +114,11 @@ nav {
   flex: 1 0 auto;
   align-items: center;
   flex-direction: column;
+
+  p {
+    font-size: 1.3rem;
+    line-height: 35px;
+  }
 
   h1 {
     font-size: 2.1em;

@@ -56,9 +56,11 @@ impl BlogPost {
     pub fn get_body_as_html(&self) -> String {
         use hoedown::{ Html, Markdown, Render };
         use hoedown::renderer::html::Flags;
+        use hoedown::{ TABLES, FENCED_CODE, AUTOLINK, STRIKETHROUGH, NO_INTRA_EMPHASIS };
 
         let mut renderer = Html::new(Flags::empty(), 0);
-        renderer.render(&Markdown::new(&self.body))
+        let extensions = TABLES | FENCED_CODE | AUTOLINK | STRIKETHROUGH | NO_INTRA_EMPHASIS;
+        renderer.render(&Markdown::new(&self.body).extensions(extensions))
             .to_str().unwrap_or("Unable to render Markdown body")
             .to_string()
     }
