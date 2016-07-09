@@ -18,6 +18,7 @@ $color-bg-footer: $color-bg-nav;
 $color-bg-side: #CCCCCC;
 $color-fg-base: #3E3E3E;
 $color-fg-content: #FCFFF5;
+$color-fg-hover: #DDDDDD;
 $color-fg-nav: #B3B3B3;
 $color-fg-nav-hover: #DDDDDD;
 $color-fg-footer: $color-bg-base;
@@ -91,12 +92,15 @@ nav {
   margin: 0;
 
   a {
+    padding: 0;
+
     h1 {
       font-size: 2rem;
       margin: 2px;
     }
 
     h2 {
+      margin: 2px;
       font-size: 1rem;
     }
   }
@@ -114,6 +118,7 @@ nav {
   flex: 1 0 auto;
   align-items: center;
   flex-direction: column;
+  padding: 10px;
 
   p {
     font-size: 1.3rem;
@@ -186,6 +191,61 @@ nav {
       i.icon-github:hover { background-color: #000000; } // TODO: Add tooltip
       i.icon-linkedin:hover { background-color: #0077B5; }
       i.icon-twitter:hover { background-color: #55ACEE; }
+    }
+  }
+
+  a.post-listing {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    color: $color-fg-base;
+    margin: 0 10px;
+    padding: 10px;
+    width: 100%;
+
+    h1 {
+      font: 200% $font-stack-body;
+      font-weight: bold;
+    }
+
+    em {
+      font: 120% $font-stack-body;
+      font-style: italic;
+      line-height: 40px;
+    }
+
+    &:hover {
+      background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0), $color-fg-hover, rgba(0, 0, 0, 0));
+    }
+  }
+
+  .post {
+    width: 100%;
+    padding: 5px;
+
+    hr {
+      width: 100%;
+    }
+
+    p {
+      font: 120% $font-stack-body;
+      line-height: 32px;
+    }
+
+    code {
+      word-wrap: break-word;
+      word-break: break-all;
+    }
+
+    h1 {
+      font: 200% $font-stack-body;
+      font-weight: bold;
+    }
+
+    .date {
+      font: 120% $font-stack-body;
+      font-style: italic;
+      line-height: 40px;
     }
   }
 }
@@ -262,7 +322,8 @@ nav {
     justify-content: center;
 
     .brand {
-      padding: 10px 0 0 5px;
+      /* padding: 10px 0 0 5px; */
+      padding: 18px;
     }
 
     nav {
@@ -301,7 +362,6 @@ nav {
   }
 
   .container-content {
-    width: 960px;
     padding: 0 $space;
     margin: 0;
 
@@ -322,6 +382,11 @@ nav {
     .blurb { 
       line-height: 45px;
       font-size: 1.5rem;
+    }
+
+    code {
+      word-wrap: break-word;
+      word-break: break-all;
     }
   }
 }
