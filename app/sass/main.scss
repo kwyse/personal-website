@@ -248,6 +248,10 @@ nav {
       line-height: 40px;
     }
   }
+
+  ul li {
+    font: 110% $font-stack-body;
+  }
 }
 
 .container-footer {
