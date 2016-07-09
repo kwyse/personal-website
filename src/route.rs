@@ -18,13 +18,12 @@ pub fn handle_about_page(_: &mut Request) -> IronResult<Response> {
 pub fn handle_blog_list_page(_: &mut Request) -> IronResult<Response> {
     use blog::Metadata;
 
-    let posts: Vec<Metadata> = try!(get_posts())
+    let posts: Vec<Metadata> = get_posts()
         .iter().map(|post| post.metadata.clone())
         .collect();
 
     let mut template_data = BTreeMap::new();
     template_data.insert(String::from("posts"), posts);
-
     handle_with_template("blog_list", template_data)
 }
 
@@ -32,7 +31,7 @@ pub fn handle_blog_post_page(request: &mut Request) -> IronResult<Response> {
     use std::collections::HashMap;
     use router::Router;
 
-    let posts = try!(get_posts());
+    let posts = get_posts();
     let paths_index = posts.iter().map(|post| {
         // TODO: Ensure path is always available instead of constructing
         (post.metadata.get("path").unwrap_or(&construct_path(post)).clone(), post.clone())
@@ -65,8 +64,8 @@ fn construct_path(post: &BlogPost) -> String {
 }
 
 
-fn get_posts() -> IronResult<Vec<BlogPost>> {
+fn get_posts() -> Vec<BlogPost> {
     use blog::read_posts_from_disk;
 
-    Ok(try!(read_posts_from_disk().map_err(|err| IronError::new(err, "No posts found"))))
+    read_posts_from_disk().unwrap_or(Vec::new())
 }
