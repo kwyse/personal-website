@@ -22,9 +22,15 @@ pub fn handle_blog_list_page(_: &mut Request) -> IronResult<Response> {
         .iter().map(|post| post.metadata.clone())
         .collect();
 
-    let mut template_data = BTreeMap::new();
-    template_data.insert(String::from("posts"), posts);
-    handle_with_template("blog_list", template_data)
+    if posts.is_empty() {
+        let mut template_data = BTreeMap::new();
+        template_data.insert(String::from("info"), String::from("No blog posts found. Check back soon!"));
+        handle_with_template("blog_list_noposts", template_data)
+    } else {
+        let mut template_data = BTreeMap::new();
+        template_data.insert(String::from("posts"), posts);
+        handle_with_template("blog_list", template_data)
+    }
 }
 
 pub fn handle_blog_post_page(request: &mut Request) -> IronResult<Response> {
