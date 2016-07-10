@@ -1,0 +1,118 @@
+.container-content {
+  width: 90%;
+  max-width: 960px;
+  @extend .flex-column;
+  flex: 1 0 auto;
+  align-items: center;
+  padding: 10px;
+
+  hr {
+    display: block;
+    clear: both;
+    width: 90%;
+    height: 1px;
+  }
+}
+
+.profile-image {
+  width: 180px;
+  height: 180px;
+  background-image: url('profile.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  @include background-size(cover);
+  @include border-radius(50%);
+  @include animation('fade-in 2s ease-in 0.5s');
+}
+
+.blurb { 
+  line-height: 25px;
+  margin: 10px 0;
+  font-size: 1.2rem;
+  text-align: center;
+  @include animation('fade-in 1.5s ease-in 1.5s');
+}
+
+// TODO: Clean this up after adding posts
+a.post-listing {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  color: $color-fg-base;
+  margin: 0 10px;
+  padding: 10px;
+  width: 100%;
+
+  h1 {
+    font: 200% $font-stack-body;
+    font-weight: bold;
+  }
+
+  em {
+    font: 120% $font-stack-body;
+    font-style: italic;
+    line-height: 40px;
+  }
+
+  &:hover {
+    background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0), $color-fg-hover, rgba(0, 0, 0, 0));
+  }
+}
+
+.post {
+  width: 100%;
+  padding: 5px;
+
+  hr {
+    width: 100%;
+  }
+
+  p {
+    font: 120% $font-stack-body;
+    line-height: 32px;
+  }
+
+  code {
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+
+  h1 {
+    font: 200% $font-stack-body;
+    font-weight: bold;
+  }
+
+  .date {
+    font: 120% $font-stack-body;
+    font-style: italic;
+    line-height: 40px;
+  }
+}
+
+@media only screen and (min-width: $pixel-breakpoint) {
+  .container-content {
+    margin: 0;
+
+    h1 { margin-top: 30px; }
+
+    hr {
+      width: 95%;
+      margin: 20px 0;
+    }
+
+    .profile-image {
+      width: 220px;
+      height: 220px;
+    }
+
+    .blurb { 
+      line-height: 45px;
+      font-size: 1.5rem;
+    }
+
+    code {
+      word-wrap: break-word;
+      word-break: break-all;
+    }
+  }
+}
