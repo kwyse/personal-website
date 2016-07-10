@@ -3,7 +3,6 @@
   max-width: 960px;
   @extend .flex-column;
   flex: 1 0 auto;
-  align-items: center;
   padding: 10px;
 
   hr {
@@ -13,6 +12,8 @@
     height: 1px;
   }
 }
+
+.horiz-centered { align-items: center; }
 
 .profile-image {
   width: 180px;
@@ -88,6 +89,8 @@ a.post-listing {
     line-height: 40px;
   }
 }
+
+.info { text-align: center; }
 
 @media only screen and (min-width: $pixel-breakpoint) {
   .container-content {
