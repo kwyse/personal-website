@@ -1,5 +1,6 @@
 target
 log
+static/vendor
 
 .sass-cache
 *.css*
