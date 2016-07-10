@@ -1,5 +1,4 @@
-$font-stack-heading: 'Bungee', sans-serif;
-$font-stack-body: 'Lato', sans-serif;
+$font-stack: 'Ubuntu', sans-serif;
 $pixel-breakpoint: 768px;
 
 $color-bg-base: #F3F3F3;
@@ -14,8 +13,12 @@ $color-fg-nav: #B3B3B3;
 $color-fg-nav-hover: $color-fg-hover;
 $color-fg-footer: $color-fg-nav;
 
-h1, h2, h3 { font-family: $font-stack-heading; }
-p { font: 100% $font-stack-body; }
+h1, h2, h3, h4, h5, h6, p { font-family: $font-stack; }
+h1 { font-size: 2.1rem; }
+p {
+  font-size: 1.3rem;
+  line-height: 35px;
+}
 
 body {
   color: $color-fg-base;
@@ -45,16 +48,6 @@ body {
   overflow: hidden;
   display: flex;
   justify-content: space-between;
-}
-
-p {
-  font-size: 1.3rem;
-  line-height: 35px;
-}
-
-h1 {
-  font-size: 2.1em;
-  margin: 15px 0 0 0;
 }
 
 .container-body {

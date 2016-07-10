@@ -31,7 +31,8 @@ nav {
     width: 100%;
 
     a {
-      font: 150% $font-stack-heading;
+      font: 150% $font-stack;
+      font-weight: bold;
       color: $color-fg-nav;
       @include transition(0.3s);
 

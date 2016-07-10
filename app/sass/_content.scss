@@ -44,12 +44,12 @@ a.post-listing {
   width: 100%;
 
   h1 {
-    font: 200% $font-stack-body;
+    font-size: 200%;
     font-weight: bold;
   }
 
   em {
-    font: 120% $font-stack-body;
+    font-size: 120%;
     font-style: italic;
     line-height: 40px;
   }
@@ -68,7 +68,7 @@ a.post-listing {
   }
 
   p {
-    font: 120% $font-stack-body;
+    font-size: 120%;
     line-height: 32px;
   }
 
@@ -78,12 +78,12 @@ a.post-listing {
   }
 
   h1 {
-    font: 200% $font-stack-body;
+    font-size: 200%;
     font-weight: bold;
   }
 
   .date {
-    font: 120% $font-stack-body;
+    font-size: 120%;
     font-style: italic;
     line-height: 40px;
   }
