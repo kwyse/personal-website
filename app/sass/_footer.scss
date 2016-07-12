@@ -1,6 +1,7 @@
 footer {
   width: 100%;
   background-color: $color-bg-footer;
+  flex-shrink: 0;
 }
 
 .container-footer {
