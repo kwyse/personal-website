@@ -72,6 +72,7 @@ fn add_mounts<H: Handler>(router: H) -> Mount {
     let mut mounts = Mount::new();
     mounts.mount("/", router);
     mounts.mount("/static", Static::new(Path::new("static")));
+    mounts.mount("/app", Static::new(Path::new("app")));
     mounts
 }
 
