@@ -20,6 +20,11 @@ p {
   line-height: 35px;
 }
 
+ul li {
+  font-family: $font-stack;
+  font-size: 1.3rem;
+}
+
 body {
   color: $color-fg-base;
   margin: 0;
