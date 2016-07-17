@@ -91,6 +91,66 @@ The final thing to note is the `unwrap()` call at the very end. Again, the [erro
 
 # Templating with Handlebars
 
-Writing a hello world app never gets old, but we can do better. The [`handlebars-iron`](https://crates.io/crates/handlebars-iron) crate adds support for the [Handlebars](http://handlebarsjs.com/) templating language directly to Iron. Templating languages allow for dynamic content to be loaded into an otherwise static HTML page. The post you're reading now differs from others based on the URL entered, but the header and footer remain the same across blog posts. This templating promotes clean project structure and keeps things [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself). Add the crate as a dependency in `Cargo.toml`, declare it for linkage at the top of `src/main.rs` and update the `use` statements for the structs we will use. Update the `main` function to this:
+Writing a hello world app never gets old, but we can do better. The [`handlebars-iron`](https://crates.io/crates/handlebars-iron) crate adds support for the [Handlebars](http://handlebarsjs.com/) templating language directly to Iron. Templating languages allow for dynamic content to be loaded into an otherwise static HTML page. The blog post you're reading now differs from others based on the URL entered, but the header and footer remain the same across blog posts. This templating promotes clean project structure and keeps things [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself). Add the crate as a dependency in `Cargo.toml`, declare it for linkage at the top of `src/main.rs` and update the `use` statements to include the structs we use below. Update the `main` function to this:
 
-In the `main` function, we first define a *closure* (called a lambda or anonymous function in other languages). Closures themselves are [too big of a topic](https://doc.rust-lang.org/book/closures.html) to cover in depth here, but you can think of them as inline functions. In Rust, functions and closures even have the same signature. Parameters of the function are declared between the two vertical pipes and, just as with all scopes in Rust, the final expression is used as the return value if it's not terminated with a semicolon. The contents of the `Ok` are an implementation detail of what [Iron expects as a response](http://ironframework.io/doc/iron/response/struct.Response.html). Here, we're returning a [tuple](https://doc.rust-lang.org/std/primitive.tuple.html), which is a sequence in Rust that can contain objects of differing types. Iron can accept a response structured as a 2-length tuple containing an HTTP status and a body as the two elements.
+```rust
+fn main() {
+    fn handler(_: &mut Request) -> IronResult<Response> {
+        Ok(Response::with((status::Ok, Template::new("landing", ()))))
+    }
+
+    let mut routes = Router::new();
+    routes.get("/", handler);
+
+    // Define a new templating engine that will look in the templates forlder of
+    // the root project directory for .hbs files, and load them up.
+    let mut templates = HandlebarsEngine::new();
+    templates.add(Box::new(DirectorySource::new("templates/", ".hbs")));
+    templates.reload().expect("Failed to load templates");
+
+    // Iron allows you to arbitrarily link different middlewares together via
+    // the Chain struct. Here we link our routing and templating middlewares
+    // together.
+    let mut chain = Chain::new(routes);
+    chain.link_after(templates);
+
+    // Remember to pass the chain to Iron::new() instead of the router
+    let url = "localhost:3000";
+    println!("Starting server at {}", url);
+    Iron::new(chain).http(url).expect("Failed to start the server");
+```
+
+We redefine our handler to load the template named `landing.hbs` instead of a static string. The empty tuple passed as the second argument will contain our template data, which will add in a moment. If you look at the [signature](http://ironframework.io/doc/iron/response/struct.Response.html#method.with) of the `Response::with` function, it takes a `Modifier`. The Iron crate itself implements this trait for `String`s, and the Handlebars crate implements it for its `Template` struct, which enables you to easily change the arguments passed like this.
+
+Next, we add the directory we intend to store the templates (as `.hbs` files in this case). We then tell the Handlebars engine to actually read the files stored there with the reload call. The `expect` method is another method related to Rust's error handling. Calling `expect` is just like `unwrap`ing, but in the case of an error, the string you pass to `expect` will be outputted as well. In general, you should use `expect` in place of `unwrap` for the additional information it provides.
+
+The next block introduces `Chain` and, as the comments state, it provides a way to link different middlewares together. More are included with the Iron framework, including [`Mount`](http://ironframework.io/doc/mount/struct.Mount.html), which functions similarly to `Router` but allows you process paths as if they were mounted to a specific predefined mount point. `Mount` is particularly useful for organising staticly served content.
+
+We're going to want to populate our template with data, otherwise it's no different to static HTLM. Looking at the [signature](https://sunng87.github.io/handlebars-iron/handlebars_iron/struct.Template.html#method.new) for the `Template::new` method, we can see it takes anything that implements the [`ToJson`](https://doc.rust-lang.org/rustc-serialize/rustc_serialize/json/trait.ToJson.html) trait. [Traits](https://doc.rust-lang.org/book/traits.html) are another one of Rust's killer features and function similarly to Java's interfaces, in that they provide a contract in what functionality something must implement. In this case, that something my be able to be serialized to JSON. The [`rustc_serialize`](https://doc.rust-lang.org/rustc-serialize/rustc_serialize/index.html) implements it for Rust primitives and some common collections, like `HashMap` and `Vec`. It represents a standard JSON object as a [`BTreeMap`](https://doc.rust-lang.org/std/collections/struct.BTreeMap.html), so let's structure our data similarly:
+
+```rust
+fn handler(_: &mut Request) -> IronResult<Response> {
+    let mut template_data = BTreeMap::new();
+    let post1 = String::from("This is the contents of post 1");
+    let post2 = String::from("This is the contents of post 2");
+    template_data.insert(String::from("posts"), vec![post1, post2] );
+
+    Ok(Response::with((status::Ok, Template::new("landing", template_data)))
+}
+```
+
+The accompanying template may look like:
+
+``` html
+<h1>Blog Posts</h1>
+{{#each posts}}
+  {{this}}
+  <br />
+{{/each}}
+```
+
+We've introduced quite a few new things here. First of all, you can treat `BTreeMap` just like any other collection. It has a map interface and all the methods you would expect, but provides some nice optimizations for JSON representation due to its backing implementation as a binary tree. We use it as our enclosing JSON object. We then declare two posts as strings and create a `Vec` out of them with the `vec!` macro, which will take an arbitrary number of arguments and produce the correct `Vec`. Once again, it is implemented as a macro because Rust does not support variable length argument lists. We then pass the JSON object to our template.
+
+You may be wondering on the need for [`String::from`](https://doc.rust-lang.org/std/convert/trait.From.html#tymethod.from). Rust has two string types: the statically allocated [`str`](https://doc.rust-lang.org/std/primitive.str.html) and the heap allocated [`String`](https://doc.rust-lang.org/std/string/struct.String.html). The `ToJson` trait is not implemented for `str`s in their [borrowed](https://doc.rust-lang.org/book/references-and-borrowing.html) form, as is the case for string literals like above. It is implemented for `String`s however, so we can simply do the conversation and use those.
+
+As for the template, you can use Handlebars-specific features inside double braces, but otherwise the file is parsed as HTML. `each` will iterate over an array, which was serialized from our `posts` `Vec`. `this` represents the current object of the iteration, which is a string in this case (we had a `Vec` of `String`s). If you run the application and view it in a web browser, it should show the title and two strings seperated by a line break. The real power here is when you programmatically add data to this template. The blog post you're reading now is composed of a body, a title, a publication date and other attributes. All of these can be manipulated by Rust prior to being passed to the template, and this allows for dynamic content.
