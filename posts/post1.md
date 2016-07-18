@@ -1,10 +1,10 @@
 title: Building a personal website in Rust
 author: Krishan Wyse
-date: 17 July, 2016
+date: 18 July, 2016
 path: building-personal-website-in-rust
 summary: How this website came into existence and how to build your own using Rust, Handlebars and Flexbox
 
-Inaugural blog post time! Here I will be covering how to create a basic templated website using Rust and HTML5/CSS3. I wish to state up front that I'm pretty new to web development and learnt all of this from other resources on the internet. It's my hope that condensing what I learnt into this post will help save you some time if you wish to develop your own website. I also hope that, by demonstrating how easy Rust and modern CSS makes it, this may serve as some inspiration!
+Inaugural blog post time! Here I will be covering how to create a basic templated website using Rust and HTML5/CSS3. I wish to state up front that I'm pretty new to web development and learnt all of this from other resources online. It's my hope that condensing what I learnt will help save you some time if you wish to develop your own website. I also hope that, by demonstrating how easy Rust and modern CSS makes it, this may serve as some inspiration!
 
 We'll cover the basics of Rust as a lot of people I know haven't tried it out yet. If you're familiar with Rust and project setup, you can skip the following section and perhaps skim read the one after. For those new to the language, I've tried to provide links to the (top-quality) docs wherever possible. Let's get started!
 
@@ -22,7 +22,7 @@ If you're on Windows, you'll need to download an appropriate installer from the 
 
 With Rust installed, you'll have access to some new tools in your shell. The most important of these is `cargo` and the only one we'll use in this post. Cargo is Rust's package manager as well as a wrapper around `rustc`, the compiler. You can do most project management tasks directly from Cargo (near enough all with additional tools like [cargo edit](https://github.com/killercup/cargo-edit), also recommended). If you'd like to know more about Cargo, the [Cargo docs](http://doc.crates.io/guide.html) have you covered.
 
-To create our project, run `cargo new --bin demo-website`. The `--bin` flag tells Cargo we intend for this project to produce an executable binary, as opposed to a library that others will use. It will create a `src/main.rs` file that acts as the entry point. Running `cargo build` inside the root directory of the project (this is always the folder containing the `Cargo.toml` file) will create an executable in `target/debug`. Running `cargo run` should print out the ever joyous `Hello, world!` Executing `cargo run` will automatically do a `cargo build` before running if you've changed the source code since the last build.
+To create our project, run `cargo new --bin demo-website`. The `--bin` flag tells Cargo we intend to produce an executable binary, as opposed to a library that others will use. It will create a `src/main.rs` file that acts as the entry point. Running `cargo build` inside the root directory of the project (this is always the folder containing the `Cargo.toml` file) will create an executable in `target/debug`. Running `cargo run` should print out the ever joyous `Hello, world!` Executing `cargo run` will automatically do a `cargo build` before running if you've changed the source code since the last build.
 
 Instead of just printing to stdout, how about starting up a server and printing to a web page? It's surprisingly little effort. Read on!
 
@@ -38,7 +38,7 @@ router = "0.1.1"
 
 The `Cargo.toml` file acts as the specification for your project. It contains metadata about the project like authors and current version, pulls any dependencies needed, and can even run custom build scripts. [crates.io](https://crates.io/) acts as a central repository for all Rust projects (called crates) and the information on their is sourced from each project's `Cargo.toml` in turn. We're specifying versions to negate future regressions and ensure the example below runs as intended. In fact, at the time of writing, the latest version of Iron is `0.4`, but `router` [has not been updated](https://github.com/iron/router/issues/117) to use `0.4` and will fail to compile with it.
 
-Before we demonstrate how to use Iron, let's go over the basic structure of a standalone Rust file, as it varies from more conventional languages. We first declare any external crates that are needed for our application. This informs the compiler to compile and link against these. This must be done in addition to declaring them in the `Cargo.toml` file, as that file is for dependency management only, not compiling and linking. We then declare what symbols from these crates we want to bring into scope and use freely. This section can be omitted and you can instead fully qualify and usages of symbols you use from external crates. Finally, we have our `main` function, which servers as the entry as in most other languages.
+Before we demonstrate how to use Iron, let's go over the basic structure of a standalone Rust file, as it varies from more conventional languages. We first declare any external crates that are needed for our application. This informs the compiler to compile and link against these. This must be done in addition to declaring them in the `Cargo.toml` file, as that file is for dependency management only, not compiling and linking. We then declare what symbols from these crates we want to bring into scope and use freely. This section can be omitted and you can instead fully qualify any usages. Finally, we have our `main` function, which servers as the entry as in most other languages.
 
 Edit `src/main.rs` to the following:
 
@@ -73,25 +73,25 @@ fn main() {
 
 If you execute `cargo run`, you'll see Cargo download the necessary dependencies, compile them along with out application, and run it. If you navigate to the URL specified in a web browser, you should see the output. This is all that's required to get a server up and running and demonstrates some of the fundamentals of Rust, so let's go through it line by line.
 
-The first two lines state we want to link to two external crates: `iron` and `router`. The next three lines bring specific structs and functions declared in those crates into scope so that we can call them. The `use` call functions similarly to Java's `import` statement, where you can glob import symbols at that level of the hierarchy with an asterisk. The [Iron docs](http://ironframework.io/doc/iron/prelude/index.html) state what's included in the `prelude` module, but you can be sure it contains symbols you will need in most Iron apps. By convention, some Rust libraries include a `prelude` module just for this convenience purpose.
+The first two lines state that we want to link to two external crates: `iron` and `router`. The next three lines bring specific structs and functions declared in those crates into scope so that we can call them without further qualification. The `use` call functions similarly to Java's `import` statement, where you can glob import symbols at that level of the hierarchy with an asterisk. The [Iron docs](http://ironframework.io/doc/iron/prelude/index.html) state what's included in the `prelude` module, but you can be sure it contains symbols you will need in most Iron apps. By convention, some Rust libraries include a `prelude` module just for this convenience purpose.
 
 In the `main` function, we first define a function that will handle a request to the server. Rust syntax can be a big jarring at first but very expressive once you are used to it. A key thing to note is that everything is an expression, and if you leave the semicolon off of the last expression of a function, that expression is the *return value*. Our function must return an `IronResult<Response>`, which is a [type alias](https://doc.rust-lang.org/book/type-aliases.html) for `Result<Response, IronError>`. `Result` is one of the two fundamental error handling constructs in Rust and composed of two values: `Ok` or `Err`, signalling expected and error values respectively. In the body of the function, we wrap our actual response in `Ok` to signal everything is as expected. The [error handling](https://doc.rust-lang.org/book/error-handling.html) chapter in the Rust book is a marvellous read and definitely recommended. It explains the `Result` type and its friend, `Option`, in great detail.
 
 The contents of the `Ok` are an implementation detail of what [Iron expects as a response](http://ironframework.io/doc/iron/response/struct.Response.html). Here, we're returning a [tuple](https://doc.rust-lang.org/std/primitive.tuple.html), which is a sequence in Rust that can contain objects of differing types. Iron can accept a response structured as a 2-length tuple containing an HTTP status and a body as the two elements.
 
-The next two lines declare a `Router` object, implemented by the `router` crate and independent of Iron. We then register the function/closure to be called when we receive a `GET` request to the root URL of the application. `let` is used for variable bindings in Rust, whilst `mut` is used to designate mutability in the variable as by default all variables are immutable. The `get` function mutates the `router` variable, so you would get a compiler error if you omitted `mut`. Rust is strongly typed, but supports type inference, which is why we didn't need to explicitly state the type of the variable. The inference algorithm is not perfect though, and may get confused with more advanced constructs. You can explicitly state the type of a variable via this syntax, which is equivalent to what we have already:
+The next two lines declare a `Router` object, implemented by the `router` crate and independent of Iron. We then register the function to be called when we receive a `GET` request to the root URL of the application. `let` is used for variable bindings in Rust, whilst `mut` is used to designate mutability in the variable as all variables are immutable by default. The `get` function mutates the `router` variable, so you would get a compiler error if you omitted `mut`. Rust is strongly typed, but supports type inference, which is why we didn't need to explicitly state the type of the variable. The inference algorithm is not perfect though, and may get confused with more advanced constructs. You can explicitly state the type of a variable via this syntax, which is equivalent to what we have already:
 
 ```rust
 let mut routes: Router = Router::new();
 ```
 
-The final block of code sets the host and port number we want to run on, prints this out for logging purposes, and initialises and starts the Iron server. [Macros](https://doc.rust-lang.org/book/macros.html), the methods by which `println!` is implemented, are too large a topic to discuss here, though one of Rust's greatest assets. You can tell it's a macro by the trailing exclamation mark, though functions just like a regular function. Macros play a key role in keeping Rust code concise and expressive. A well-designed macro can be treated as a black box, which is the case here for `println!`. It accepts a format string followed by a variable number of arguments corresponding to the number of format specifiers (designated by `{}` in Rust). Rust does not support a variable number of arguments in functions, which is why printing to standard output is implemented as a macro.
+The final block of code sets the host and port number that we want to run on, prints this out for logging purposes, and initialises and starts the Iron server. [Macros](https://doc.rust-lang.org/book/macros.html), the methods by which `println!` is implemented, are too large a topic to discuss here, though one of Rust's greatest assets. You can tell it's a macro by the trailing exclamation mark, though it functions just like a regular function. Macros play a key role in keeping Rust code concise and expressive. A well-designed macro can be treated as a black box, as is the case here for `println!`. It accepts a format string followed by a variable number of arguments corresponding to the number of format specifiers (designated by `{}` in Rust). Rust does not support a variable number of arguments in functions, which is why printing to standard output is implemented as a macro.
 
 The final thing to note is the `unwrap()` call at the very end. Again, the [error handling](https://doc.rust-lang.org/book/error-handling.html) chapter in the Rust book covers this topic nicely. It goes into the specifics of `unwrap()` and why there are better alternatives to it. `unwrap()` will cause an application to panic (gracefully unwind and/or abort) if you unwrap an error value, so it should be avoided in production code, though it is useful for demonstrating other concepts when error handling isn't as much of a concern.
 
 # Templating with Handlebars
 
-Writing a hello world app never gets old, but we can do better. The [`handlebars-iron`](https://crates.io/crates/handlebars-iron) crate adds support for the [Handlebars](http://handlebarsjs.com/) templating language directly to Iron. Templating languages allow for dynamic content to be loaded into an otherwise static HTML page. The blog post you're reading now differs from others based on the URL entered, but the header and footer remain the same across blog posts. This templating promotes clean project structure and keeps things [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself). Add the crate as a dependency in `Cargo.toml`, declare it for linkage at the top of `src/main.rs` and update the `use` statements to include the structs we use below. Update the `main` function to this:
+Writing a hello world app never gets old, but we can do better. The [`handlebars-iron`](https://crates.io/crates/handlebars-iron) crate adds support for the [Handlebars](http://handlebarsjs.com/) templating language directly to Iron. Templating languages allow for dynamic content to be loaded into an otherwise static HTML page. The blog post you're reading now differs from others based on the URL entered, but the header and footer remain the same across blog posts. This templating promotes clean project structure and keeps things [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself). Add the crate as a dependency in `Cargo.toml`, declare it for linkage at the top of `src/main.rs` with another `extern` statement, and update the `use` statements to include the structs we use below. Let's update the `main` function to this:
 
 ```rust
 fn main() {
@@ -120,13 +120,13 @@ fn main() {
     Iron::new(chain).http(url).expect("Failed to start the server");
 ```
 
-We redefine our handler to load the template named `landing.hbs` instead of a static string. The empty tuple passed as the second argument will contain our template data, which will add in a moment. If you look at the [signature](http://ironframework.io/doc/iron/response/struct.Response.html#method.with) of the `Response::with` function, it takes a `Modifier`. The Iron crate itself implements this trait for `String`s, and the Handlebars crate implements it for its `Template` struct, which enables you to easily change the arguments passed like this.
+We redefine our handler to load the template named `landing.hbs` instead of a static string. The empty tuple passed as the second argument will contain our template data, which will add in a moment. If you look at the [signature](http://ironframework.io/doc/iron/response/struct.Response.html#method.with) of the `Response::with` function, it takes a `Modifier`. The Iron crate itself implements this trait for `String`s, and the Handlebars crate implements it for its `Template` struct, which enables you to easily change the arguments passed like in this example.
 
-Next, we add the directory we intend to store the templates (as `.hbs` files in this case). We then tell the Handlebars engine to actually read the files stored there with the reload call. The `expect` method is another method related to Rust's error handling. Calling `expect` is just like `unwrap`ing, but in the case of an error, the string you pass to `expect` will be outputted as well. In general, you should use `expect` in place of `unwrap` for the additional information it provides.
+Next, we add the directory we intend to store the templates in (as `.hbs` files in this case). We then tell the Handlebars engine to actually read the files stored there with the reload call. The `expect` method is another method related to Rust's error handling. Calling `expect` is just like `unwrap`ing, but in the case of an error, the string you pass to `expect` will be outputted as well. In general, you should use `expect` in place of `unwrap` for the additional information it provides.
 
 The next block introduces `Chain` and, as the comments state, it provides a way to link different middlewares together. More are included with the Iron framework, including [`Mount`](http://ironframework.io/doc/mount/struct.Mount.html), which functions similarly to `Router` but allows you process paths as if they were mounted to a specific predefined mount point. `Mount` is particularly useful for organising statically served content.
 
-We're going to want to populate our template with data, otherwise it's no different to static HTML. Let's create a simple blog post listings page. Looking at the [signature](https://sunng87.github.io/handlebars-iron/handlebars_iron/struct.Template.html#method.new) for the `Template::new` method, we can see it takes anything that implements the [`ToJson`](https://doc.rust-lang.org/rustc-serialize/rustc_serialize/json/trait.ToJson.html) trait. [Traits](https://doc.rust-lang.org/book/traits.html) are another one of Rust's killer features and function similarly to Java's interfaces, in that they provide a contract of what functionality something must implement. In this case, that something must be able to be serialised to JSON. The [`rustc_serialize`](https://doc.rust-lang.org/rustc-serialize/rustc_serialize/index.html) implements it for Rust primitives and some common collections, like `HashMap` and `Vec`. It represents a standard JSON object as a [`BTreeMap`](https://doc.rust-lang.org/std/collections/struct.BTreeMap.html), so let's structure our data similarly:
+We're going to want to populate our template with data, otherwise it's no different to static HTML. Let's create a simple blog post listings page. Looking at the [signature](https://sunng87.github.io/handlebars-iron/handlebars_iron/struct.Template.html#method.new) for the `Template::new` method, we can see it takes anything that implements the [`ToJson`](https://doc.rust-lang.org/rustc-serialize/rustc_serialize/json/trait.ToJson.html) trait. [Traits](https://doc.rust-lang.org/book/traits.html) function similarly to Java's interfaces, in that they provide a contract of what functionality something must implement. In this case, that something must be able to be serialised to JSON. The [`rustc_serialize`](https://crates.io/crates/rustc-serialize) crate implements it for Rust primitives and some common collections, like `HashMap` and `Vec`. It represents a standard JSON object as a [`BTreeMap`](https://doc.rust-lang.org/std/collections/struct.BTreeMap.html), so let's structure our data similarly:
 
 ```rust
 fn handler(_: &mut Request) -> IronResult<Response> {
@@ -162,17 +162,17 @@ We have our template rendering now, but it's pretty plain to look at. Let's fix 
 ```scss
 // _mixin.scss
 @mixin border-radius($radius) {
-  -webkit-border-radius: radius;
-  -moz-border-radius: radius;
-  -ms-border-radius: radius;
-  -o-border-radius: radius;
-  border-radius: radius;
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  -o-border-radius: $radius;
+  border-radius: $radius;
 }
 
 // main.scss
 @import 'mixin'
 .box {
-  @include border-radius: 50%;
+  @include border-radius(50%);
 }
 ```
 
@@ -198,11 +198,11 @@ This example here is from the sticky footer article on Solved by Flexbox. It dem
 }
 ```
 
-By specifying `display: flex`, we are saying we want the `body` class to act as Flexbox container. Setting `flex-grow` to `1` for the central content on the page makes it use *all* remaining space available, and as we set our container use the `column` direction, it will use all remaining *vertical* space. `flex-shrink` is set to `0` for the footer to make it stay a consistent size, which is usually what you'd want.
+By specifying `display: flex`, we are saying we want the `body` class to act as a Flexbox container. Setting `flex-grow` to `1` for the central content on the page makes it use *all* remaining space available and, as we set our container use the `column` direction, it will use all remaining *vertical* space. `flex-shrink` is set to `0` for the footer to make it stay a consistent size, which is usually what you'd want.
 
 I'd encourage you to visit the aforementioned site to get a taster for Flexbox and see if it could help streamline your CSS.
 
-# Useful Resources
+# Additional Resources
 
 I hope this post has given you an idea of how to create a custom server in Rust for use from a templated and styled front-end, and how it's not too difficult using these technologies. All of them served as the foundations for this website in the beginning.
 
