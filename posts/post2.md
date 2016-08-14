@@ -43,7 +43,7 @@ Emacs has a lot of advantages. Its package management is built-in and its packag
 I've stripped the vim plugins I use down to the bare minimum, but these five are particularly essential for me:
 
 * [`vim-commentary`](https://github.com/tpope/vim-commentary) - commenting and uncommenting code
-* [`vim-surround`](https://github.com/tpope/vim-surround) - changing surrounding parenthesis/brackets/braces/quotes/etc.
+* [`vim-surround`](https://github.com/tpope/vim-surround) - changing surrounding brackets/quotes/etc.
 * [`vim-unimpaired`](https://github.com/tpope/vim-unimpaired) - useful extra key bindings, most are in pairs
 * [`vim-textobj-user`](https://github.com/kana/vim-textobj-user) - define custom text objects
 * [`vim-textobj-entire`](https://github.com/kana/vim-textobj-entire) - text object for the entire buffer
