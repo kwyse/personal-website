@@ -3,6 +3,7 @@ log
 static/vendor
 
 .sass-cache
+.env
 *.css*
 *.log
 

@@ -1,15 +1,15 @@
 [package]
-name = "personal-website"
 authors = ["Krishan Wyse <kwysek@gmail.com>"]
-version = "0.1.0"
 build = "build.rs"
+name = "personal-website"
+version = "0.1.0"
 
 [build-dependencies]
 sass-rs = "0.0.18"
 
 [dependencies]
 chrono = "0.2.25"
-clippy = { version = "0.0.84", optional = true }
+dotenv = "0.8.0"
 fern = "0.3.5"
 handlebars-iron = "0.18.0"
 hoedown = "5.0.0"
@@ -19,6 +19,10 @@ mount = "0.2.1"
 router = "0.2.0"
 rustc-serialize = "0.3.19"
 staticfile = "0.3.0"
+
+[dependencies.clippy]
+optional = true
+version = "0.0.84"
 
 [features]
 default = []

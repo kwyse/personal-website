@@ -12,6 +12,7 @@ extern crate staticfile;
 extern crate handlebars_iron;
 extern crate hoedown;
 extern crate rustc_serialize;
+extern crate dotenv;
 
 mod blog;
 mod route;
@@ -23,7 +24,7 @@ use mount::Mount;
 use router::Router;
 use handlebars_iron::HandlebarsEngine;
 
-const DEFAULT_PORT: &'static str = "42451";
+const DEFAULT_PORT: &'static str = "3000";
 
 fn main() {
     init_logger();
@@ -90,10 +91,15 @@ fn add_templates() -> HandlebarsEngine {
 
 fn get_server_port() -> u16 {
     use std::env;
+    use dotenv::dotenv;
+
+    dotenv().ok();
 
     env::var("PORT")
-        .unwrap_or_else(|_| String::from(DEFAULT_PORT))
-        .parse().expect("Attempting to parse server port number")
+        .unwrap_or_else(|_| {
+            info!("PORT is not set, defaulting to {}", DEFAULT_PORT);
+            String::from(DEFAULT_PORT)
+        }).parse().expect("Attempting to parse server port number")
 }
 
 struct PageNotFound;
