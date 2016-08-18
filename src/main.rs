@@ -1,3 +1,6 @@
+#![cfg_attr(feature="clippy", feature(plugin))]
+#![cfg_attr(feature="clippy", plugin(clippy))]
+
 #[macro_use]
 extern crate log;
 extern crate fern;
@@ -89,7 +92,7 @@ fn get_server_port() -> u16 {
     use std::env;
 
     env::var("PORT")
-        .unwrap_or(String::from(DEFAULT_PORT))
+        .unwrap_or_else(|_| String::from(DEFAULT_PORT))
         .parse().expect("Attempting to parse server port number")
 }
 

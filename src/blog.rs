@@ -21,9 +21,7 @@ impl BlogPost {
             metadata: Metadata::new(),
         }
     }
-}
 
-impl BlogPost {
     pub fn from_file<P: AsRef<Path>>(file_path: P) -> Result<BlogPost> {
         use std::fs::File;
         use std::io::BufReader;
@@ -38,7 +36,7 @@ impl BlogPost {
             {
                 let mut parts = buffer.splitn(2, ':');
                 let first = parts.next().unwrap_or("");
-                if first.len() > 0 && first.split_whitespace().count() == 1 {
+                if !first.is_empty() && first.split_whitespace().count() == 1 {
                     let second = String::from(parts.next().unwrap_or("").trim());
                     post.metadata.insert(String::from(first.to_lowercase()), second);
                 } else {

@@ -40,7 +40,7 @@ pub fn handle_blog_post_page(request: &mut Request) -> IronResult<Response> {
     let posts = get_posts();
     let paths_index = posts.iter().map(|post| {
         // TODO: Ensure path is always available instead of constructing
-        (post.metadata.get("path").unwrap_or(&construct_path(post)).clone(), post.clone())
+        (post.metadata.get("path").unwrap_or(&construct_path(post)).clone(), post)
     }).collect::<HashMap<_, _>>();
 
     let router_extension = request.extensions.get::<Router>().unwrap(); // TODO: Handle this
@@ -73,5 +73,5 @@ fn construct_path(post: &BlogPost) -> String {
 fn get_posts() -> Vec<BlogPost> {
     use blog::read_posts_from_disk;
 
-    read_posts_from_disk().unwrap_or(Vec::new())
+    read_posts_from_disk().ok().unwrap_or_default()
 }

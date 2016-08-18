@@ -9,6 +9,7 @@ sass-rs = "0.0.18"
 
 [dependencies]
 chrono = "0.2.25"
+clippy = { version = "0.0.84", optional = true }
 fern = "0.3.5"
 handlebars-iron = "0.18.0"
 hoedown = "5.0.0"
@@ -18,3 +19,6 @@ mount = "0.2.1"
 router = "0.2.0"
 rustc-serialize = "0.3.19"
 staticfile = "0.3.0"
+
+[features]
+default = []
