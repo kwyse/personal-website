@@ -81,7 +81,7 @@ fn add_templates() -> HandlebarsEngine {
 
     let mut template_engine = HandlebarsEngine::new();
     template_engine.add(Box::new(DirectorySource::new("templates/", ".hbs")));
-    template_engine.reload().expect("Attempting to load Handlebars tempaltes");
+    template_engine.reload().expect("Attempting to load Handlebars templates");
     template_engine
 }
 

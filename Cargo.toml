@@ -1,23 +1,20 @@
 [package]
 name = "personal-website"
-version = "0.1.0"
 authors = ["Krishan Wyse <kwysek@gmail.com>"]
+version = "0.1.0"
 build = "build.rs"
 
-[dependencies]
-log = "*"
-fern = "*"
-chrono = "*"
-iron = "*"
-router = "*"
-mount = "*"
-staticfile = "*"
-handlebars-iron = "*"
-hoedown = "*"
-rustc-serialize = "*"
-
 [build-dependencies]
-sass-rs = "*"
+sass-rs = "0.0.18"
 
-[target.heroku]
-version = "nightly"
+[dependencies]
+chrono = "0.2.25"
+fern = "0.3.5"
+handlebars-iron = "0.18.0"
+hoedown = "5.0.0"
+iron = "0.4.0"
+log = "0.3.6"
+mount = "0.2.1"
+router = "0.2.0"
+rustc-serialize = "0.3.19"
+staticfile = "0.3.0"
