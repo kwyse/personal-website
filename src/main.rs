@@ -24,8 +24,12 @@ use mount::Mount;
 use router::Router;
 use handlebars_iron::HandlebarsEngine;
 
+#[cfg(feature = "live-reload")]
+use handlebars_iron::Watchable;
+
 const DEFAULT_PORT: &'static str = "3000";
 
+#[cfg(not(feature = "live-reload"))]
 fn main() {
     init_logger();
 
@@ -33,8 +37,32 @@ fn main() {
     let mounts = add_mounts(routes);
     let mut chain = Chain::new(mounts);
 
+    info!("Template live reload disabled");
     let templates = add_templates();
     chain.link_after(templates);
+    chain.link_after(PageNotFound);
+
+    let url: &str = &format!("0.0.0.0:{}", get_server_port());
+    info!("Server started on {}", url);
+    Iron::new(chain).http(url).unwrap();
+}
+
+#[cfg(feature = "live-reload")]
+fn main() {
+    use std::sync::Arc;
+
+    init_logger();
+
+    let routes = add_routes();
+    let mounts = add_mounts(routes);
+    let mut chain = Chain::new(mounts);
+
+    info!("Template live reload enabled");
+    let templates = add_templates();
+    let templates_ref = Arc::new(templates);
+    templates_ref.watch("templates/");
+
+    chain.link_after(templates_ref);
     chain.link_after(PageNotFound);
 
     let url: &str = &format!("0.0.0.0:{}", get_server_port());
