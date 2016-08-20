@@ -15,6 +15,13 @@ pub fn establish_connection() -> PgConnection {
     PgConnection::establish(&database_url).expect(&format!("Error connecting to {}", database_url))
 }
 
+pub fn create_post(post: NewBlogPost) -> BlogPost {
+    use db::schema::blogposts;
+
+    let conn = establish_connection();
+    ::diesel::insert(&post).into(blogposts::table).get_result(&conn).expect("Error adding new post")
+}
+
 pub fn read_posts() -> Vec<BlogPost> {
     use std::error::Error;
     use db::schema::blogposts::dsl::*;
@@ -25,14 +32,6 @@ pub fn read_posts() -> Vec<BlogPost> {
         error!("{}", err.description());
         Vec::new()
     })
-}
-
-pub fn create_post(post: NewBlogPost) -> BlogPost {
-    use db::schema::blogposts;
-    // use db::schema::blogposts::dsl::*;
-
-    let conn = establish_connection();
-    ::diesel::insert(&post).into(blogposts::table).get_result(&conn).expect("Error adding new post")
 }
 
 pub mod models {

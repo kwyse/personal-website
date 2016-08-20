@@ -17,7 +17,7 @@ fn main() {
     body_file.read_to_string(&mut body).unwrap();
 
     let created = Local::today().naive_local();
-    let url = title.replace(" ", "/").to_lowercase();
+    let url = title.replace(" ", "-").to_lowercase();
 
     let new_post = NewBlogPost {
         title: title,

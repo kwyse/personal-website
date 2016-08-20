@@ -1,4 +1,4 @@
-extern crate personal_website;
+#[macro_use] extern crate log;
 extern crate fern;
 extern crate chrono;
 extern crate iron;
@@ -11,10 +11,7 @@ extern crate rustc_serialize;
 extern crate dotenv;
 extern crate serde;
 extern crate serde_json;
-
-#[macro_use] extern crate log;
-
-use personal_website::*;
+extern crate personal_website;
 
 use iron::prelude::*;
 use iron::AfterMiddleware;
