@@ -15,7 +15,7 @@ pub fn establish_connection() -> PgConnection {
     PgConnection::establish(&database_url).expect(&format!("Error connecting to {}", database_url))
 }
 
-pub fn get_posts() -> Vec<BlogPost> {
+pub fn read_posts() -> Vec<BlogPost> {
     use std::error::Error;
     use db::schema::blogposts::dsl::*;
 
@@ -27,16 +27,34 @@ pub fn get_posts() -> Vec<BlogPost> {
     })
 }
 
+pub fn create_post(post: NewBlogPost) -> BlogPost {
+    use db::schema::blogposts;
+    // use db::schema::blogposts::dsl::*;
+
+    let conn = establish_connection();
+    ::diesel::insert(&post).into(blogposts::table).get_result(&conn).expect("Error adding new post")
+}
+
 pub mod models {
+    use super::schema::blogposts;
     use chrono::NaiveDate;
     
     #[derive(Queryable, Serialize)]
     pub struct BlogPost {
         pub id: i32,
         pub title: String,
-        pub creation_date: NaiveDate,
+        pub created: NaiveDate,
         pub published: bool,
-        pub url_path: String,
+        pub url: String,
+        pub summary: String,
+        pub body: String,
+    }
+
+    #[insertable_into(blogposts)]
+    pub struct NewBlogPost {
+        pub title: String,
+        pub created: NaiveDate,
+        pub url: String,
         pub summary: String,
         pub body: String,
     }

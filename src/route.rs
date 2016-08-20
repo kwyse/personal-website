@@ -23,7 +23,7 @@ pub fn handle_blog_list_page(_: &mut Request) -> IronResult<Response> {
     //     .iter().map(|post| post.metadata.clone())
     //     .collect();
 
-    let posts = ::db::get_posts();
+    let posts = ::db::read_posts();
 
     if posts.is_empty() {
         let mut template_data = BTreeMap::new();

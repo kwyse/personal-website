@@ -21,7 +21,6 @@ extern crate serde_json;
 
 mod blog;
 mod db;
-mod post;
 mod route;
 
 use iron::prelude::*;

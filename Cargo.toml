@@ -8,7 +8,6 @@ version = "0.1.0"
 sass-rs = "0.0.18"
 
 [dependencies]
-chrono = { version = "0.2.25", default-features = false, features = ["serde"] }
 dotenv = "0.8.0"
 dotenv_macros = "0.9.0"
 fern = "0.3.5"
@@ -22,6 +21,11 @@ serde = "0.8.3"
 serde_json = "0.8.1"
 serde_macros = "0.8.3"
 staticfile = "0.3.0"
+
+[dependencies.chrono]
+default-features = false
+features = ["serde"]
+version = "0.2.25"
 
 [dependencies.clippy]
 optional = true
