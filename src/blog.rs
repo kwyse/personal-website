@@ -76,3 +76,19 @@ pub fn read_posts_from_disk() -> Result<Vec<BlogPost>> {
 
     Ok(posts)
 }
+
+pub fn read_posts_from_db() -> Vec<::db::models::BlogPost> {
+    use db::models::*;
+    use diesel::prelude::*;
+    use db::schema::blogposts::dsl::*;
+
+    let conn = ::db::establish_connection();
+    
+    let p = blogposts.load::<::db::models::BlogPost>(&conn).expect("Error loading posts");
+    for post in p {
+        println!("{}", post.title);
+    }
+
+    let v: Vec<::db::models::BlogPost> = Vec::new();
+    v
+}
