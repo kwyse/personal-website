@@ -20,6 +20,6 @@ extern crate serde;
 extern crate serde_json;
 
 pub mod db;
+pub mod route;
 
 mod blog;
-mod route;

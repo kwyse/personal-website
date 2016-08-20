@@ -1,11 +1,4 @@
-#![feature(custom_derive, custom_attribute, plugin)]
-
-#![plugin(diesel_codegen, dotenv_macros, serde_macros)]
-#![cfg_attr(feature="clippy", plugin(clippy))]
-
-#[macro_use] extern crate diesel;
-#[macro_use] extern crate log;
-
+extern crate personal_website;
 extern crate fern;
 extern crate chrono;
 extern crate iron;
@@ -19,9 +12,9 @@ extern crate dotenv;
 extern crate serde;
 extern crate serde_json;
 
-mod blog;
-mod db;
-mod route;
+#[macro_use] extern crate log;
+
+use personal_website::*;
 
 use iron::prelude::*;
 use iron::AfterMiddleware;
@@ -93,7 +86,7 @@ fn init_logger() {
 }
 
 fn add_routes() -> Router {
-    use route::*;
+    use personal_website::route::*;
 
     let mut router = Router::new();
     router.get("/", handle_landing_page);
