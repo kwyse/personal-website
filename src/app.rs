@@ -39,7 +39,35 @@ impl App {
         self
     }
 
+    #[cfg(not(feature = "live-reload"))]
     pub fn build_and_run(&mut self) {
+        self.build(|mounts, template_engine, _| {
+            info!("Template live reloading disabled");
+
+            let mut chain = Chain::new(mounts);
+            chain.link_after(template_engine);
+            chain
+        });
+    }
+
+    #[cfg(feature = "live-reload")]
+    pub fn build_and_run_reloadable(&mut self) {
+        use std::sync::Arc;
+        use handlebars_iron::Watchable;
+
+        self.build(|mounts, template_engine, template_dir| {
+            info!("Template live reloading enabled");
+
+            let templates_ref = Arc::new(template_engine);
+            templates_ref.watch(template_dir);
+
+            let mut chain = Chain::new(mounts);
+            chain.link_after(templates_ref);
+            chain
+        });
+    }
+
+    fn build<F>(&mut self, chain_func: F) where F: Fn(Mount, HandlebarsEngine, &String) -> Chain {
         use std::mem::swap;
         use iron::Iron;
         use handlebars_iron::DirectorySource;
@@ -55,8 +83,7 @@ impl App {
         template_engine.add(Box::new(DirectorySource::new(&self.template_dir, ".hbs")));
         template_engine.reload().expect("Attempting to load Handlebars templates");
 
-        let mut chain = Chain::new(mounts);
-        chain.link_after(template_engine);
+        let chain = chain_func(mounts, template_engine, &self.template_dir);
 
         let url: &str = &format!("{}:{}", self.host, get_server_port());
         info!("Server started on {}", url);
