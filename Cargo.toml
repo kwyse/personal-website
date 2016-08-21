@@ -2,27 +2,48 @@
 authors = ["Krishan Wyse <kwysek@gmail.com>"]
 build = "build.rs"
 name = "personal-website"
-version = "0.1.0"
+version = "0.2.0"
 
 [build-dependencies]
 sass-rs = "0.0.18"
 
 [dependencies]
-chrono = "0.2.25"
 dotenv = "0.8.0"
+dotenv_macros = "0.9.0"
 fern = "0.3.5"
-handlebars-iron = "0.18.0"
 hoedown = "5.0.0"
 iron = "0.4.0"
 log = "0.3.6"
 mount = "0.2.1"
 router = "0.2.0"
-rustc-serialize = "0.3.19"
+serde = "0.8.3"
+serde_json = "0.8.1"
+serde_macros = "0.8.3"
 staticfile = "0.3.0"
+
+[dependencies.chrono]
+default-features = false
+features = ["serde"]
+version = "0.2.25"
 
 [dependencies.clippy]
 optional = true
 version = "0.0.84"
+
+[dependencies.diesel]
+default-features = false
+features = ["chrono"]
+version = "0.7.1"
+
+[dependencies.diesel_codegen]
+default-features = false
+features = ["postgres"]
+version = "0.7.1"
+
+[dependencies.handlebars-iron]
+default-features = false
+features = ["serde_type"]
+version = "0.18.0"
 
 [features]
 default = []

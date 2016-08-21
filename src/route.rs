@@ -1,11 +1,12 @@
 //! Provides routes for main application
 
 use std::collections::BTreeMap;
-use blog::BlogPost;
 use iron::prelude::*;
 use iron::status;
 use handlebars_iron::Template;
-use rustc_serialize::json::ToJson;
+use serde::Serialize;
+
+use ::db::read_posts;
 
 pub fn handle_landing_page(_: &mut Request) -> IronResult<Response> {
     handle_with_template("landing", ())
@@ -16,11 +17,7 @@ pub fn handle_about_page(_: &mut Request) -> IronResult<Response> {
 }
 
 pub fn handle_blog_list_page(_: &mut Request) -> IronResult<Response> {
-    use blog::Metadata;
-
-    let posts: Vec<Metadata> = get_posts()
-        .iter().map(|post| post.metadata.clone())
-        .collect();
+    let posts = read_posts();
 
     if posts.is_empty() {
         let mut template_data = BTreeMap::new();
@@ -37,41 +34,31 @@ pub fn handle_blog_post_page(request: &mut Request) -> IronResult<Response> {
     use std::collections::HashMap;
     use router::Router;
 
-    let posts = get_posts();
-    let paths_index = posts.iter().map(|post| {
-        // TODO: Ensure path is always available instead of constructing
-        (post.metadata.get("path").unwrap_or(&construct_path(post)).clone(), post)
-    }).collect::<HashMap<_, _>>();
+    let mut posts = read_posts();
+    let mut paths_index = posts.iter_mut().map(|post| (post.url.clone(), post)).collect::<HashMap<_, _>>();
 
     let router_extension = request.extensions.get::<Router>().unwrap(); // TODO: Handle this
     let post_path = router_extension.find("post").unwrap_or("/");
-    let post = paths_index.get(&String::from(post_path)).unwrap(); // TODO: Handle post not found
+    let post: &mut ::db::models::BlogPost = paths_index.get_mut(&String::from(post_path)).unwrap(); // TODO: Handle post not found
+    post.body = markdown_to_html(&post.body);
 
-    let mut template_data = BTreeMap::new();
-    template_data.insert(String::from("body"), post.get_body_as_html());
-    template_data.insert(String::from("title"), post.metadata.get("title").unwrap_or(&String::from("No title")).clone());
-    template_data.insert(String::from("date"), post.metadata.get("date").unwrap_or(&String::from("No date")).clone());
-    handle_with_template("blog_post", template_data)
+    handle_with_template("blog_post", post)
 }
 
-fn handle_with_template<T: ToJson>(name: &str, data: T) -> IronResult<Response> {
+fn handle_with_template<T: Serialize>(name: &str, data: T) -> IronResult<Response> {
     Ok(Response::with(
         (status::Ok, Template::new(name, data))
     ))
 }
 
-// TODO: Do this when constructing BlogPost
-fn construct_path(post: &BlogPost) -> String {
-    use std::hash::{ Hash, Hasher, SipHasher };
+fn markdown_to_html(markdown: &str) -> String {
+    use hoedown::{ Html, Markdown, Render };
+    use hoedown::{ TABLES, FENCED_CODE, AUTOLINK, STRIKETHROUGH, NO_INTRA_EMPHASIS };
+    use hoedown::renderer::html::Flags;
 
-    let mut hasher = SipHasher::new();
-    post.body.hash(&mut hasher);
-    format!("{:16}", hasher.finish())
-}
-
-
-fn get_posts() -> Vec<BlogPost> {
-    use blog::read_posts_from_disk;
-
-    read_posts_from_disk().ok().unwrap_or_default()
+    let mut renderer = Html::new(Flags::empty(), 0);
+    let extensions = TABLES | FENCED_CODE | AUTOLINK | STRIKETHROUGH | NO_INTRA_EMPHASIS;
+    renderer.render(&Markdown::new(markdown).extensions(extensions))
+        .to_str().unwrap_or("Unable to render Markdown body")
+        .to_string()
 }
