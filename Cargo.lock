@@ -1,6 +1,6 @@
 [root]
 name = "personal-website"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "chrono 0.2.25 (registry+https://github.com/rust-lang/crates.io-index)",
  "clippy 0.0.84 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -15,7 +15,6 @@ dependencies = [
  "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "mount 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "router 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)",
  "sass-rs 0.0.18 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 0.8.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_json 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)",

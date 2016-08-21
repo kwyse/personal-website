@@ -6,16 +6,14 @@
 #[macro_use] extern crate diesel;
 #[macro_use] extern crate log;
 
-extern crate fern;
 extern crate chrono;
-extern crate iron;
-extern crate router;
-extern crate mount;
-extern crate staticfile;
+extern crate dotenv;
+extern crate fern;
 extern crate handlebars_iron;
 extern crate hoedown;
-extern crate rustc_serialize;
-extern crate dotenv;
+extern crate iron;
+extern crate mount;
+extern crate router;
 extern crate serde;
 extern crate serde_json;
 

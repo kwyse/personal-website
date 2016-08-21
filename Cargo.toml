@@ -2,7 +2,7 @@
 authors = ["Krishan Wyse <kwysek@gmail.com>"]
 build = "build.rs"
 name = "personal-website"
-version = "0.1.0"
+version = "0.2.0"
 
 [build-dependencies]
 sass-rs = "0.0.18"
@@ -16,7 +16,6 @@ iron = "0.4.0"
 log = "0.3.6"
 mount = "0.2.1"
 router = "0.2.0"
-rustc-serialize = "0.3.19"
 serde = "0.8.3"
 serde_json = "0.8.1"
 serde_macros = "0.8.3"
