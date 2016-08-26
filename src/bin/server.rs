@@ -15,6 +15,7 @@ fn main() {
         .add_get_route("/blog/:post", handle_blog_post_page)
         .add_mount("/static", Static::new(Path::new("./static")))
         .add_mount("/app", Static::new(Path::new("./app")))
+        .add_mount("/bower_components", Static::new(Path::new("./bower_components")))
         .set_template_dir("./templates")
         .build_and_run();
 }
@@ -28,6 +29,7 @@ fn main() {
         .add_get_route("/blog/:post", handle_blog_post_page)
         .add_mount("/static", Static::new(Path::new("./static")))
         .add_mount("/app", Static::new(Path::new("./app")))
+        .add_mount("/bower_components", Static::new(Path::new("./bower_components")))
         .set_template_dir("./templates")
         .build_and_run_reloadable();
 }
