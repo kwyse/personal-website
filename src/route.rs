@@ -1,6 +1,5 @@
 //! Provides routes for main application
 
-use std::collections::BTreeMap;
 use iron::prelude::*;
 use iron::status;
 use handlebars_iron::Template;
@@ -20,13 +19,9 @@ pub fn handle_blog_list_page(_: &mut Request) -> IronResult<Response> {
     let posts = read_posts();
 
     if posts.is_empty() {
-        let mut template_data = BTreeMap::new();
-        template_data.insert(String::from("info"), String::from("No blog posts found. Check back soon!"));
-        handle_with_template("blog_list_noposts", template_data)
+        handle_with_template("blog_list_noposts", "No blog posts found. Check back soon!")
     } else {
-        let mut template_data = BTreeMap::new();
-        template_data.insert(String::from("posts"), posts);
-        handle_with_template("blog_list", template_data)
+        handle_with_template("blog_list", posts)
     }
 }
 
