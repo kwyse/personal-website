@@ -1,5 +1,5 @@
 {{# partial body }}
-  <article class="container-content horiz-centered">
+  <aside>
     <h1>Hey there!</h1>
     <hr />
     <div class="profile-image"></div>
@@ -12,6 +12,16 @@
       <li><a href="https://github.com/kwyse"><i class="icon-github"></i></a></li>
       <li><a href="https://uk.linkedin.com/in/krishanwyse"><i class="icon-linkedin"></i></a></li>
     </ul>
+  </aside>
+  <article class="container-content horiz-centered">
+    {{#each this}}
+      <a href="/blog/{{url}}" class="post-listing">
+        <h1>{{title}}</h1>
+        <h2 class="date">{{created}}</h2>
+        <p>{{summary}}</p>
+      </a>
+      <!-- <hr /> -->
+    {{/each}}
   </article>
 {{/partial}}
 

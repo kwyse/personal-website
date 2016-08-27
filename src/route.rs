@@ -7,8 +7,8 @@ use serde::Serialize;
 
 use ::db::read_posts;
 
-pub fn handle_landing_page(_: &mut Request) -> IronResult<Response> {
-    handle_with_template("landing", ())
+pub fn handle_landing_page(request: &mut Request) -> IronResult<Response> {
+    handle_blog_list_page(request)
 }
 
 pub fn handle_about_page(_: &mut Request) -> IronResult<Response> {

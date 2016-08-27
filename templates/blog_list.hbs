@@ -1,12 +1,33 @@
 {{# partial content }}
-  {{#each this}}
-    <a href="/blog/{{url}}" class="post-listing">
-      <h1>{{title}}</h1>
-      <h2 class="date">{{created}}</h2>
-      <p>{{summary}}</p>
-    </a>
-    <!-- <hr /> -->
-  {{/each}}
+  <aside>
+    <div>
+      <h1>Hey there!</h1>
+      <div class="profile-image"></div>
+      <p class="fade-in blurb">
+        My name is Krishan Wyse<br \>
+        I'm a software developer residing in London<br \>
+      </p>
+      <ul class="social">
+        <li><a href="https://twitter.com/krishanwyse"><i class="icon-twitter"></i></a></li>
+        <li><a href="https://github.com/kwyse"><i class="icon-github"></i></a></li>
+        <li><a href="https://uk.linkedin.com/in/krishanwyse"><i class="icon-linkedin"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <article>
+    {{#each this}}
+      <div class="post-list">
+        <a href="/blog/{{url}}">
+          <h1>{{title}}</h1>
+          <h2 class="date">{{created}}</h2>
+          <p>{{summary}}</p>
+        </a>
+        {{#unless @last}}
+          <hr />
+        {{/unless}}
+      </div>
+    {{/each}}
+  </article>
 {{/partial}}
 
 {{> body}}
