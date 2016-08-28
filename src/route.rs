@@ -5,7 +5,7 @@ use iron::status;
 use handlebars_iron::Template;
 use serde::Serialize;
 
-use ::db::read_posts;
+use ::db::{read_posts, read_tagged_posts};
 
 pub fn handle_landing_page(request: &mut Request) -> IronResult<Response> {
     handle_blog_list_page(request)
@@ -15,8 +15,13 @@ pub fn handle_about_page(_: &mut Request) -> IronResult<Response> {
     handle_with_template("about", ())
 }
 
-pub fn handle_blog_list_page(_: &mut Request) -> IronResult<Response> {
-    let posts = read_posts();
+pub fn handle_blog_list_page(request: &mut Request) -> IronResult<Response> {
+    use urlencoded::UrlEncodedQuery;
+
+    let posts = match request.get_mut::<UrlEncodedQuery>() {
+        Ok(ref mut params) => read_tagged_posts(params.remove("tags").unwrap_or_default()),
+        Err(_) => read_posts()
+    };
 
     if posts.is_empty() {
         handle_with_template("blog_list_noposts", "No blog posts found. Check back soon!")

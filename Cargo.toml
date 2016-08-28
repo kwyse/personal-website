@@ -20,6 +20,7 @@ serde = "0.8.3"
 serde_json = "0.8.1"
 serde_macros = "0.8.3"
 staticfile = "0.3.0"
+urlencoded = "0.4.1"
 
 [dependencies.chrono]
 default-features = false

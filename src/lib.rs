@@ -16,6 +16,7 @@ extern crate mount;
 extern crate router;
 extern crate serde;
 extern crate serde_json;
+extern crate urlencoded;
 
 pub mod app;
 pub mod db;
