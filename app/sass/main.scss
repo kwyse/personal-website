@@ -3,15 +3,13 @@ $pixel-breakpoint: 768px;
 
 @import 'mixin';
 
-html, body {
+body {
   margin: 0;
   padding: 0;
-  display: flex;
 }
 
 main {
   margin: 0;
-  width: 90%;
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
@@ -38,7 +36,6 @@ article {
   flex-direction: column;
 
   div.post-list {
-    margin-bottom: 10px;
     text-align: center;
     width: 100%;
     max-width: 680px;
@@ -62,7 +59,7 @@ article {
       text-decoration: none;
       color: #000;
       margin: 0 10px;
-      padding: 10px;
+      padding: 10px 10px 0 10px;
 
       &:hover {
         // TODO: Add vendor prefixes
@@ -71,25 +68,34 @@ article {
     }
   }
 
-  div.post-container {
-    display: flex;
-    justify-content: center;
-  }
-
   div.post {
     max-width: 960px;
-    padding: 5px;
+    padding: 10px;
 
     p {
       line-height: 1.5rem;
     }
 
     .date {
-      margin-bottom: 40px;
       font-size: 0.9rem;
       font-weight: normal;
       font-style: italic;
       color: #888;
+    }
+
+    ul.tags {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 40px;
+
+      li {
+        display: inline;
+
+      }
+
+      li + li:before {
+        content: ", ";
+      }
     }
 
     pre {
@@ -101,11 +107,29 @@ article {
       .operator { background: inherit; }
     }
   }
+
+  .info {
+    text-align: center;
+    color: #888;
+  }
 }
 
 hr {
-  height: 1px;
-  width: 30px;
+  border: none;
+  border-top: medium double #333;
+  color: #333;
+  width: 128px;
+  margin-top: 40px;
+
+  &:after {
+    content: "§";
+    display: inline-block;
+    position: relative;
+    top: -0.7em;
+    padding: 0 0.25em;
+    font-size: 0.8em;
+    background: #FFF;
+  }
 }
 
 .profile-image {
@@ -148,6 +172,11 @@ i.icon-linkedin, i.icon-linkedin { background-color: #0077B5; }
 i.icon-twitter, i.icon-twitter { background-color: #55ACEE; }
 
 @media only screen and (min-width: $pixel-breakpoint) {
+  body {
+    display: flex;
+    flex: 1;
+  }
+
   main {
     flex-direction: row;
   }
@@ -159,6 +188,12 @@ i.icon-twitter, i.icon-twitter { background-color: #55ACEE; }
 
   article {
     flex: 9;
+
+    div.post-container {
+      display: flex;
+      justify-content: center;
+      flex: 0 1 auto;
+    }
   }
 }
 /* $color-bg-base: #FFF;
