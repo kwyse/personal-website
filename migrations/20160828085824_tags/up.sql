@@ -1,0 +1,2 @@
+ALTER TABLE blogposts
+ADD COLUMN tags TEXT[] NOT NULL DEFAULT '{}'

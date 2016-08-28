@@ -61,6 +61,7 @@ pub mod models {
         pub url: String,
         pub summary: String,
         pub body: String,
+        pub tags: Vec<String>,
     }
 
     #[insertable_into(blogposts)]
@@ -70,6 +71,7 @@ pub mod models {
         pub url: String,
         pub summary: String,
         pub body: String,
+        pub tags: Vec<String>,
     }
 }
 

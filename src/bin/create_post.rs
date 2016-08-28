@@ -10,6 +10,7 @@ use personal_website::db::create_post;
 fn main() {
     let title = prompt_input("title");
     let summary = prompt_input("summary");
+    let tags = prompt_input("tags").split_whitespace().map(str::to_string).collect();
     let body_file_name = prompt_input("Markdown file name");
 
     let mut body_file = File::open(body_file_name).unwrap();
@@ -25,6 +26,7 @@ fn main() {
         url: url,
         summary: summary,
         body: body,
+        tags: tags,
     };
 
     let added_post = create_post(new_post);

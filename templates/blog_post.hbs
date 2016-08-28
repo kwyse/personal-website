@@ -4,6 +4,11 @@
       <div class="post">
         <h1 class="title">{{title}}</h1>
         <h2 class="date">{{created}}</h2>
+        <ul class="tags">
+          {{#each tags}}
+            <li>{{this}}</li>
+          {{/each}}
+        </ul>
         {{{body}}}
       </div>
     </div>
