@@ -8,7 +8,7 @@ use personal_website::route::*;
 
 #[cfg(not(feature = "live-reload"))]
 fn main() {
-    App::new("0.0.0.0")
+    App::new("127.0.0.1")
         .add_get_route("/", handle_landing_page)
         .add_get_route("/about", handle_about_page)
         .add_get_route("/blog", handle_blog_list_page)
@@ -22,7 +22,7 @@ fn main() {
 
 #[cfg(feature = "live-reload")]
 fn main() {
-    App::new("0.0.0.0")
+    App::new("127.0.0.1")
         .add_get_route("/", handle_landing_page)
         .add_get_route("/about", handle_about_page)
         .add_get_route("/blog", handle_blog_list_page)

@@ -2,7 +2,7 @@
 authors = ["Krishan Wyse <kwysek@gmail.com>"]
 build = "build.rs"
 name = "personal-website"
-version = "0.3.0"
+version = "0.3.1"
 
 [build-dependencies]
 sass-rs = "0.0.18"

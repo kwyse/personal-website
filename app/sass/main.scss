@@ -172,11 +172,6 @@ i.icon-linkedin, i.icon-linkedin { background-color: #0077B5; }
 i.icon-twitter, i.icon-twitter { background-color: #55ACEE; }
 
 @media only screen and (min-width: $pixel-breakpoint) {
-  body {
-    display: flex;
-    flex: 1;
-  }
-
   main {
     flex-direction: row;
   }
