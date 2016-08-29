@@ -1,11 +1,20 @@
 {{# partial content }}
-  <div class="post">
-    <h1 class="title">{{title}}</h1>
-    <hr />
-    <h2 class="date">{{created}}</h2>
-    {{{body}}}
-  </div>
+  <article>
+    <div class="post-container">
+      <div class="post">
+        <h1 class="title">{{title}}</h1>
+        <h2 class="date">{{created}}</h2>
+        <ul class="tags">
+          {{#each tags}}
+            <li>
+              <a href="/blog?tag={{this}}">#{{this}}</li></a>
+          {{/each}}
+        </ul>
+        {{{body}}}
+      </div>
+    </div>
+  </article>
   <script src="/app/js/prism.js"></script>
 {{/partial}}
 
-{{> body}}
+{{> main}}

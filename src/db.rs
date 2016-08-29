@@ -28,6 +28,21 @@ pub fn read_posts() -> Vec<BlogPost> {
         })
 }
 
+pub fn read_tagged_posts(target_tags: Vec<String>) -> Vec<BlogPost> {
+    use std::error::Error;
+    use db::schema::blogposts::dsl::*;
+
+    let conn = establish_connection();
+    blogposts.filter(published.eq(true))
+        .filter(tags.overlaps_with(target_tags))
+        .order(created.desc())
+        .load::<BlogPost>(&conn).unwrap_or_else(|err| {
+            warn!("Error loading blog posts from database - returning empty Vec");
+            error!("{}", err.description());
+            Vec::new()
+        })
+}
+
 pub fn publish_post(target_id: i32) -> BlogPost {
     use db::schema::blogposts::dsl::*;
 
@@ -61,6 +76,7 @@ pub mod models {
         pub url: String,
         pub summary: String,
         pub body: String,
+        pub tags: Vec<String>,
     }
 
     #[insertable_into(blogposts)]
@@ -70,6 +86,7 @@ pub mod models {
         pub url: String,
         pub summary: String,
         pub body: String,
+        pub tags: Vec<String>,
     }
 }
 

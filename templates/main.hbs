@@ -10,22 +10,11 @@
     <link rel="stylesheet" type="text/css" href="/static/main.css">
     <link href='https://fonts.googleapis.com/css?family=Ubuntu:300,300i,700' rel='stylesheet' type='text/css'>
   </head>
-  <body class="container">
-    <header class="container-header">
-      <nav>
-        <a href="/" class="brand">
-          <h1>Krishan Wyse</h1>
-          <h2><em>Software developer</em></h2>
-        </a>
-        <ul>
-          <li><a href="/about">About</a></li>
-          <li><a href="/blog">Blog</a></li>
-        </ul>
-      </nav>
-    </header>
-    <main class="container-body">
-      {{#block body}}
+  <body>
+    <main>
+      {{#block content}}
       {{/block}}
     </main>
   </body>
+  <script type="text/javascript" src="/app/js/app.js"></script>
 </html>

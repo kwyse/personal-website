@@ -1,8 +1,9 @@
 extern crate personal_website;
 extern crate chrono;
 
-use std::io::{stdin, Read};
 use std::fs::File;
+use std::io::{stdin, Read};
+use std::path::Path;
 use chrono::Local;
 use personal_website::db::models::NewBlogPost;
 use personal_website::db::create_post;
@@ -10,14 +11,17 @@ use personal_website::db::create_post;
 fn main() {
     let title = prompt_input("title");
     let summary = prompt_input("summary");
-    let body_file_name = prompt_input("Markdown file name");
+    let tags = prompt_input("tags").split_whitespace().map(str::to_string).collect();
 
-    let mut body_file = File::open(body_file_name).unwrap();
+    let file_name = prompt_input("Markdown file name");
+    let file_path = Path::new(&file_name);
+
+    let mut body_content = File::open(file_path).unwrap();
     let mut body = String::new();
-    body_file.read_to_string(&mut body).unwrap();
+    body_content.read_to_string(&mut body).unwrap();
 
     let created = Local::today().naive_local();
-    let url = title.replace(" ", "-").to_lowercase();
+    let url = file_path.file_stem().unwrap().to_str().unwrap().replace("_", "-").to_lowercase();
 
     let new_post = NewBlogPost {
         title: title,
@@ -25,6 +29,7 @@ fn main() {
         url: url,
         summary: summary,
         body: body,
+        tags: tags,
     };
 
     let added_post = create_post(new_post);
