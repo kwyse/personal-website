@@ -17,10 +17,12 @@ pub fn handle_about_page(_: &mut Request) -> IronResult<Response> {
 
 pub fn handle_blog_list_page(request: &mut Request) -> IronResult<Response> {
     use urlencoded::UrlEncodedQuery;
+    use db::establish_connection;
 
+    let conn = establish_connection();
     let posts = match request.get_mut::<UrlEncodedQuery>() {
         Ok(ref mut params) => read_tagged_posts(params.remove("tag").unwrap_or_default()),
-        Err(_) => read_posts()
+        Err(_) => read_posts(&conn)
     };
 
     if posts.is_empty() {
@@ -33,8 +35,10 @@ pub fn handle_blog_list_page(request: &mut Request) -> IronResult<Response> {
 pub fn handle_blog_post_page(request: &mut Request) -> IronResult<Response> {
     use std::collections::HashMap;
     use router::Router;
+    use db::establish_connection;
 
-    let mut posts = read_posts();
+    let conn = establish_connection();
+    let mut posts = read_posts(&conn);
     let mut paths_index = posts.iter_mut().map(|post| (post.url.clone(), post)).collect::<HashMap<_, _>>();
 
     let router_extension = request.extensions.get::<Router>().unwrap(); // TODO: Handle this
