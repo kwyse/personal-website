@@ -21,7 +21,7 @@ pub fn handle_blog_list_page(request: &mut Request) -> IronResult<Response> {
 
     let conn = establish_connection();
     let posts = match request.get_mut::<UrlEncodedQuery>() {
-        Ok(ref mut params) => read_tagged_posts(params.remove("tag").unwrap_or_default()),
+        Ok(ref mut params) => read_tagged_posts(&conn, params.remove("tag").unwrap_or_default()),
         Err(_) => read_posts(&conn)
     };
 

@@ -2,53 +2,45 @@
 
 use diesel::prelude::*;
 use diesel::pg::PgConnection;
+use std::error::Error;
 
 use self::models::*;
 
-pub fn create_post(post: NewBlogPost) -> BlogPost {
+pub fn create_post(conn: &PgConnection, post: NewBlogPost) -> BlogPost {
     use db::schema::blogposts;
 
-    let conn = establish_connection();
     ::diesel::insert(&post).into(blogposts::table)
-        .get_result(&conn)
+        .get_result(&*conn)
         .expect("Error adding new post")
 }
 
 pub fn read_posts(conn: &PgConnection) -> Vec<BlogPost> {
-    use std::error::Error;
-    use db::schema::blogposts::dsl::*;
-
-    blogposts.filter(published.eq(true))
-        .order(created.desc())
-        .load::<BlogPost>(&*conn).unwrap_or_else(|err| {
-            warn!("Error loading blog posts from database - returning empty Vec");
-            error!("{}", err.description());
-            Vec::new()
-        })
+    read_tagged_posts(conn, Vec::new())
 }
 
-pub fn read_tagged_posts(target_tags: Vec<String>) -> Vec<BlogPost> {
-    use std::error::Error;
+pub fn read_tagged_posts(conn: &PgConnection, target_tags: Vec<String>) -> Vec<BlogPost> {
     use db::schema::blogposts::dsl::*;
 
-    let conn = establish_connection();
-    blogposts.filter(published.eq(true))
-        .filter(tags.overlaps_with(target_tags))
-        .order(created.desc())
-        .load::<BlogPost>(&conn).unwrap_or_else(|err| {
-            warn!("Error loading blog posts from database - returning empty Vec");
-            error!("{}", err.description());
-            Vec::new()
-        })
+    if target_tags.is_empty() {
+        blogposts.filter(published.eq(true))
+            .order(created.desc())
+            .load::<BlogPost>(&*conn)
+            .unwrap_or_else(handle_load_error)
+    } else {
+        blogposts.filter(published.eq(true))
+            .filter(tags.overlaps_with(target_tags))
+            .order(created.desc())
+            .load::<BlogPost>(&*conn)
+            .unwrap_or_else(handle_load_error)
+    }
 }
 
-pub fn publish_post(target_id: i32) -> BlogPost {
+pub fn publish_post(conn: &PgConnection, target_id: i32) -> BlogPost {
     use db::schema::blogposts::dsl::*;
 
-    let conn = establish_connection();
     ::diesel::update(blogposts.filter(id.eq(target_id)))
         .set(published.eq(true))
-        .get_result(&conn)
+        .get_result(&*conn)
         .expect("Error publishing post")
 }
 
@@ -62,11 +54,17 @@ pub fn establish_connection() -> PgConnection {
     PgConnection::establish(&database_url).expect(&format!("Error connecting to {}", database_url))
 }
 
+fn handle_load_error<E: Error>(err: E) -> Vec<BlogPost> {
+    warn!("Error loading blog posts from database - returning empty Vec");
+    error!("{}", err.description());
+    Vec::new()
+}
+
 pub mod models {
     use super::schema::blogposts;
     use chrono::NaiveDate;
     
-    #[derive(Queryable, Serialize)]
+    #[derive(Debug, PartialEq, Queryable, Serialize)]
     pub struct BlogPost {
         pub id: i32,
         pub title: String,
@@ -115,25 +113,111 @@ mod tests {
     }
 
     #[test]
+    fn test_create_post() {
+        use chrono::NaiveDate;
+        use diesel::LoadDsl;
+        use super::models::*;
+        use super::schema::blogposts;
+
+        let conn = get_test_connection();
+        let mut num_posts = conn.execute("SELECT * FROM blogposts").unwrap();
+        assert_eq!(0, num_posts);
+
+        let new_post = NewBlogPost {
+            title: "New Post Title".to_string(),
+            created: NaiveDate::from_ymd(2016, 8, 5),
+            url: "new-post".to_string(),
+            summary: "A new summary".to_string(),
+            body: "A new body".to_string(),
+            tags: vec!["new".to_string(), "post".to_string()],
+        };
+
+        create_post(&conn, new_post);
+        num_posts = conn.execute("SELECT * FROM blogposts").unwrap();
+        assert_eq!(1, num_posts);
+
+        let expected_post = BlogPost {
+            id: 1,
+            title: "New Post Title".to_string(),
+            created: NaiveDate::from_ymd(2016, 8, 5),
+            published: false,
+            url: "new-post".to_string(),
+            summary: "A new summary".to_string(),
+            body: "A new body".to_string(),
+            tags: vec!["new".to_string(), "post".to_string()],
+        };
+
+        let actual_post = blogposts::table.get_result::<BlogPost>(&conn).unwrap();
+        assert_eq!(expected_post, actual_post);
+    }
+
+    #[test]
     fn test_read_posts() {
         use chrono::NaiveDate;
+
         let conn = get_test_connection();
         let mut posts = read_posts(&conn);
 
-        assert!(posts.len() == 0);
+        assert!(posts.is_empty());
 
-        conn.execute("INSERT INTO blogposts VALUES (1, 'Test Post', '20160722', 'f', 'test-post', 'A test post', 'A body', '{test}');").unwrap();
+        conn.execute("INSERT INTO blogposts VALUES
+                      (1, 'Test Post', '20160722', 'f', 'test-post', 'A test post', 'A body', '{test}');"
+        ).unwrap();
         posts = read_posts(&conn);
-        assert!(posts.len() == 0);
+        assert!(posts.is_empty());
 
         let _ = conn.execute("UPDATE blogposts SET published = 't' WHERE id = 1;");
         posts = read_posts(&conn);
-        assert!(posts.len() == 1);
+        assert_eq!(1, posts.len());
 
-        conn.execute("INSERT INTO blogposts VALUES (2, 'Test Post', '20160822', 't', 'test-post', 'A test post', 'A body', '{test}');").unwrap();
+        conn.execute("INSERT INTO blogposts VALUES
+                      (2, 'Test Post', '20160822', 't', 'test-post', 'A test post', 'A body', '{test}');"
+        ).unwrap();
         posts = read_posts(&conn);
-        assert!(posts.len() == 2);
-        assert!(posts[0].created == NaiveDate::from_ymd(2016, 8, 22));
-        assert!(posts[1].created == NaiveDate::from_ymd(2016, 7, 22));
+        assert_eq!(2, posts.len());
+        assert_eq!(NaiveDate::from_ymd(2016, 8, 22), posts[0].created);
+        assert_eq!(NaiveDate::from_ymd(2016, 7, 22), posts[1].created);
+    }
+
+    #[test]
+    fn test_read_tagged_posts() {
+        let conn = get_test_connection();
+        conn.execute("INSERT INTO blogposts VALUES
+                      (1, 'Test Post', '20160722', 't', 'test-post', 'A test post', 'A body', '{test}');"
+        ).unwrap();
+        let mut posts = read_tagged_posts(&conn, vec!["nottest".to_string()]);
+        assert!(posts.is_empty());
+
+        let _ = conn.execute("UPDATE blogposts SET tags = '{test, post}' WHERE id = 1;");
+        posts = read_tagged_posts(&conn, vec!["test".to_string()]);
+        assert_eq!(1, posts.len());
+
+        conn.execute("INSERT INTO blogposts VALUES
+                      (2, 'Test Post', '20160822', 't', 'test-post', 'A test post', 'A body', '{post}');"
+        ).unwrap();
+        posts = read_tagged_posts(&conn, vec!["post".to_string()]);
+        assert_eq!(2, posts.len());
+    }
+
+    #[test]
+    fn test_publish_post() {
+        use diesel::{ExpressionMethods, FilterDsl, LoadDsl};
+        use super::models::BlogPost;
+        use super::schema::blogposts::dsl::*;
+
+        let conn = get_test_connection();
+        conn.execute("INSERT INTO blogposts VALUES
+                      (1, 'Test Post', '20160722', 'f', 'test-post', 'A test post', 'A body', '{test}');"
+        ).unwrap();
+        conn.execute("INSERT INTO blogposts VALUES
+                      (2, 'Test Post', '20160822', 'f', 'test-post', 'A test post', 'A body', '{post}');"
+        ).unwrap();
+
+        publish_post(&conn, 1);
+
+        let post1 = blogposts.filter(id.eq(1)).get_result::<BlogPost>(&conn).unwrap();
+        let post2 = blogposts.filter(id.eq(2)).get_result::<BlogPost>(&conn).unwrap();
+        assert_eq!(true, post1.published);
+        assert_eq!(false, post2.published);
     }
 }

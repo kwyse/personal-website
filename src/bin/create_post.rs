@@ -6,7 +6,7 @@ use std::io::{stdin, Read};
 use std::path::Path;
 use chrono::Local;
 use personal_website::db::models::NewBlogPost;
-use personal_website::db::create_post;
+use personal_website::db::{create_post, establish_connection};
 
 fn main() {
     let title = prompt_input("title");
@@ -32,7 +32,8 @@ fn main() {
         tags: tags,
     };
 
-    let added_post = create_post(new_post);
+    let conn = establish_connection();
+    let added_post = create_post(&conn, new_post);
     println!("Successfully added new post to database (ID: {})", added_post.id);
 }
 
