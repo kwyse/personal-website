@@ -44,6 +44,14 @@ pub fn publish_post(conn: &PgConnection, target_id: i32) -> BlogPost {
         .expect("Error publishing post")
 }
 
+pub fn update_body(conn: &PgConnection, target_id: i32, new_body: &str) -> QueryResult<BlogPost> {
+    use db::schema::blogposts::dsl::*;
+
+    ::diesel::update(blogposts.filter(id.eq(target_id)))
+        .set(body.eq(new_body))
+        .get_result(&*conn)
+}
+
 pub fn establish_connection() -> PgConnection {
     use dotenv::dotenv;
     use std::env;
@@ -219,5 +227,22 @@ mod tests {
         let post2 = blogposts.filter(id.eq(2)).get_result::<BlogPost>(&conn).unwrap();
         assert_eq!(true, post1.published);
         assert_eq!(false, post2.published);
+    }
+
+    #[test]
+    fn test_update_body() {
+        use diesel::{ExpressionMethods, FilterDsl, LoadDsl};
+        use super::models::BlogPost;
+        use super::schema::blogposts::dsl::*;
+
+        let conn = get_test_connection();
+        conn.execute("INSERT INTO blogposts VALUES
+                      (1, 'Test Post', '20160722', 'f', 'test-post', 'A test post', 'A body', '{test}');"
+        ).unwrap();
+
+        update_body(&conn, 1, "An edited body").unwrap();
+
+        let post = blogposts.filter(id.eq(1)).get_result::<BlogPost>(&conn).unwrap();
+        assert_eq!("An edited body", post.body);
     }
 }

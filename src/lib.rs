@@ -6,6 +6,7 @@
 #[macro_use] extern crate diesel;
 #[macro_use] extern crate log;
 
+extern crate clap;
 extern crate chrono;
 extern crate dotenv;
 extern crate fern;
@@ -19,5 +20,6 @@ extern crate serde_json;
 extern crate urlencoded;
 
 pub mod app;
+pub mod cli;
 pub mod db;
 pub mod route;

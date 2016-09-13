@@ -27,6 +27,11 @@ default-features = false
 features = ["serde"]
 version = "0.2.25"
 
+[dependencies.clap]
+default-features = false
+features = ["unstable"]
+version = "2.10.4"
+
 [dependencies.clippy]
 optional = true
 version = "0.0.84"
