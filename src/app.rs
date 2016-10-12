@@ -25,7 +25,7 @@ impl App {
     }
 
     pub fn add_get_route<P: AsRef<str>, H: Handler>(&mut self, path: P, handler: H) -> &mut Self {
-        self.routes.get(path, handler);
+        self.routes.get(&path, handler, &path);
         self
     }
 
