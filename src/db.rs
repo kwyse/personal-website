@@ -71,7 +71,7 @@ fn handle_load_error<E: Error>(err: E) -> Vec<BlogPost> {
 pub mod models {
     use super::schema::blogposts;
     use chrono::NaiveDate;
-    
+
     #[derive(Debug, PartialEq, Queryable, Serialize)]
     pub struct BlogPost {
         pub id: i32,
@@ -84,7 +84,7 @@ pub mod models {
         pub tags: Vec<String>,
     }
 
-    #[insertable_into(blogposts)]
+    #[derive(Insertable)] #[table_name="blogposts"]
     pub struct NewBlogPost {
         pub title: String,
         pub created: NaiveDate,
@@ -96,7 +96,7 @@ pub mod models {
 }
 
 pub mod schema {
-    infer_schema!(dotenv!("DATABASE_URL"));
+    infer_schema!("dotenv:DATABASE_URL");
 }
 
 #[cfg(test)]
