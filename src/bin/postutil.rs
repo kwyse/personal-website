@@ -16,6 +16,14 @@ fn main() {
             (@arg ID: +required "The ID of the post to update")
             (@arg FILE: +required "The file containing the body contents")
         )
+        (@subcommand create =>
+            (about: "Creates a new blog post")
+            (@arg TITLE: +required "The title of the new post")
+            (@arg FILE: +required "The file containing the body contents")
+            (@arg summary: -s --summary +takes_value "Sets the snippet summarising body contents")
+            (@arg tag: -t --tag +takes_value ... "Adds a tag used to group related posts")
+            (@arg publish: -p --publish "Sets the post to be published immediately")
+        )
     ).get_matches();
 
     apply(matches).unwrap_or_else(|err| println!("Error executing command: {}", err.description()));

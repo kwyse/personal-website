@@ -11,8 +11,58 @@ use std::path::Path;
 
 pub fn apply(matches: ArgMatches) -> Result<(), CliError> {
     match matches.subcommand() {
+        ("create", Some(sub_matches)) => create(sub_matches),
         ("update", Some(sub_matches)) => update(sub_matches),
         _ => Ok(()) // clap will prevent unknown subcommand being used
+    }
+}
+
+fn create(matches: &ArgMatches) -> Result<(), CliError> {
+    use chrono::Local;
+    use db;
+
+    let title = matches.value_of("TITLE").unwrap().trim().to_string();
+    let body_file = matches.value_of("FILE").unwrap();
+    let tags = get_optionals("tag", matches);
+    let summary = get_optional("summary", matches);
+    let publish = matches.is_present("publish");
+
+    let url = title.replace(" ", "-").to_lowercase();
+    let created = Local::today().naive_local();
+    let body = try!(string_from_file(body_file));
+
+    let new_post = db::models::NewBlogPost {
+        title: title,
+        created: created,
+        published: publish,
+        url: url,
+        summary: summary,
+        body: body,
+        tags: tags,
+    };
+
+    let conn = db::establish_connection();
+    let added_post = db::create_post(&conn, new_post);
+    println!("Successfully added new post to database (ID: {})", added_post.id);
+
+    Ok(())
+}
+
+fn get_optional(attribute: &str, matches: &ArgMatches) -> String {
+    let value = matches.value_of(attribute).unwrap_or_default();
+    if value.is_empty() {
+        println!("warning: {} was not supplied", attribute);
+    }
+
+    value.to_string()
+}
+
+fn get_optionals(attribute: &str, matches: &ArgMatches) -> Vec<String> {
+    if let Some(args) = matches.values_of(attribute) {
+        args.map(str::to_string).collect::<Vec<String>>()
+    } else {
+        println!("warning: {} was not supplied", attribute);
+        Vec::new()
     }
 }
 

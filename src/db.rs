@@ -88,6 +88,7 @@ pub mod models {
     pub struct NewBlogPost {
         pub title: String,
         pub created: NaiveDate,
+        pub published: bool,
         pub url: String,
         pub summary: String,
         pub body: String,
@@ -134,6 +135,7 @@ mod tests {
         let new_post = NewBlogPost {
             title: "New Post Title".to_string(),
             created: NaiveDate::from_ymd(2016, 8, 5),
+            published: false,
             url: "new-post".to_string(),
             summary: "A new summary".to_string(),
             body: "A new body".to_string(),
