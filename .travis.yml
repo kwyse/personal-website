@@ -1,0 +1,14 @@
+language: rust
+sudo: required
+rust:
+  - stable
+  - beta
+  - nightly
+addons:
+  postgresql: '9.4'
+before_script:
+  - export DATABASE_URL=postgres://postgres@localhost/
+  - psql -c 'create database personal_website;' -U postgres
+branches:
+  only:
+    - master
