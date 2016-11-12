@@ -8,7 +8,6 @@ addons:
 before_script:
   - export DATABASE_URL=postgres://postgres@localhost/
   - psql -c "create database test;" -U postgres
-  - psql -c "create role ${USER} superuser createdb nocreaterole inherit login;" -U postgres
 branches:
   only:
     - master
