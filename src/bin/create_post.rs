@@ -26,6 +26,7 @@ fn main() {
     let new_post = NewBlogPost {
         title: title,
         created: created,
+        published: false,
         url: url,
         summary: summary,
         body: body,
