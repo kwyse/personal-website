@@ -1,3 +1,16 @@
-baseURL = "http://example.org/"
+baseURL = "https://www.kwyse.com/"
 languageCode = "en-us"
-title = "My New Hugo Site"
+title = "Krishan Wyse"
+
+theme = "minimo"
+
+Paginate = 5
+
+[params.info]
+description = "life.iter().map(Musings::fetch).collect()"
+title404 = "Nothing's here!"
+
+[params.settings]
+dateFormat = "1 January 1970"
+listDateFormat = "1 January 1970"
+recentPostsLength = 5
