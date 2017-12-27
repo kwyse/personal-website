@@ -6,7 +6,9 @@ languageCode = "en-us"
 defaultContentLanguage = "en"
 sectionPagesMenu = "main"
 
+pygmentsCodefences = true
 Paginate = 5
+
 
 [languages.en]
 lang = "en"
