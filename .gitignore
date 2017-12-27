@@ -1,8 +1,1 @@
-target
-log
-static/vendor
-
-.sass-cache
-.env
-*.log
-
+/public/
