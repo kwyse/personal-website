@@ -1,0 +1,13 @@
+run.config:
+  engine: static
+  engine.config:
+    rel_dir: public
+
+  fs_watch: true
+
+  extra_steps:
+    - bash ./install.sh
+
+deploy.config:
+  extra_steps:
+    - hugo
