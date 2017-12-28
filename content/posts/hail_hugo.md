@@ -1,52 +1,55 @@
 ---
 title: "Hail, Hugo!"
-date: 2017-12-27T16:03:45Z
-draft: true
+date: 2017-12-28T17:53:55Z
 ---
 
-One of my goals this holiday season was to relaunch a blog. My previous attempt
-failed because there was too much friction in actually *blogging*. It ran as an
-[Iron](http://ironframework.io/)-backed Rust web app using Postgres (through
-[Diesel](http://diesel.rs/)) on a DigitalOcean host behind
-[NGINX](https://www.nginx.com/). It was my first time using most of those
-technologies for anything semi-serious. I learnt a lot about them in the course
-of building that blog, but the fifth blog post never saw the light of day.
-Deployment was too manual and enhancements would take a lot of time.
+One of my goals this holiday season was to relaunch my blog. My previous attempt
+failed because there was too much friction in actually *blogging*. It was an
+[Iron](http://ironframework.io/)-backed Rust web app using PostgreSQL and
+[Diesel](http://diesel.rs/) on a DigitalOcean host behind NGINX. It was my first
+time using most of these technologies for anything serious. I learnt a lot about
+them in the course of building that blog but the fifth blog post never saw the
+light of day. Deployment was too manual and enhancements were a time sync.
+Ultimately it became a burden.
 
 Enter static site generators. I know I'm late to the party, but at least I now
 comprehend the benefit ;) [Hugo](https://gohugo.io/) is one such static site
-generator that has [swathes of
-users](https://github.com/gohugoio/hugo/stargazers). And I can see why: it is
+generator that seems [fairly
+popular](https://github.com/gohugoio/hugo/stargazers). And I can see why: it is
 *so* easy to get something up and running quickly. Here I'll show you how to go
 from running that initial scaffolding command to being able to hit [insert your
 domain name] and seeing it fully deployed.
 
 One thing of note is exactly how much Hugo balances convention (or opinion)
-against configuration. Hugo touts configuration as one of its strengths, and
+against configuration. Hugo touts configuration as one of its strengths and
 this was an initial draw for me. I try to avoid heavily magic-laden frameworks
 like the plague. Sometimes that can go too far, when the desire to build
-everything from scratch is strong. So in an effort to find that balance, I want
-to start with the absolute bare minimum and build up from there. Nothing should
-be added that doesn't have an explicit and understood purpose. Thus far, Hugo
-has accomodated that, so let's begin.
+everything from scratch is strong. So in an effort to find balance, I want to
+start with the absolute bare minimum and build up from there. We should not add
+anything that doesn't have an explicit and understood purpose. Thus far, Hugo
+has accommodated that, so let's begin.
 
 ## Building the basics
 
 Hugo already has a great [quick
-start](https://gohugo.io/getting-started/quick-start/) guide. We'll follow it
-word-by-word to begin with.
+start](https://gohugo.io/getting-started/quick-start/) guide that we'll follow
+to begin with.
 
-First install `hugo` with your package manager of choice.
+First install Hugo with your package manager of choice.
 
 ```bash
 # OS X buddies
 $ brew install hugo
 
-# Arch and friends
+# Arch compatriots
 $ sudo pacman -S hugo
+
+# Gentoo and friends
+$ sudo layman -a go-overlay
+$ sudo emerge --ask www-apps/hugo
 ```
 
-Then let's create a skeleton site and add a theme. You can browse from available
+Let's create a skeleton site and add a theme. You can browse the available
 themes [here](https://themes.gohugo.io/). I'll be using the
 [Minimo](https://minimo.netlify.com/) theme.
 
@@ -79,13 +82,13 @@ likely need to add options specific to the theme you chose. Most importantly,
 actually set the theme with the `theme` key! You can find out relevant options
 for the Minimo theme on [this
 commit](https://github.com/kwyse/personal-website/blob/b00c1f66a4a30f260347a8507d479f0c9fde36f9/config.toml)
-I made for this site.  Minimo has it's own more extensive configuration
+I made for this site.  Minimo has its own comprehensive configuration
 [example](https://themes.gohugo.io/theme/minimo/docs/example-config-toml/), but
 the only required key is the `recentPostsLength`. Forgetting to add this key
 will give you an error upon starting the server.
 
-Fire up the Hugo server and you should see something beautiful. If not, ensure
-your configuration is correct.
+Fire up the Hugo server and navigate to the URL displayed in the output. You
+should see something beautiful. If not, ensure your configuration is correct.
 
 ```bash
 $ hugo server
@@ -93,28 +96,35 @@ $ hugo server
 
 ## Adding content and customising
 
-What good are wild baguettes if you can't find them. Being good citizens,
-we'll share our knowledge on their habitats as our first post.
+What good are wild baguettes if you can't find them? Being good citizens,
+we'll share our knowledge on their habitats in our first blog post.
 
 ```bash
 $ hugo new posts/where_to_find_them.md
 ```
 
-The `posts` directory will be nested under `contents`, in the project root.
-Fill this file with whatever nonsense pleases you. The important thing is the
-front matter. That's the bit in the `---` block at the top of the file. By
-default, Hugo will use the `title` for the post's title (say what?) and the name
-of the file for its URL path. It's important that a `title` is set.
+The `posts` directory will be nested under `contents` in the project root.  Fill
+this file with whatever pleases you. The important thing is the front matter.
+That's the bit in the `---` block at the top of the file. By default, Hugo will
+use the `title` for the post's title (say what?) and the name of the file for
+its URL path. It's important that `title` is set.
 
-Nesting this under the `posts` directory will also nest it in the URL. With that
-in mind, it makes sense to have a `posts` page on the site. We need to create a
-new file for that.
+If you're wondering what dictates that front matter, that's the archetype! Hugo
+allows you to [define your own
+archetypes](https://gohugo.io/content-management/archetypes/) to streamline
+adding the content you wish to provide. The default archetype suffices for a
+simple blog.
+
+Nesting the new post under the `posts` directory will also nest it in the URL.
+With that in mind, it makes sense to have a `posts` page on the site. We need to
+create a new file for that.
 
 ```bash
 $ echo '---\ntitle: Posts\n---' > content/posts/_index.md
 ```
 
-Each section can contain a `_index.md` file that represents the section itself,
+Each [section](https://gohugo.io/content-management/sections/), or distinct part
+of our site, can contain a `_index.md` file that represents the section itself
 rather than its children, like posts do. The value we give to `title` here will
 be what's shown on the section page and in the navigation bar. One more change:
 add `sectionPagesMenu = "main"` to `config.toml`. The value you pass here should
@@ -141,21 +151,32 @@ theme uses. For Minimo, this meant [adding a footer
 partial](https://github.com/kwyse/personal-website/blob/41e3702fa15589739e22f64870acb9c19e9a7322/layouts/partials/footer/attribution.html)
 for the new content, as well as [overriding the existing
 footer](https://github.com/kwyse/personal-website/blob/41e3702fa15589739e22f64870acb9c19e9a7322/layouts/partials/footer.html).
-You can read more about Hugo's solution for this
+You can read more about Hugo's solution for customising your theme
 [here](https://gohugo.io/themes/customizing/).
+
+Thus far, the only thing that tripped me up was Minimo requiring that one
+`recentPostsLength` key to have a value. Hugo itself has been completely
+transparent in what it's doing. If you look at the folder structure of our
+project, you'll see every file we've added has a known purpose. If we want to
+make adjustments to common configuration options, `config.toml` is a good place
+to start. If we want to override specific parts of our theme, we just provide
+the override in the `layouts` directory. The organisation of our site content
+will correspond to the folder structure inside the `content` directory. So far,
+it's all very intuitive!
 
 ## Deploying
 
 I promised we'd deploy this so the whole world would know where to hunt for
-baguettes. Hugo has a [good
+wild baguettes. Hugo has a [good
 guide](https://gohugo.io/hosting-and-deployment/deployment-with-nanobox/) on
 [Nanobox](https://nanobox.io/) deployment. I hadn't heard of
 Nanobox before so I did some digging. Essentially they provide a managed Docker
-container for you. They are not a cloud proivider and rely on you having an
-account with a one such as AWS or DigitalOcean. Once you link the accounts,
-Nanobox will take care of deployments to the hosts of the cloud provider. Given
-one of the goals of this project was to streamline the process of actually
-*blogging*, this sounded like the perfect solution.
+container for you. They are not a cloud provider and rely on you having an
+account with a service such as AWS or DigitalOcean. Once you link the accounts,
+Nanobox will take care of deployments to the hosts of the cloud provider.
+Nanobox itself is completely free on the basic plan. Given one of the goals of
+this project was to streamline the process of actually *blogging*, this sounded
+like the perfect solution.
 
 I'll be using DigitalOcean here because I already had an account. Follow the
 [Nanobox
@@ -176,24 +197,25 @@ $ nanobox remote add <nanobox-app-name>
 $ nanobox deploy
 ```
 
-If you now visit your Nanobox portal, you can find a link that takes you to the
-deployed site! Too easy!
+Visit your Nanobox portal and find a link that takes you to the deployed site!
+Too easy!
 
 The next logical step is to set up a domain name for your site. I use
 [NameCheap](https://www.namecheap.com/) and have been very happy with their
-service. They provide a very intuitive dashboard for adding DNS records.
+service. The prices are competitive and they provide a very intuitive dashboard
+for adding DNS records.
 
-# Next steps
+## Next steps
 
 There's **loads** of places we could go from here. If you want your site to get
 even marginal traffic, definitely get a domain name for it. You'll probably then
-want to look into adding SSL to your site. Even if you only serve static
+want to look into adding TLS to your site. Even if you only serve static
 content, it's always a [good
 idea](https://security.stackexchange.com/questions/142496/which-security-measures-make-sense-for-a-static-web-site)
-to enable it. After that, you can check our the depths of [Hugo's
+to enable it. After that, you can check out the depths of [Hugo's
 documentation](https://gohugo.io/documentation/).  We've barely scratched the
 surface of what it's capable of.
 
-This will probably be the the path that I take. So far I'm very impressed with
-how easy this whole experience is. Hopefully you'll see more content on here
-soon!
+This will probably be the path that I take. I'm impressed with how easy the
+whole experience was, primarily due to the solid documentation and usability of
+Hugo. Hopefully you'll see more content on here soon!
