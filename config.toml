@@ -9,7 +9,6 @@ sectionPagesMenu = "main"
 pygmentsCodefences = true
 Paginate = 5
 
-
 [languages.en]
 lang = "en"
 language = "English"
@@ -36,6 +35,7 @@ title404 = "Nothing's here!"
 dateFormat = "02 Jan 2006"
 listDateFormat = "02 Jan 2006"
 recentPostsLength = 5
+showReadingTime = true
 
 [params.social]
 github = "kwyse"
