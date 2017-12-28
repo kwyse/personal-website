@@ -17,8 +17,8 @@ comprehend the benefit ;) [Hugo](https://gohugo.io/) is one such static site
 generator that seems [fairly
 popular](https://github.com/gohugoio/hugo/stargazers). And I can see why: it is
 *so* easy to get something up and running quickly. Here I'll show you how to go
-from running that initial scaffolding command to being able to hit [insert your
-domain name] and seeing it fully deployed.
+from running that initial scaffolding command to hitting [insert your domain
+name] and seeing it fully deployed.
 
 One thing of note is exactly how much Hugo balances convention (or opinion)
 against configuration. Hugo touts configuration as one of its strengths and
@@ -42,15 +42,15 @@ First install Hugo with your package manager of choice.
 $ brew install hugo
 
 # Arch compatriots
-$ sudo pacman -S hugo
+$ sudo pacman --sync hugo
 
 # Gentoo and friends
-$ sudo layman -a go-overlay
+$ sudo layman --add go-overlay
 $ sudo emerge --ask www-apps/hugo
 ```
 
-Let's create a skeleton site and add a theme. You can browse the available
-themes [here](https://themes.gohugo.io/). I'll be using the
+Let's create a skeleton site and add a theme. You can browse available themes
+[here](https://themes.gohugo.io/). I'll be using the
 [Minimo](https://minimo.netlify.com/) theme.
 
 ```bash
@@ -132,7 +132,7 @@ be the name of your menu, which could be different for your chosen theme. For
 Minimo, it is `main`.
 
 Start the server again and see our new navigation menu and post rendered. The
-`-D` flag here indicates we should render draft posts in addition to regular
+`-D` flag here indicates we want to render draft posts in addition to regular
 ones.
 
 ```bash
@@ -185,7 +185,7 @@ generate a DigitalOcean key and give Nanobox read/write access to your account.
 Then launch the new app.
 
 You'll then need to [install](https://docs.nanobox.io/install/) the Nanobox CLI
-locally. Nanobox needs two files for use to tell it how to run our Hugo project:
+locally. Nanobox needs two files for us to tell it how to run our Hugo project:
 [`boxfile.yml`](https://github.com/kwyse/personal-website/blob/65791863bff9abfd4c6e430ca38d601c90d9b61c/boxfile.yml),
 which tells Nanobox what commands to run, and
 [`install.sh`](https://github.com/kwyse/personal-website/blob/65791863bff9abfd4c6e430ca38d601c90d9b61c/install.sh),
