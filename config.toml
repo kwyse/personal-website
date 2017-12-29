@@ -8,6 +8,7 @@ sectionPagesMenu = "main"
 
 pygmentsCodefences = true
 Paginate = 5
+disqusShortname = "kwyse"
 
 [languages.en]
 lang = "en"
