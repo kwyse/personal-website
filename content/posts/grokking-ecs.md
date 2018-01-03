@@ -119,7 +119,7 @@ objects contained within a
 rather than compile time. These rules, at their core, are that we can only have
 one mutable reference to an object at a time, or multiple immutable references
 to it. As such, we can have only have one `FetchMut` reference to a resource at
-a time, or mutiple `Fetch` ones. When we want to read a component, we specify a
+a time, or multiple `Fetch` ones. When we want to read a component, we specify a
 system with a `Fetch` of that same type. We do the same for components we want
 to modify, but use `FetchMut` for those instead.
 
@@ -292,15 +292,16 @@ approaches.
 
 [Gist of the source code](https://gist.github.com/kwyse/1d6be3de1c95d05502e10b6dba3cc6be)
 
-The above includes the simplest kind of run loop with a fixed timestep of 1/60th of a
-second. The results are hopefully a white square moving across a black abyss.
+The above includes the simplest kind of run loop with a fixed time step of
+1/60th of a second. The results are hopefully a white square moving across a
+black abyss.
 
 {{% center %}}
 ![Grokking ECS results](/images/grokking_ecs_result.gif)
 {{% /center %}}
 
 There are many ways to improve this. You could use a more sophisticated run loop
-that can handle variable time steps. Or you could use the parellel iterators
+that can handle variable time steps. Or you could use the parallel iterators
 offered by Specs to improve performance. It's probably a good idea to better
-define the boundaries of our ECS explcitely as well. Modularise all of that and
+define the boundaries of our ECS explicitly as well. Modularise all of that and
 you have the beginnings of a game!
