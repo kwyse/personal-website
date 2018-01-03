@@ -107,9 +107,16 @@ integers (wrapped in `std::any::TypeId`, itself wrapped in `shred`'s
 
 `shred` revolves around its `Fetch` and `FetchMut` structs. These are
 effectively wrappers for `Ref` and `RefMut` from the standard library,
-respectively. When we want to read a component, we specify a system with a
-`Fetch` of that same type. We do the same for components we want to modify, but
-use `FetchMut` for those instead.
+respectively. `Ref` and `RefMut` are in turn the wrappers for objects contained
+wihtin a `RefCell` when it is *borrowed*.
+
+`RefCell`s are used when we want to enforce Rust's borrowing rules at runtime
+rather than compile time, the rules being, at their core, we can only have one
+mutable reference to an object at a time, or multiple immutable references to
+it. As such, we can have only have one `FetchMut` reference to a resource at a
+time, or mutiple `Fetch` ones. When we want to read a component, we specify a
+system with a `Fetch` of that same type. We do the same for components we want
+to modify, but use `FetchMut` for those instead.
 
 A really ergonomic feature of this API is that you declare the components a
 system corresponds to with a tuple. This allows you to include as many read or
@@ -130,4 +137,164 @@ and `HashMapStorage`, with the same nuances described in the previous section.
 
 # Demonstration
 
-Benchmarks, include profiles of cache misses
+Theory only goes so far. We want a result. Let's follow along with the examples
+above.  We'll create an ECS that modifies an entity's position according to it's
+velocity. Rather than just show numbers being affected, let's actually show the
+entity moving across the screen. We'll use SDL2 for events, rendering and window
+management.
+
+The following application was build with these crates:
+
+* sdl2 (0.31.0)
+* specs (0.10.0)
+* specs-derive (0.1.0)
+
+First we declare out components. This includes a sprite component that wraps
+SDL2's `Rect` struct. SDL2 makes it easy to render `Rect`s to screen.
+
+```rust
+#[derive(Component)]
+struct Position {
+    x: f64,
+    y: f64,
+}
+
+#[derive(Component)]
+struct Velocity {
+    x: f64,
+    y: f64,
+}
+
+
+#[derive(Component)]
+struct Sprite(Rect);
+```
+
+Then we declare out systems. The first one is to update the position of an
+entity given its velocity;
+
+```rust
+struct MovementSystem;
+
+impl<'a> System<'a> for MovementSystem {
+    type SystemData = (
+        Fetch<'a, Duration>,
+        ReadStorage<'a, Velocity>,
+        WriteStorage<'a, Position>
+    );
+
+    fn run(&mut self, data: Self::SystemData) {
+        let (dt, velocities, mut positions) = data;
+
+        for (vel, pos) in (&velocities, &mut positions).join() {
+            pos.x += vel.x * dt.subsec_nanos() as f64 / 1_000_000_000.0;
+            pos.y += vel.y * dt.subsec_nanos() as f64 / 1_000_000_000.0;
+        }
+    }
+}
+```
+
+This matches the logic described in the last section. The only difference is
+that we also include a *delta time* input value. This represents the amount of
+time has passed from one frame to the next. We need this because we don't have
+control on exactly when our function will be called again. We can aim for a
+target, say, 60 times per second, but we'll never hit that exactly. It may only
+be a few milliseconds off here and there, but that adds up the longer the game
+is running. Pretty quickly we would have vastly inaccurate positions if you
+don't scale them like this! [Integration
+Basics](https://gafferongames.com/post/integration_basics/) by Glenn Fiedler
+does well on explaining why this happens.
+
+The other system we need converts logical world coordinates to screen
+coordinates.
+
+```rust
+struct RenderSystem;
+
+impl<'a> System<'a> for RenderSystem {
+    type SystemData = (ReadStorage<'a, Position>, WriteStorage<'a, Sprite>);
+
+    fn run(&mut self, data: Self::SystemData) {
+        let (positions, mut sprites) = data;
+
+        for (pos, sprite) in (&positions, &mut sprites).join() {
+            sprite.0.set_x((pos.x * PIXELS_PER_UNIT) as i32);
+            sprite.0.set_y((pos.y * PIXELS_PER_UNIT) as i32);
+        }
+    }
+}
+```
+
+Using logical world units for an entity's position frees us from the details of
+our rendering process. When it comes to rendering, we simply scale the position
+by a constant factor to get screen coordinates, which is used by our sprite for
+rendering.
+
+Almost there. We now need to hook this all up to the `World`, which manages the
+entities.
+
+```rust
+let mut world = World::new();
+world.add_resource(Duration::new(0, 0));
+world.register::<Position>();
+world.register::<Velocity>();
+world.register::<Sprite>();
+
+let initial_pos = Position { x: 2.0, y: 2.0 };
+let initial_vel = Velocity { x: 1.0, y: 0.0 };
+let sprite = Sprite(Rect::new(
+        (initial_pos.x * PIXELS_PER_UNIT) as i32,
+        (initial_pos.y * PIXELS_PER_UNIT) as i32,
+        32,
+        32
+));
+world.create_entity()
+    .with(initial_pos)
+    .with(initial_vel)
+    .with(sprite)
+    .build();
+
+let mut dispatcher = DispatcherBuilder::new()
+    .add(MovementSystem, "movement_system", &[])
+    .add(RenderSystem, "render_system", &["movement_system"])
+    .build();
+```
+
+It's then just one line to update all of our entities.
+
+```rust
+dispatcher.dispatch(&mut world.res);
+```
+
+Of course, we need some additional infrastructure around this. The above line
+should belong in the application run loop. That loop should also contain input
+handling and rendering to a hardware context.
+
+You may be able to implement those as systems as well, but at some point you
+will hit a boundary where the objects are too large. This will often be with
+input and output. Rendering to screen is a complex process, and should probably
+be done outside of the ECS. This demonstrates that ECSs are not appropriate for
+the entire application, particularly on the boundaries, but still very useful
+for internal logic that we have full control over.
+
+If you would like to learn the details of run loops, check out [Fix Your
+Timestep!](https://gafferongames.com/post/fix_your_timestep/) It's probably the
+most quoted article on the subject and does a fine job explaining the various
+approaches.
+
+## Results
+
+[Gist of the source code](https://gist.github.com/kwyse/1d6be3de1c95d05502e10b6dba3cc6be)
+
+The above includes the simplest kind of run loop with a fixed timestep of 1/60th of a
+second. The results are hopefully a white square moving across a black abyss.
+
+![Grokking ECS results](/images/grokking_ecs_result.gif)
+
+There are many ways to improve this:
+
+* Using a more sophisticated run loop that can handle variable time steps
+* Using the parellel iterators offered by Specs
+* Defining the boundaries of our ECS explcitely
+
+Modularise all of that and you have the beginnings of a game!
