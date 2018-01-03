@@ -1,7 +1,6 @@
 ---
 title: "Grokking Entity-Component-Systems"
-date: 2017-12-28T23:00:59Z
-draft: true
+date: 2018-01-03T21:57:06Z
 ---
 
 I've spent many commutes in the last few months learning the intricacies of
