@@ -13,17 +13,18 @@ findings in order to solidify that knowledge.
 ECSs are a decoupling pattern. They're most frequently seen in game development
 where we often have many similar yet distinct types of *game objects*. Games are
 effectively giant state machines and it can be hard to create an object-oriented
-hierarchy that represents this. ECSs instead implores the use of data-driven
+hierarchy that represents this. ECSs instead implore the use of data-driven
 programming, with components representing the data to be acted on, systems
 acting on those components to mutate them, and entities linking components for
-each *game object*.
+each game object.
 
 ## High level design
 
 There isn't clear consensus on *how* one should go about building an ECS.
-They're a high-level concept that implementation details can be optimised to a
-particular use case. But there are clear themes, which I've included here, as
-well as design decisions that I found particularly interesting.
+They're enough of a high-level concept that implementation details can be
+optimised to a particular use case. But there are clear themes, which I've
+included here, as well as design decisions that I found particularly
+interesting.
 
 The first revelation is that entities needn't be fat. Entities represent a game
 object, like the player. You may think a *player* object must be complex,
@@ -35,9 +36,10 @@ components should only contain primitive types. It is vital that we are able to
 retrieve the component instance for a particular component and for a particular
 entity efficiently (*O(1)*), because these operations will make up most of the
 game loop, as you'll see shortly. We accomplish the first part by storing each
-type of component in a different collection. All positions for all entities will
-be stored in one collection and all sprites will be stored in another. How the
-second requirement is fulfilled depends on the underlying storage medium.
+type of component in a different collection. For example, all positions for all
+entities will be stored in one collection and all sprites will be stored in
+another. How the second requirement is fulfilled depends on the underlying
+storage medium.
 
 For a map data structure, it's simple because lookup for a given ID (the entity
 ID) will always be amortized to constant time complexity. But maps have
@@ -48,11 +50,10 @@ For arrays, we could insert the entity at an index that matches its ID. The
 problem here is that the array must be as large as the largest entity ID. This
 brings a distinction between *hot* components, which we'll likely have many of,
 like entity positions, and *cold* components which we may only have a few of,
-the hardware input context. In general, arrays are a better storage medium for
-hot components and maps are better for cold components, though other data
+like the keyboard input context. In general, arrays are a better storage medium
+for hot components and maps are better for cold components, though other data
 structures exist and may suit your particular use case more. This binary
-division may also not create enough granularity for your
-use case.
+division may also not create enough granularity for your use case.
 
 Efficient lookup is vital because we will need to iterate through these
 collections in our systems. We could have a *MovementSystem* that adjusts an
@@ -62,9 +63,8 @@ expect there to be many entities that have a velocity component) and join on the
 indexes that also exist in the positions collection. Ideally the API should
 seamlessly expose this join, because it's generic across all systems and all
 components. All the system cares about is being provided components that it
-needs to act upon that belong to the same entity. This keeps the system very
-small. It should only include the logic to logic to mutate a position given a
-velocity.
+needs to act upon that belong to the same entity. This keeps the system small.
+It should only include the logic to mutate a position given a velocity.
 
 Structuring the code this way gives a clear decoupling benefit. What may not be
 as clear is the performance benefit. Remember that components should ideally
@@ -72,8 +72,9 @@ only contain primitive types, and appropriately abstracted components should be
 as small as possible. This means their collections should also be small in terms
 of memory. We can then take advantage of the CPU caches. If our position
 component is simply a coordinate with two 64-bit floating point components, an
-*x* and a *y* component, we could have as many as a few thousand position
-components and still fit comfortably in the L1 cache.
+*x* component and a *y* component, we could have as many as a few thousand
+position components and still fit comfortably in the L1 cache, not to mention
+the L2 and L3 caches for more realistic collection sizes.
 
 ## A Rust implementation with Specs
 
@@ -85,13 +86,13 @@ way backwards.
 
 `mopa`, or *My Own Personal Any*, allows you to covert an object that implements
 a certain trait into the concrete object, known as downcasting. This emulates
-downcasting in the [`Any`](https://github.com/chris-morgan/mopa) trait in the
-Rust standard library.
+downcasting on the [`Any`](https://doc.rust-lang.org/std/any/trait.Any.html)
+trait in the Rust standard library.
 
 `shred` uses this for storing arbitrarily-typed structs. What we were calling
-components above, `shred` calls a *resource*. Its `Resource` trait is
-implemented for all types that adhere to Rust's borrowing model (all those that
-implement `Any + Send + Sync`), but this `Any` is `mopa`'s `Any`, not the
+a component above, `shred` calls a *resource*. Its `Resource` trait is
+implemented for all types that adhere to Rust's borrowing model, all those that
+implement `Any + Send + Sync`, but this `Any` is `mopa`'s `Any`, not the
 standard library `Any`, which means we can only downcast our own `Resource`s,
 but that's all we need. You can see this in the
 [`res`](https://github.com/slide-rs/shred/blob/master/src/res/mod.rs) module of
@@ -101,20 +102,25 @@ A neat optimisation is that `Resource`s are stored in a `FnvHashMap`. This uses
 the *FNV* hashing algorithm instead of the default *SipHash* algorithm. The
 former is faster when using smaller keys, but is less secure. This is
 perfectly acceptable in this instance because our keys are just unsigned
-integers (wrapped in `std::any::TypeId`, itself wrapped in `shred`'s
-`ResourceId`). Benchmarks can be found
+integers (wrapped in
+[`std::any::TypeId`](https://doc.rust-lang.org/std/any/struct.TypeId.html),
+itself wrapped in `shred`'s `ResourceId`). Benchmarks can be found
 [here](http://cglab.ca/~abeinges/blah/hash-rs/).
 
 `shred` revolves around its `Fetch` and `FetchMut` structs. These are
-effectively wrappers for `Ref` and `RefMut` from the standard library,
-respectively. `Ref` and `RefMut` are in turn the wrappers for objects contained
-wihtin a `RefCell` when it is *borrowed*.
+effectively wrappers for
+[`Ref`](https://doc.rust-lang.org/std/cell/struct.Ref.html) and
+[`RefMut`](https://doc.rust-lang.org/std/cell/struct.RefMut.html) from the
+standard library, respectively. `Ref` and `RefMut` are in turn the wrappers for
+objects contained within a
+[`RefCell`](https://doc.rust-lang.org/std/cell/struct.RefCell.html) when it is
+*borrowed*.
 
 `RefCell`s are used when we want to enforce Rust's borrowing rules at runtime
-rather than compile time, the rules being, at their core, we can only have one
-mutable reference to an object at a time, or multiple immutable references to
-it. As such, we can have only have one `FetchMut` reference to a resource at a
-time, or mutiple `Fetch` ones. When we want to read a component, we specify a
+rather than compile time. These rules, at their core, are that we can only have
+one mutable reference to an object at a time, or multiple immutable references
+to it. As such, we can have only have one `FetchMut` reference to a resource at
+a time, or mutiple `Fetch` ones. When we want to read a component, we specify a
 system with a `Fetch` of that same type. We do the same for components we want
 to modify, but use `FetchMut` for those instead.
 
@@ -125,15 +131,16 @@ limit`](https://github.com/slide-rs/shred/blob/master/src/system.rs#L215) of 26,
 though systems should never reach close to that number in practice.
 
 That's the crux of how `shred` is working under the hood. Check the project's
-[README](https://github.com/slide-rs/shred/blob/master/README.md) for an example
+[README](https://github.com/slide-rs/shred/blob/master/README.md) for example
 usage.
 
 Specs fine tunes this model specifically for ECSs. Its API uses terminology
-that's more familiar. All structs that our systems want to work on my implement
-the `Component` trait. The tuple that defines the components our systems work on
-accepts `ReadStorage` and `WriteStorage` types instead of `Fetch` and
-`FetchMut`. It also introduces different storage strategies like `VecStorage`
-and `HashMapStorage`, with the same nuances described in the previous section.
+that's more familiar. All structs that our systems want to work on must
+implement the `Component` trait. The tuple that defines the components our
+systems work on accepts `ReadStorage` and `WriteStorage` types instead of
+`Fetch` and `FetchMut`. It also introduces different storage strategies like
+`VecStorage` and `HashMapStorage`, with the same nuances described in the
+previous section.
 
 # Demonstration
 
@@ -143,7 +150,7 @@ velocity. Rather than just show numbers being affected, let's actually show the
 entity moving across the screen. We'll use SDL2 for events, rendering and window
 management.
 
-The following application was build with these crates:
+The following application was built with these crates:
 
 * sdl2 (0.31.0)
 * specs (0.10.0)
@@ -171,7 +178,7 @@ struct Sprite(Rect);
 ```
 
 Then we declare out systems. The first one is to update the position of an
-entity given its velocity;
+entity given its velocity.
 
 ```rust
 struct MovementSystem;
@@ -194,16 +201,16 @@ impl<'a> System<'a> for MovementSystem {
 }
 ```
 
-This matches the logic described in the last section. The only difference is
-that we also include a *delta time* input value. This represents the amount of
-time has passed from one frame to the next. We need this because we don't have
-control on exactly when our function will be called again. We can aim for a
-target, say, 60 times per second, but we'll never hit that exactly. It may only
-be a few milliseconds off here and there, but that adds up the longer the game
-is running. Pretty quickly we would have vastly inaccurate positions if you
-don't scale them like this! [Integration
+This matches the logic described prior. The only difference is that we also
+include a *delta time* input value. This represents the amount of time that has
+passed from one frame to the next. We need this because we don't have control on
+exactly when our function will be called again. We can aim for a target, say, 60
+times per second, but we'll never hit that exactly. It may only be a few
+milliseconds off here and there, but that adds up the longer the game is
+running. Pretty quickly we would have vastly inaccurate positions if you don't
+scale them like this! [Integration
 Basics](https://gafferongames.com/post/integration_basics/) by Glenn Fiedler
-does well on explaining why this happens.
+explains why this happens.
 
 The other system we need converts logical world coordinates to screen
 coordinates.
@@ -289,12 +296,12 @@ approaches.
 The above includes the simplest kind of run loop with a fixed timestep of 1/60th of a
 second. The results are hopefully a white square moving across a black abyss.
 
+{{% center %}}
 ![Grokking ECS results](/images/grokking_ecs_result.gif)
+{{% /center %}}
 
-There are many ways to improve this:
-
-* Using a more sophisticated run loop that can handle variable time steps
-* Using the parellel iterators offered by Specs
-* Defining the boundaries of our ECS explcitely
-
-Modularise all of that and you have the beginnings of a game!
+There are many ways to improve this. You could use a more sophisticated run loop
+that can handle variable time steps. Or you could use the parellel iterators
+offered by Specs to improve performance. It's probably a good idea to better
+define the boundaries of our ECS explcitely as well. Modularise all of that and
+you have the beginnings of a game!
