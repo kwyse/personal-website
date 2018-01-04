@@ -39,7 +39,9 @@ recentPostsLength = 5
 showReadingTime = true
 
 [params.social]
+email = "contact@kwyse.com"
 github = "kwyse"
 linkedin = "krishanwyse"
+twitter = "KrishanWyse"
 [params.social.config]
-platforms = ["linkedin", "github"]
+platforms = ["linkedin", "twitter", "github", "email"]
