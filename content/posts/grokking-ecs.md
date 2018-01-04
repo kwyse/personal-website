@@ -47,7 +47,7 @@ lookup for hash maps.
 
 For arrays, we could insert the entity at an index that matches its ID. The
 problem here is that the array must be as large as the largest entity ID. This
-brings a distinction between *hot* components, which we'll likely have many of,
+brings a distinction between *hot* components which we'll likely have many of,
 like entity positions, and *cold* components which we may only have a few of,
 like the keyboard input context. In general, arrays are a better storage medium
 for hot components and maps are better for cold components, though other data
