@@ -5,15 +5,15 @@ draft: true
 ---
 
 This is actually a rediscovery. A colleague was telling me about
-[Feedly](https://feedly.com/) back in 2013 when I was scrammbling around in my
+[Feedly](https://feedly.com/) back in 2013 when I was scrambling around in my
 first job. I had narrower interests that were sufficiently sated with
 GameTrailers.com and other video-heavy publications. Times have changed! My
 interests are broader.  Commutes (often without Internet access) are the best
-times to peruse news. I want to give priority to news targetted at my interests
+times to peruse news. I want to give priority to news targeted at my interests
 rather than news discovery. And given the additional web presence you have when
 you start a blog, I'm keener to see what others are up to as well =]
 
-RSS is perfect for all of this. It's a web syntication format that the vast
+RSS is perfect for all of this. It's a web syndication format that the vast
 majority of content publishers and blogs support. They provide a URL that gives
 access to a feed of their content in a client of your choice.
 
