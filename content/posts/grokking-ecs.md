@@ -4,7 +4,7 @@ date: 2018-01-03T21:57:06Z
 ---
 
 I've spent many commutes in the last few months learning the intricacies of
-[Specs](https://github.com/slide-rs/specs), a entity-component-system (ECS)
+[Specs](https://github.com/slide-rs/specs), an entity-component-system (ECS)
 written in Rust and, to be more broad, ECSs in general. ECSs have proved to be a
 much deeper topic than I had initially anticipated. Now I'd like to explain my
 findings in order to solidify that knowledge.
