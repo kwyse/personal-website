@@ -39,13 +39,13 @@ rather than learning from it.
 Now I have a just a few feeds set up in Feedly. I can fine tune it to sources
 that I find interesting. That's an ongoing process and one that is far from
 being optimal, but it means that when I check Feedly there's a much higher
-chance I'll learn rather than sift. I've purposely chosen feeds that post a few
-times a day as their frequency limit, so that I can look forward to a steady
-stream of new content every morning but not get overwhelmed. This may become too
-frequent as I discover more feeds, and I'll readjust then if necessary. Having
-that level of control is a real asset. Once I've read through everything, I feel
-confident that I've "caught up". I can then focus on other things, like creating
-content myself!
+chance I'll learn rather than sift. I've chosen feeds that post a maximum of a
+few times per day so that I can look forward to a steady stream of new content
+every morning without getting overwhelmed. This may become too frequent as I
+discover more feeds, and I'll readjust then if necessary.  Having that level of
+control is a real asset. Once I've read through everything, I feel confident
+that I've "caught up". I can then focus on other things, like creating content
+myself!
 
 It's not a perfect setup. There are topics out there that could be my next
 passion but are completely off my radar, hidden on the other side of the
@@ -58,5 +58,5 @@ I'm still on the hunt for feeds. Some that have proved worthwhile subscriptions
 in the last week are the [Trello blog](https://blog.trello.com/), various
 [Gamasutra blogs](https://www.gamasutra.com/blogs/),
 [Opensource.com](https://opensource.com/) and, of course, [This Week in
-Rust](https://this-week-in-rust.org/)! I look forward to discovering what else
-is out there!
+Rust](https://this-week-in-rust.org/)! Here's to discovering what else is out
+there.
