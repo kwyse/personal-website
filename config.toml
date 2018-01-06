@@ -10,6 +10,8 @@ pygmentsCodefences = true
 Paginate = 5
 disqusShortname = "kwyse"
 
+googleAnalytics = "UA-112072110-1"
+
 [languages.en]
 lang = "en"
 language = "English"
