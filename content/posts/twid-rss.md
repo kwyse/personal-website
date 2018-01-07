@@ -1,7 +1,6 @@
 ---
 title: "This Week I Discovered: RSS"
-date: 2018-01-06T15:47:26Z
-draft: true
+date: 2018-01-07T11:34:15Z
 categories: ["This Week I Discovered"]
 ---
 
@@ -53,7 +52,7 @@ passion but are completely off my radar, hidden on the other side of the
 Internet. Locating such topics is hard, but prove incredibly fruitful when you
 do! For that reason, I still check Hacker News occasionally, but limit myself to
 the top stories.  There's feeds specifically tailored for top Hacker News
-stories which I plan to look into.
+stories that could prove to be a great compromise.
 
 I'm still on the hunt for feeds. Some that have proved worthwhile subscriptions
 in the last week are the [Trello blog](https://blog.trello.com/), various
