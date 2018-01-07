@@ -2,6 +2,7 @@
 .entry-header:after,
 .list-header:after,
 .entry-nav-links:before,
+.entry-nav:before,
 .footer:before,
 .prev-entry~.next-entry:before,
 .site-header:after {
