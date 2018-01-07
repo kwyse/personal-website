@@ -2,6 +2,7 @@
 title: "This Week I Discovered: RSS"
 date: 2018-01-06T15:47:26Z
 draft: true
+categories: ["This Week I Discovered"]
 ---
 
 This is actually a rediscovery. A colleague was telling me about

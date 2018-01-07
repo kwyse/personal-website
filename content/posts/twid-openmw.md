@@ -1,6 +1,7 @@
 ---
 title: "This Week I Discovered: OpenMW"
 date: 2017-12-31T12:11:10Z
+categories: ["This Week I Discovered"]
 ---
 
 Two weeks back I installed Gentoo with the intention to use it as my primary
