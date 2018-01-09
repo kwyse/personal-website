@@ -1,4 +1,4 @@
-baseURL = "https://www.kwyse.com/"
+baseURL = "http://www.kwyse.com/"
 theme = "minimo"
 title = "Krishan Wyse"
 languageCode = "en-us"

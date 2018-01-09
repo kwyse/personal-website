@@ -1,6 +1,7 @@
 run.config:
   engine: static
   engine.config:
+    force_https: true
     rel_dir: public
 
   fs_watch: true
