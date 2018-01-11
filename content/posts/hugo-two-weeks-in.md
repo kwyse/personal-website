@@ -1,5 +1,5 @@
 ---
-title: "Hugo, One Week In"
+title: "Hugo, Two Weeks In"
 date: 2018-01-11T20:23:33Z
 ---
 
