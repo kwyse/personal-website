@@ -1,10 +1,9 @@
 ---
 title: "Hugo, One Week In"
-date: 2017-12-30T22:51:02Z
-draft: true
+date: 2018-01-11T20:23:33Z
 ---
 
-My [last post](/posts/hail-hugo) about Hugo focussed on getting it set up. It
+My [last post](/posts/hail-hugo) about Hugo focused on getting it set up. It
 finished with a few ideas on improvements. Maybe you've noticed a few
 implemented since then =]
 
@@ -83,9 +82,9 @@ contents. It can be configured to merge the PRs immediately or delegate to the
 repository owner, which provides comment moderation. It's a really nice idea.
 
 The problem is that it the comments form does not look that great in Minimo. I
-spent some time tweaking it but form design is not my forte. I'd like to
-move to Staticman in the future if a designer will alleviate that burden from me
-;) Suffice to say, the comments section took some time to investigate and play
+spent some time tweaking it but form design is not my forte. I'd like to move to
+Staticman in the future if a designer will alleviate me of that burden ;)
+Suffice to say, the comments section took some time to investigate and play
 around with.
 
 The biggest pain point was TLS, and it could have been so easy! The lesson here
@@ -94,21 +93,21 @@ trying to find out why my site was so slow to initially load. The first
 incarnation of this site didn't have this problem, and was hosted on the same
 DigitalOcean setup, so I ruled that out. It seemed like a DNS lookup issue,
 because performance was good once the site was loaded, but I couldn't tell if
-this was on Namecheap's side or something I had misconfigured with Nanobox,
+this was on Namecheap's side or something I had misconfigured with Nanobox
 given it was my first time using it.
 
 The investigation led me discovering that [cURL can provide
 timings](https://blog.josephscott.org/2011/10/14/timing-details-with-curl/)!
 There's also an [awesome little
 script](https://github.com/mat/dotfiles/blob/master/bin/curlt) to save you from
-having to type out the long command. It confirmed immediately that the issue was
+having to type out the long version. It confirmed immediately that the issue was
 indeed DNS lookup. I took a closer look at my Namecheap DNS configuration and
 found that I was redirecting traffic to the TLS version of the site. Nginx,
 running inside my Nanobox, wasn't playing nice with this setup.  Then I took
 another look at the
 [README](https://github.com/nanobox-io/nanobox-engine-static/blob/master/README.md)
 for the Nanobox static site engine and saw that forcing HTTPS was supported at
-that level!
+this level!
 
 ```yaml
 force_https: true
