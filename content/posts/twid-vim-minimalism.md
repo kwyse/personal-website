@@ -1,8 +1,7 @@
 ---
 title: "This Week I Discovered: Vim Minimalism"
-date: 2018-01-14T12:41:39Z
+date: 2018-01-14T20:52:20Z
 categories: ["This Week I Discovered"]
-draft: true
 ---
 
 Last month marked four years since I started my
@@ -63,10 +62,11 @@ editing text. As such, simpler alternatives have been created like
 
 ## Deciding what Vim should be
 
-Proselytising online about idiomatic Vim configurations is all well and good to
-see different opinions and help you decide which camp you sit in. Vim, along
-with its plugin ecosystem, is completely open and that means you can configure
-out however you please.
+If there's [three camps of coders](https://josephg.com/blog/3-tribes/), you can
+bet there's be multiple views on idiomatic Vim configurations. Arguing about it
+online is all well and good to see different opinions and help you decide which
+camp you sit in. Vim, along with its plugin ecosystem, is completely open and
+that means you can configure out however you please.
 
 For me, I want Vim to be *fast*. Thinking back on my usage in the last four
 years, I'm comfortable falling back into the terminal. I used *very* few of the
@@ -108,5 +108,13 @@ Plugins are designed to be applicable to as many people as possible. They will
 support use cases you may never need. Hence I am also trying to instead take
 ideas from the plugins I like and configure them inside Vim myself. It's a great
 way to learn Vimscript, offers me tailored control on the behaviour, and makes
-sure every time I benchmark Vim's startup time I know why it's behaving the way
-it is.
+sure that every time I benchmark Vim's startup time I know why it's behaving the
+way it is.
+
+[Modern Vim](https://pragprog.com/book/modvim/modern-vim) is due for release
+next month. I *loved* Drew Neil's previous book, [Practical
+Vim](https://pragprog.com/book/dnvim2/practical-vim-second-edition). Having read
+it when I'd been using Vim for only a few months, much of it went over my head,
+but it convinced me that the methodology works. I will tinker with my
+configuration for now in the hopes that Modern Vim will soon enlighten me much
+like Practical Vim did before it.
