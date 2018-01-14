@@ -48,7 +48,7 @@ intake, and weekly if you want to plot trends.
 ## Burning fat by undereating
 
 This is controversial. Every single friend, family member and
-physician/nutritionist/personal trainer I have every spoken to has recommended
+physician/nutritionist/personal trainer I have ever spoken to has recommended
 against this. They say that going under your recommended calorie intake by any
 significant amount will force your body into "starvation mode" and that once you
 stop you will put all the weight back on, because your metabolism will be so
