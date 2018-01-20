@@ -2,7 +2,8 @@
 title: "This Week I Discovered: Tmux"
 date: 2018-01-20T20:12:57Z
 draft: true
-categories: ["This Week I Discovered"]
+categories: ["Command Line Interface"]
+series: ["This Week I Discovered"]
 ---
 
 Tmux seems like a natural progression from last week's [Vim

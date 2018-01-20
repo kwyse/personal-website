@@ -12,3 +12,7 @@
 .site-header:after {
   border-bottom-color: #1793d0;
 }
+
+.home-taxonomy-list {
+  display: block
+}

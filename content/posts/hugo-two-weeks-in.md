@@ -1,6 +1,8 @@
 ---
 title: "Hugo, Two Weeks In"
 date: 2018-01-11T20:23:33Z
+categories: ["Tools"]
+tags: ["hugo"]
 ---
 
 My [last post](/posts/hail-hugo) about Hugo focused on getting it set up. It

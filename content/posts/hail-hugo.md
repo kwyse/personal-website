@@ -1,6 +1,8 @@
 ---
 title: "Hail, Hugo!"
 date: 2017-12-28T17:53:55Z
+categories: ["Tools"]
+tags: ["hugo"]
 ---
 
 One of my goals this holiday season was to relaunch my blog. My previous attempt

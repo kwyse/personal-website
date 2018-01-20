@@ -1,16 +1,16 @@
 <section class='home-section'>
   <header>
     <h2 class='home-section-title title'>
-      {{- ( ( i18n "category" 2 ) | default .Title ) | title -}}
+      {{- ( ( i18n "series" 2 ) | default "Series" ) | title -}}
     </h2>
   </header>
 
   <div class='list-container'>
     <ul class='term-cloud home-taxonomy-list {{- if .Site.Params.settings.noTermCloudShuffle }} no-shuffle{{- end -}}'>
-    {{ range $term, $_ := .Site.Taxonomies.categories }}
+    {{ range $term, $_ := .Site.Taxonomies.series }}
       <li>
-        <a href='{{ $.LanguagePrefix }}/categories/{{ $term | urlize }}'>
-        {{- with $.Site.GetPage "taxonomyTerm" "categories" $term -}}
+        <a href='{{ $.LanguagePrefix }}/series/{{ $term | urlize }}'>
+        {{- with $.Site.GetPage "taxonomyTerm" "series" $term -}}
           {{- .Title -}}
         {{- else -}}
           {{- $term -}}

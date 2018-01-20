@@ -1,7 +1,8 @@
 ---
 title: "This Week I Discovered: RSS"
 date: 2018-01-07T11:34:15Z
-categories: ["This Week I Discovered"]
+categories: ["Tools"]
+series: ["This Week I Discovered"]
 ---
 
 This is actually a rediscovery. A colleague was telling me about

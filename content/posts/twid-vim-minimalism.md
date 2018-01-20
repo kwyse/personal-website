@@ -1,7 +1,8 @@
 ---
 title: "This Week I Discovered: Vim Minimalism"
 date: 2018-01-14T20:52:20Z
-categories: ["This Week I Discovered"]
+categories: ["Command Line Interface"]
+series: ["This Week I Discovered"]
 ---
 
 Last month marked four years since I started my

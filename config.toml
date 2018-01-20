@@ -35,11 +35,12 @@ description = "life.iter().map(Musings::fetch).collect()"
 title404 = "Nothing's here!"
 
 [params.settings]
-homepageSections = ["recent_posts", "categories"]
+homepageSections = ["recent_posts", "categories", "series"]
 dateFormat = "02 Jan 2006"
 listDateFormat = "02 Jan 2006"
 recentPostsLength = 5
 showReadingTime = true
+noTermCloudShuffle = true
 
 [params.social]
 email = "contact@kwyse.com"
@@ -48,3 +49,8 @@ linkedin = "krishanwyse"
 twitter = "KrishanWyse"
 [params.social.config]
 platforms = ["linkedin", "twitter", "github", "email"]
+
+[taxonomies]
+category = "categories"
+tags = "tags"
+series = "series"
