@@ -2,7 +2,8 @@
 title: "This Week I Discovered: Tmux"
 date: 2018-01-20T20:12:57Z
 draft: true
-categories: ["Command Line Interface"]
+categories: ["Tools"]
+tags: ["command-line"]
 series: ["This Week I Discovered"]
 ---
 
