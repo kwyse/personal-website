@@ -5,6 +5,10 @@
 .entry-nav:before,
 .footer:before,
 .prev-entry~.next-entry:before,
+.home-section:before,
+.entry+.home-sections-container,
+.home-sections:before,
+.home-section+.home-section:before,
 .site-header:after {
   border-bottom-color: #1793d0;
 }
