@@ -101,6 +101,14 @@ understanding of tmux. Maybe down the road you notice it would be great to
 always have on-screen vision on the output of a particular shell process. Tmux
 supports this out of the box and you can easily add that to the status bar.
 
+The week wasn't entirely smooth sailing. I've had trouble getting user-defined
+options working. These are options that are prefixed with `@`. I want to keep my
+colour scheme consistent in the file so declaring a custom option would be
+ideal. It could also be interesting to only show the status bar when the prefix
+key is pressed, and make it vanish again when the subsequent key is pressed.
+This seems pretty difficult with tmux alone, but I'm sure it's possible through
+shell scripting. After all, the status bar can be toggled in this way.
+
 It can pay off in the long run to keep the configs for new tools small to begin
 with. Only use what you know will give you benefit and add more as time goes and
 you discover new things. It's much easier to maintain when you've added every
