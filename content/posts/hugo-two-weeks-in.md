@@ -50,19 +50,19 @@ Kudos to Brian Wisti for his
 [post](https://randomgeekery.org/2017/09/15/full-content-hugo-feeds/) on this
 technique.
 
-The final quick addition is categories. I've started a series called [This Week
-I Discovered](/categories/this-week-i-discovered) where, each week, I plan to
+The final quick addition is taxonomies. I've started a series called [This Week
+I Discovered](/series/this-week-i-discovered) where, each week, I plan to
 discuss something cool I found in the last seven days. These posts should
 naturally be grouped together. Hugo calls such a grouping a
 [*taxonomy*](https://gohugo.io/content-management/taxonomies/). Two taxonomies
-are provided for us: *categories* and *tags*. Categories have a one-to-many
-relationships with posts, whilst tags have a many-to-many relationship.
+are provided for us: *categories* and *tags*, but we can easily add our own as
+well, such as a *series* taxonomy.
 
-Enabling categories requires the name of one category to be included in at least
-one post's front matter:
+Enabling a taxonomy requires the name of it to be included in at least one
+post's front matter:
 
 ```yaml
-categories: ["This Week I Discovered"]
+series: ["This Week I Discovered"]
 ```
 
 ## Somewhat effortful improvements
