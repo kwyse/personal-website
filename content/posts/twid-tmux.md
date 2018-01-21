@@ -1,7 +1,6 @@
 ---
 title: "This Week I Discovered: Tmux"
-date: 2018-01-20T20:12:57Z
-draft: true
+date: 2018-01-21T11:52:04Z
 categories: ["Tools"]
 tags: ["command-line"]
 series: ["This Week I Discovered"]
@@ -15,20 +14,19 @@ applications would call split windows. And if you use a tiling window manager
 like [i3](https://i3wm.org/), you have panes at the application level as well.
 
 [Tmux](https://github.com/tmux/tmux/wiki) fills in the middle ground, operating
-at the shell session level. Launch `tmux` in a shell session. This will spin up
-the tmux *server*, launch the *client* and put you in a *session* with one
-*window* and one *pane*. You can spawn as many sessions as you want, detaching
-and re-attaching among them. They are independent of each other. Each window
-belongs to a session and acts similar to tabs in other applications. Each pane
-belongs to a window a controls a particular part of the screen. Like sessions,
-you can spawn as many windows and panes as you wish, rearrange them, and move
-them to other sessions and windows respectively.
+at the shell session level. When you launch `tmux` in a shell session, it will
+spin up the tmux *server*, launch the *client*, and put you in a *session* with
+one *window* and one *pane*. You can spawn as many sessions as you want,
+detaching and re-attaching among them. They are independent of each other. Each
+window belongs to a session and acts similar to tabs in other applications. Each
+pane belongs to a window a controls a particular part of the screen. Like
+sessions, you can spawn as many windows and panes as you wish, rearrange them,
+and move them to other sessions and windows respectively.
 
 Why is this useful? Organisation. A key difference between my first trial with
-tmux some years ago and this week are that now I have a job and work much more
-in the shell, often over SSH. Yes, you can achieve this with a tiling window
-manager, or even inside terminals themselves. Both
-[iTerm2](https://www.iterm2.com/) on OS X and
+tmux some years ago and this past week is that I now have a job and work more in
+the shell. Yes, you can achieve this with a tiling window manager, or even
+inside terminals themselves. Both [iTerm2](https://www.iterm2.com/) on OS X and
 [Terminator](https://gnometerminator.blogspot.co.uk/p/introduction.html) support
 panes and tabs. But tmux is cross-platform, and configuration portability is a
 big boon if you work on multiple machines.
@@ -53,12 +51,13 @@ tell.
 
 If you're playing around with your config, adding a mapping that calls
 `source-file` with your config as an argument is invaluable so that you can
-quickly test out changes. Adding more vi-like pane selections mappings is
-useful, as is more vi-like copy-mode behaviour like explained
+quickly test out changes. Adding more vi-like pane-selection mappings is useful,
+as is more vi-like copy-mode behaviour like explained
 [here](https://sanctum.geek.nz/arabesque/vi-mode-in-tmux/). A particularly great
 mapping is window reordering. I'm surprised this isn't in more configs online
 because it's insanely good! I found it in [this answer on
-superuser](https://superuser.com/a/552493).
+superuser](https://superuser.com/a/552493), but tweaked it so that it supports
+repeated keys and forces you to use the prefix key.
 
 ```conf
 bind-key -r S-Left swap-window -t -
@@ -68,9 +67,7 @@ bind-key -r S-Right swap-window -t +
 Otherwise I try to keep other mappings and remappings to a minimum. Many suggest
 to remap the window split commands, like remapping a horizontal split from
 `<prefix>%` to `<prefix>|`, but I find the visual association unnecessary. I've
-only been using tmux for a week and have already gotten used to the default. I
-think it's better to use the defaults when possible to keep your config targeted
-at the changes that really matter.
+only been using tmux for a week and have already gotten used to the default.
 
 In a similar vain, I've kept my status bar minimal. It only contains the session
 name and the window list. The current window is highlighted and activity in an
@@ -79,7 +76,7 @@ out of the way.
 
 The remainder of my config is specifying consistent colours across the status
 bar, pane borders, pane information display and clock. Yes, you can press
-`<prefix> T` to get a full-pane clock display. Another reason it doesn't need to
+`<prefix> T` to get a full-pane clock display! Another reason it doesn't need to
 be in the status bar. Enabling `renumber-windows` is useful if you have large
 sessions with short-lived windows. Changing `base-index` and `pane-base-index`
 to 1 will make it easier to select them with the number keys, rather than
@@ -94,7 +91,7 @@ the tools he mentioned is [vimux](https://github.com/benmills/vimux), a Vim
 plugin that allows you to interact with tmux from inside Vim. This is next on my
 list of things to play around with. Vim already has pretty good shell
 integration, so I'm sceptical, but his example of the edit-test-repeat loop and
-how vimux can help with it was pretty convincing.
+how vimux can help with it is pretty convincing.
 
 If you have a similar workflow that is as common, then by all means you should
 make it easier to perform. Tools like vimux can help, as can a better
@@ -111,13 +108,11 @@ This seems pretty difficult with tmux alone, but I'm sure it's possible through
 shell scripting. After all, the status bar can be toggled in this way.
 
 It can pay off in the long run to keep the configs for new tools small to begin
-with. Only use what you know will give you benefit and add more as time goes and
-you discover new things. It's much easier to maintain when you've added every
-line for a reason!
+with. Only use what you know will give you benefit and add more as time goes by
+and you discover new things. It's much easier to maintain when you've added
+every line for a reason!
 
----
-
-*Closing tip*: use `<prefix> Z`! This will *zoom* the active pane to take up the
+*Closing tip*: use `<prefix> Z`! This *zooms* the active pane to take up the
 full size of its containing window. Use the same binding to revert the original
 layout. It's great for temporarily getting the big picture if you're working on
 a smaller screen.
