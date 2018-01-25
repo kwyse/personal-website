@@ -1,6 +1,7 @@
 ---
 title: "Five Months into the Hacker's Diet"
 date: 2018-01-13T15:53:39Z
+categories: ["Health"]
 draft: true
 ---
 
@@ -102,6 +103,10 @@ lose 15 kilograms and that would give me about 15 weeks to do it. One kilogram
 of body fat is equivalent to 7700 calories, meaning I would need to have a daily
 calorie deficit of 1100 calories, so a daily calorie intake of 1300 calories on
 average.  If I had a perfect run, that is certainly possible to hit.
+
+{{% center %}}
+![Hacker's Diet Five Months In Results](/images/hackers_diet_five_months.png)
+{{% /center %}}
 
 I didn't hit it, but I made a big dent. This is a plot of my progress. The blue
 line is my actual weight as recorded every morning. I started the eating plan in
