@@ -1,8 +1,7 @@
 ---
 title: "Five Months into the Hacker's Diet"
-date: 2018-01-13T15:53:39Z
+date: 2018-01-25T09:35:25Z
 categories: ["Health"]
-draft: true
 ---
 
 I've always had weight problems. Only in recent years has it gotten under
@@ -18,17 +17,17 @@ engineers and approaches the human body like a machine, one with inputs and
 outputs. A machine that you can tune to get the results you want. It's quite
 contrary to other diet books that suggest slow and methodical lifestyle changes.
 Instead it asks you to measure everything, monitor consistently, and reassess
-constantly with the information you have. It's a feedback loop that, in so far,
-has been effective.
+constantly with the information you have. It's a feedback loop that, so far, has
+been effective.
 
 ## The Eat Watch
 
 The eat watch is the centrepiece introduced in the book. The premise is that
 some of us are predispositioned to eat more (or less) than our body needs
 because we don't receive the "full" (or "hungry") signal in time, or at all. The
-eat watch is an imaginary accessory that lights up when you should and turns off
-when you shouldn't. Hence, you're relying on your watch rather than your body
-for the information.
+eat watch is an imaginary accessory that lights up when you should eat and turns
+off when you shouldn't. Hence, you're relying on your watch rather than your
+body for the information.
 
 In reality, the eat watch manifests itself in calorie counting and eating
 prepared meals. The goal is to count everything. As noted in the book, eating a
@@ -54,7 +53,7 @@ slow. On top of that, you'll be miserable, unproductive at work, always tired,
 and unable to get results from exercise.
 
 I have found most of this to be untrue. Let me clarify what my significant
-amount was. I'm a 179cm tall 24-year-old male. From online research, talks with
+amount was. I'm a 179cm-tall 24-year-old male. From online research, talks with
 nutritionists, and my own experimentation, I should be eating around 2400
 calories per day to maintain my weight. Instead, I was 1600 calories some days
 and 1200 calories other days, by skipping dinner, during the peak of this diet.
