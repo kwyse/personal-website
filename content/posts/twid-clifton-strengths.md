@@ -1,9 +1,8 @@
 ---
 title: "This Week I Discovered: CliftonStrengths"
-date: 2018-01-27T20:27:00Z
+date: 2018-01-28T22:39:36Z
 categories: ["Wellness"]
 series: ["This Week I Discovered"]
-draft: true
 ---
 
 I came across [this
