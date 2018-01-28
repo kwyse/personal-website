@@ -1,7 +1,7 @@
 ---
 title: "Five Months into the Hacker's Diet"
 date: 2018-01-25T09:35:25Z
-categories: ["Health"]
+categories: ["Wellness"]
 ---
 
 I've always had weight problems. Only in recent years has it gotten under
