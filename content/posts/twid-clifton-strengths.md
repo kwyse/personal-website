@@ -7,25 +7,24 @@ series: ["This Week I Discovered"]
 
 I came across [this
 talk](https://www.ted.com/talks/scott_dinsmore_how_to_find_work_you_love) by
-Scott Dinsmore earlier this week. The talk itself is very good for those feeling
-trapped in their current circumstances, but my main take-away was his
-recommendation on StrengthsFinder 2.0, now called CliftonStrengths. It's not the
-first time I've had this recommendation, so I finally took the plunge and bought
-it.
+Scott Dinsmore. It's geared towards those who feel trapped trapped in their
+current circumstances, yet my main take-away was his recommendation on
+StrengthsFinder 2.0, now called CliftonStrengths. I took the plunge and bought
+it since this isn't the first time it's been recommended.
 
-CliftonStrenths, the book itself, is only half of what you're getting. The back
-sleeve includes a code you can use to take the online assessment. After
-answering 177 Likert-type questions, it will tell you your top five strengths,
-of 34, that were devised by this system. By focusing on these on improving these
-traits, rather than mitigating your weaknesses - which the book claims modern
-society promotes - you can a better return on investment for your time.
+The book itself is only half of what you're getting as the back sleeve includes
+a code you can use to take the online assessment. It will tell you your top five
+strengths, of 34, that were devised by this system after you answer 177
+Likert-type questions. Rather than mitigating your weaknesses---which the book
+claims modern society promotes---you can purportedly get a better return on
+investment for your time by focusing on improving these strength traits.
 
 The book includes a useful analogy. If you spend a lot of time (say a *10* in
 effort) honing a skill you have little talent in (say a *3*), then you're
 effectively as skilled as someone who puts in little effort (a *3*), but has
 natural talent (a *10*). That is, the relationship is commutative. To get the
-biggest returns, you need *both* talent and effort investment. So, focus on what
-you're already good at.
+biggest returns, you need *both* talent and effort investment. Hence, it
+suggests you should focus on what you're already good at.
 
 ## The themes
 
@@ -33,7 +32,8 @@ The 34 themes aren't things like analytic ability, strength with numbers, or
 drawing skill. The book claims these are inherently learned skills that require
 knowledge and practice. Instead these themes are *consistency*, *discipline*,
 *empathy*, *focus*, and *ideadation*. *Communication*, *positivity* and
-*self-assurance*. *Harmony* and *intellectual*. They operate on a higher level.
+*self-assurance*. *Harmony* and *responsibility*. They operate on a higher
+level.
 
 Each theme has a detailed description, a list of action points to take away, and
 how to work with people who possess them. However, the book recommends that you
