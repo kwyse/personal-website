@@ -7,10 +7,10 @@ tags: ["book", "rust"]
 ---
 
 Most of us can agree that Rust's learning curve is steep. I've been using it for
-hobby projects for the last few years but I'm still hesitant to use it when I
-have to produce something *with a deadline*, because of the upfront cost in
-development time. And that's frustrating, because I really believe that the
-benefits it offers outweigh that.
+hobby projects for the last few years but I'm still hesitant to use it when I'm
+constrained *by a deadline*, because of the upfront cost in development time.
+And that's frustrating, because I really believe that the benefits it offers
+outweigh that.
 
 [*Programming Rust*](http://shop.oreilly.com/product/0636920040385.do) is
 included in the latest Humble *Functional Programming* [book
@@ -37,13 +37,13 @@ Ruby* before it gave me insight into their respective languages, I'm hopeful
 So far it's exceeded expectations! The book is broken down into four sections:
 
 1. Fundamentals: an overview of the language and details of the borrow checker
-1. Language constructs: expressions, error handling and the module system
+1. Language constructs: expressions, error handling, and the module system
 1. Traits and generics
-1. Advanced and use case-specific Rust, like IO, concurrency, and `unsafe` code
+1. Advanced and use case-specific Rust: IO, concurrency, and `unsafe` code
 
-I've completed the first section, comprising five chapters. The last two were
-about ownership and references respective. They offer the best explanations of
-both topics I've come across.
+I've completed the first section, comprising five chapters. The last two
+chapters are about ownership and references respective. They offer the best
+explanations of both topics I've come across.
 
 The ownership chapter explains Rust's move semantics. Comparisons to C++ and
 Python give reasons for why Rust's approach was chosen and the benefits of each
@@ -51,11 +51,11 @@ approach, but also how to recreate the other two in Rust should you need to.
 
 The references chapter explains lifetimes and the rules the borrow checker
 enforces, and repeats them in different scenarios so that they sink in. But by
-far the most valuable part of this chapter was the diagrams explaining how
+far the most valuable part of this chapter are the diagrams explaining how
 references are laid out in memory. They won't come as a shock, as the memory
 model is intuitive and what you would expect, but seeing them illustrates *why*
-the borrow checker complains when it does. So far these diagrams have been the
-highlight of the book.
+the borrow checker complains when it does. These diagrams have been the
+highlight of the book thus far.
 
 I'm satisfied that my understanding of Rust has already increased dramatically
 as a result of reading the first section. Given that the second section is
@@ -68,18 +68,18 @@ them in *Programming Rust*.
 Unfortunately, some things are still skimmed over. For instance, the
 relationship between trait objects and static methods is mentioned but not
 elaborated upon. The book mentions the details are tedious, and implies they are
-also inconsequential, but it left me wondering. Perhaps I will have a clearer
+of little consequence, but it left me wondering. Perhaps I will have a clearer
 picture on this intricacy at the end of the book. Perhaps details are included
 in the section I skipped over, or elaborated upon later in the book, so I'm wary
 to consider this in actual criticism at this point.
 
 ## Where to go from here
 
-I definitely plan to finish the book. Reading it is an actual joy. It definitely
-helps if you go in with at least some Rust knowledge, because it ramps up quite
+I definitely plan to finish the book. Reading it is a joy. It definitely helps
+if you go in with at least some Rust knowledge, because it ramps up quite
 quickly. If you're at the stage where you understand what Rust does but still
 struggle with the borrow checker and want to understand *why* it does things,
-the book is ideal.
+the book is targeted at you.
 
 The Humble Bundle is on for another eight days of writing. *Real World Haskell*
 and *Introducing Elixir* are two other books I've heard good things about and
