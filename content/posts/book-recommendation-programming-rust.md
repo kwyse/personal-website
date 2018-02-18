@@ -1,7 +1,6 @@
 ---
 title: "Book Recommendation: Programming Rust"
-date: 2018-02-18T11:41:02Z
-draft: true
+date: 2018-02-18T12:44:11Z
 categories: ["Software Development"]
 tags: ["book", "rust"]
 ---
