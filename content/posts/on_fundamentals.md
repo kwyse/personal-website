@@ -1,7 +1,6 @@
 ---
 title: "On Fundamentals"
-date: 2018-03-27T08:56:52+01:00
-draft: true
+date: 2018-03-28T22:01:11+01:00
 categories: ["Software Development"]
 tags: ["book"]
 ---
