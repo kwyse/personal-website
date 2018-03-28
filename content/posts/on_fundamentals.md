@@ -2,6 +2,8 @@
 title: "On Fundamentals"
 date: 2018-03-27T08:56:52+01:00
 draft: true
+categories: ["Software Development"]
+tags: ["book"]
 ---
 
 A recent vacation gave me time to catch up on my backlog of books. [_Stop
@@ -91,8 +93,8 @@ mastery of any field requires a deep understanding of its building blocks. And
 because of the way computer science has developed over the decades, resources
 are numerous.
 
-I recently acquired a copy of [The Art of Computer
-Programming](https://www-cs-faculty.stanford.edu/~knuth/taocp.html), a book on
+I recently acquired a copy of [_The Art of Computer
+Programming_](https://www-cs-faculty.stanford.edu/~knuth/taocp.html), a book on
 classical computer science. It still sells well to this day, despite being first
 published in the 1960s! I think that's a testament to the fact that the
 fundamentals are timeless, and that they're worth learning. I'm taking my time
