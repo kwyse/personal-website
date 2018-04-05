@@ -27,20 +27,22 @@ weight = -1
 customCSS = [ "custom.css" ]
 
 [params.copyright]
+prefix = ""
 holder = "Krishan Wyse"
 startYear = "2017"
+suffix = ""
 
 [params.info]
 description = "life.iter().map(Musings::fetch).collect()"
 title404 = "Nothing's here!"
 
 [params.settings]
-homepageSections = ["recent_posts", "categories", "series"]
 dateFormat = "02 Jan 2006"
 listDateFormat = "02 Jan 2006"
 recentPostsLength = 5
 showReadingTime = true
 noTermCloudShuffle = true
+accentColor = "#1793d0"
 
 [params.social]
 email = "contact@kwyse.com"
@@ -49,6 +51,9 @@ linkedin = "krishanwyse"
 twitter = "KrishanWyse"
 [params.social.config]
 platforms = ["linkedin", "twitter", "github", "email"]
+
+[params.widgets]
+homepage = ["recent_posts"]
 
 [taxonomies]
 category = "categories"
