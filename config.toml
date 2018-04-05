@@ -8,7 +8,6 @@ sectionPagesMenu = "main"
 
 pygmentsCodefences = true
 Paginate = 10
-disqusShortname = "kwyse"
 
 googleAnalytics = "UA-112072110-1"
 
@@ -25,6 +24,19 @@ weight = -1
 
 [params.assets]
 customCSS = [ "custom.css" ]
+
+[params.comments]
+enable = true
+
+[params.comments.staticman]
+enable = true
+apiEndpoint = "https://api.staticman.net/v2/entry"
+maxDepth = 2
+
+[params.comments.staticman.github]
+username = "kwyse"
+repository = "personal-website"
+branch = "master"
 
 [params.copyright]
 prefix = ""
