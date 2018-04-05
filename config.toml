@@ -53,7 +53,7 @@ twitter = "KrishanWyse"
 platforms = ["linkedin", "twitter", "github", "email"]
 
 [params.widgets]
-homepage = ["recent_posts"]
+homepage = ["recent_posts", "taxonomy_cloud"]
 
 [taxonomies]
 category = "categories"
