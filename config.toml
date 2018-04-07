@@ -8,7 +8,6 @@ sectionPagesMenu = "main"
 
 pygmentsCodefences = true
 Paginate = 10
-disqusShortname = "kwyse"
 
 googleAnalytics = "UA-112072110-1"
 
@@ -26,21 +25,36 @@ weight = -1
 [params.assets]
 customCSS = [ "custom.css" ]
 
+[params.comments]
+enable = true
+
+[params.comments.staticman]
+enable = true
+apiEndpoint = "https://api.staticman.net/v2/entry"
+maxDepth = 2
+
+[params.comments.staticman.github]
+username = "kwyse"
+repository = "personal-website"
+branch = "master"
+
 [params.copyright]
+prefix = ""
 holder = "Krishan Wyse"
 startYear = "2017"
+suffix = ""
 
 [params.info]
 description = "life.iter().map(Musings::fetch).collect()"
 title404 = "Nothing's here!"
 
 [params.settings]
-homepageSections = ["recent_posts", "categories", "series"]
 dateFormat = "02 Jan 2006"
 listDateFormat = "02 Jan 2006"
 recentPostsLength = 5
 showReadingTime = true
 noTermCloudShuffle = true
+accentColor = "#1793d0"
 
 [params.social]
 email = "contact@kwyse.com"
@@ -49,6 +63,9 @@ linkedin = "krishanwyse"
 twitter = "KrishanWyse"
 [params.social.config]
 platforms = ["linkedin", "twitter", "github", "email"]
+
+[params.widgets]
+homepage = ["recent_posts", "taxonomy_cloud"]
 
 [taxonomies]
 category = "categories"
