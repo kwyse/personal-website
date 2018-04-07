@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HUGO_VERSION=0.31.1
+HUGO_VERSION=0.38.1
 
 if [[ ! -f /data/bin/hugo ]]; then
   cd /tmp
