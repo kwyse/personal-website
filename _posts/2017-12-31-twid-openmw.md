@@ -20,13 +20,10 @@ better?
 but there are still issues. But the description holds a gem: a Linux-native
 alternative called [OpenMW](https://openmw.org/en/).
 
-If you want a video summary, check out the FAQ video below. It's quite dated but
-still shown prominently on the official site and gives a good overview of the
+If you want a video summary, check out [the FAQ
+video](https://www.youtube.com/watch?v=g2PKBD0D9Gw). It's quite dated but still
+shown prominently on the official site and gives a good overview of the
 project.
-
-{{< youtube g2PKBD0D9Gw >}}
-
----
 
 Essentially, OpenMW is an open source reimplementation of the game engine for
 Morrowind. It's not a different game because it still relies on assets from the
