@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "Five Months into the Hacker's Diet"
 date: 2018-01-25T09:35:25Z
 categories: ["Wellness"]

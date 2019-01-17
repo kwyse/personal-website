@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "Grokking Entity-Component-Systems"
 date: 2018-01-03T21:57:06Z
 categories: ["Game Development"]

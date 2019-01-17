@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "This Week I Discovered: Vasovagal Syncope"
 date: 2018-02-04T18:43:16Z
 categories: ["Wellness"]

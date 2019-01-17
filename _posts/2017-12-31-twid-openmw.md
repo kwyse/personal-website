@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "This Week I Discovered: OpenMW"
 date: 2017-12-31T12:11:10Z
 categories: ["Gaming"]

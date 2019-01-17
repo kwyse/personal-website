@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "Hugo, Two Weeks In"
 date: 2018-01-11T20:23:33Z
 categories: ["Tools"]
