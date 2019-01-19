@@ -19,5 +19,5 @@ more aspects than can ever be listed here.
 
 This blog may not represent all of these virtues—not yet, anyway—but they're all
 facets of my life that I value and would like to write about more. If my posts
-give _you_ some value, dead reader, then it's a win-win. It's my hope that you
+give _you_ some value, dear reader, then it's a win-win. It's my hope that you
 find something useful here.
