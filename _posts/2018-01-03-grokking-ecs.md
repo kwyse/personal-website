@@ -298,9 +298,7 @@ The above includes the simplest kind of run loop with a fixed time step of
 1/60th of a second. The results are hopefully a white square moving across a
 black abyss.
 
-{{% center %}}
-![Grokking ECS results](/images/grokking_ecs_result.gif)
-{{% /center %}}
+![Grokking ECS results](/assets/images/grokking_ecs_result.gif){: .center-image}
 
 There are many ways to improve this. You could use a more sophisticated run loop
 that can handle variable time steps. Or you could use the parallel iterators

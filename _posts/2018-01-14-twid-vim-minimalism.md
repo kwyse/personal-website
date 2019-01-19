@@ -15,12 +15,9 @@ on every computer that I work with. Some were the results of experiments I later
 forgot about and others were quickly-needed hacks that I didn't find time to
 refactor and stabilise. Now it's time to clean it up.
 
-I came across this video which explains some lesser-known Vim tips. With just a
-few lines of Vimscript, it shows you how to moderately match the functionality
-of some common Vim plugins.
-
-{{< youtube XA2WjJbmmoM >}}
----
+I came across a [video](https://www.youtube.com/watch?v=XA2WjJbmmoM) which
+explains some lesser-known Vim tips. With just a few lines of Vimscript, you
+can moderately match the functionality of some common Vim plugins.
 
 The first tip is to add `**` to the search path when using Vim's `find` command.
 This gives behaviour similar to a fuzzy finder but with the built-in, kind-of

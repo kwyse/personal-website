@@ -104,9 +104,7 @@ of body fat is equivalent to 7700 calories, meaning I would need to have a daily
 calorie deficit of 1100 calories, so a daily calorie intake of 1300 calories on
 average.  If I had a perfect run, that is certainly possible to hit.
 
-{{% center %}}
-![Hacker's Diet Five Months In Results](/images/hackers_diet_five_months.png)
-{{% /center %}}
+![Hacker's Diet Five Months In Results](/assets/images/hackers_diet_five_months.png){: .center-image}
 
 I didn't hit it, but I made a big dent. This is a plot of my progress. The blue
 line is my actual weight as recorded every morning. I started the eating plan in

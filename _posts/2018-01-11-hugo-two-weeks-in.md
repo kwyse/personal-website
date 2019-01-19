@@ -37,15 +37,19 @@ rather than just the summary. You can do that by overriding the default
 `rss.xml` file (add your own `layouts/_default/rss.xml` and it will take
 precedence) and changing
 
+{% raw %}
 ```xml
 <description>{{ .Summary | html }}</description>
 ```
+{% endraw %}
 
 to
 
+{% raw %}
 ```xml
 <description>{{ .Content | html }}</description>
 ```
+{% endraw %}
 
 Kudos to Brian Wisti for his
 [post](https://randomgeekery.org/2017/09/15/full-content-hugo-feeds/) on this
