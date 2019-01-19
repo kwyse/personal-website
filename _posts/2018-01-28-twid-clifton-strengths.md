@@ -2,8 +2,7 @@
 layout: post
 title: "This Week I Discovered: CliftonStrengths"
 date: 2018-01-28T22:39:36Z
-categories: ["Wellness"]
-series: ["This Week I Discovered"]
+category: twid
 ---
 
 I came across [this

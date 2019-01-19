@@ -2,7 +2,7 @@
 layout: post
 title: "Grokking Entity-Component-Systems"
 date: 2018-01-03T21:57:06Z
-categories: ["Game Development"]
+category: gamedev
 ---
 
 I've spent many commutes in the last few months learning the intricacies of

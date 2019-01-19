@@ -2,7 +2,7 @@
 layout: post
 title: "On Fundamentals"
 date: 2018-03-28T22:01:11+01:00
-categories: book
+category: softdev
 ---
 
 A recent vacation gave me time to catch up on my backlog of books. [_Stop
