@@ -5,9 +5,13 @@ date: 2018-01-11T20:23:33Z
 category: softdev
 ---
 
-My [last post](/posts/hail-hugo) about Hugo focused on getting it set up. It
-finished with a few ideas on improvements. Maybe you've noticed a few
-implemented since then =]
+> *2019/01*: Since this publication, this blog has migrated from Hugo to
+Jekyll. Whilst this does not make the techniques described here invalid, it
+does mean that what you currently see does not match them.
+
+My [last post]({% post_url 2017-12-28-hail-hugo %}) about Hugo focused on
+getting it set up. It finished with a few ideas on improvements. Maybe you've
+noticed a few implemented since then =]
 
 ## One-liner improvements
 
@@ -54,10 +58,10 @@ Kudos to Brian Wisti for his
 [post](https://randomgeekery.org/2017/09/15/full-content-hugo-feeds/) on this
 technique.
 
-The final quick addition is taxonomies. I've started a series called [This Week
-I Discovered](/series/this-week-i-discovered) where, each week, I plan to
-discuss something cool I found in the last seven days. These posts should
-naturally be grouped together. Hugo calls such a grouping a
+The final quick addition is taxonomies. I've started a series called _This Week
+I Discovered_ where, each week, I plan to discuss something cool I found in the
+last seven days. These posts should naturally be grouped together. Hugo calls
+such a grouping a
 [*taxonomy*](https://gohugo.io/content-management/taxonomies/). Two taxonomies
 are provided for us: *categories* and *tags*, but we can easily add our own as
 well, such as a *series* taxonomy.
