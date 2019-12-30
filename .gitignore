@@ -1,0 +1,4 @@
+/public/
+.sass-cache
+_site
+.DS_Store
