@@ -1,4 +1,4 @@
-baseURL = "http://kwyse.com/"
+baseURL = "https://kwyse.github.io/"
 languageCode = "en-gb"
 defaultLanguageContent = "en"
 title = "The Blog of Krishan Wyse"
