@@ -1,0 +1,1891 @@
+#+HUGO_BASE_DIR: ./
+
+* Blogging                                                        :@blogging:
+** Hail, Hugo!                                                     :blogging:
+   SCHEDULED: <2017-12-28 Thu>
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: hail-hugo
+   :END:
+
+One of my goals this holiday season was to relaunch my blog. My previous attempt
+failed because there was too much friction in actually /blogging/. It was an
+[[http://ironframework.io/][Iron]]-backed Rust web app using PostgreSQL and [[http://diesel.rs/][Diesel]] on a DigitalOcean host
+behind NGINX. It was my first time using most of these technologies for anything
+serious. I learnt a lot about them in the course of building that blog but the
+fifth blog post never saw the light of day.  Deployment was too manual and
+enhancements were a time sync. Ultimately it became a burden.
+
+Enter static site generators. I know I'm late to the party, but at least I now
+comprehend the benefit ;) [[https://gohugo.io/][Hugo]] is one such static site generator that seems
+[[https://github.com/gohugoio/hugo/stargazers][fairly popular]]. And I can see why: it is /so/ easy to get something up and
+running quickly.  Here I'll show you how to go from running that initial
+scaffolding command to hitting [insert your domain name] and seeing it fully
+deployed.
+
+One thing of note is exactly how much Hugo balances convention (or opinion)
+against configuration. Hugo touts configuration as one of its strengths and this
+was an initial draw for me. I try to avoid heavily magic-laden frameworks like
+the plague. Sometimes that can go too far, when the desire to build everything
+from scratch is strong. So in an effort to find balance, I want to start with
+the absolute bare minimum and build up from there. We should not add anything
+that doesn't have an explicit and understood purpose. Thus far, Hugo has
+accommodated that, so let's begin.
+
+*** Building the basics
+Hugo already has a great [[https://gohugo.io/getting-started/quick-start/][quick start]] guide that we'll follow to begin with.
+
+First install Hugo with your package manager of choice.
+
+#+BEGIN_SRC sh
+# OS X buddies
+$ brew install hugo
+
+# Arch compatriots
+$ sudo pacman --sync hugo
+
+# Gentoo and friends
+$ sudo layman --add go-overlay
+$ sudo emerge --ask www-apps/hugo
+#+END_SRC
+
+Let's create a skeleton site and add a theme. You can browse available themes
+[[https://themes.gohugo.io/][here]]. I'll be using the
+[[https://minimo.netlify.com/][Minimo]] theme.
+
+#+BEGIN_SRC sh
+$ hugo new site wild-baguette $ cd wild-baguette $ git init $ git
+submodule add https://github.com/MunifTanjim/minimo themes/minimo
+#+END_SRC
+
+This is /all/ you need for a basic site without any content (yet). Let's pause
+here and check out the folder structure.
+
+#+BEGIN_SRC sh
+$ tree -I minimo # ignore the theme directory
+.
+├── archetypes
+│   └── default.md
+├── config.toml
+├── content
+├── data
+├── layouts
+├── static
+└── themes
+#+END_SRC
+
+Excluding the theme, there's only two files! We'll cover =archtype=s in a moment
+when we add some content, but for now let's open up =config.toml=. You will
+likely need to add options specific to the theme you chose. Most importantly,
+actually set the theme with the =theme= key! You can find out relevant options
+for the Minimo theme on [[https://github.com/kwyse/personal-website/blob/b00c1f66a4a30f260347a8507d479f0c9fde36f9/config.toml][this commit]] I made for this site. Minimo has its own
+comprehensive configuration [[https://themes.gohugo.io/theme/minimo/docs/example-config-toml/][example]], but the only required key is the
+=recentPostsLength=. Forgetting to add this key will give you an error upon
+starting the server.
+
+Fire up the Hugo server and navigate to the URL displayed in the output.  You
+should see something beautiful. If not, ensure your configuration is correct.
+
+#+BEGIN_SRC sh
+$ hugo server
+#+END_SRC
+
+*** Adding content and customising
+What good are wild baguettes if you can't find them? Being good citizens, we'll
+share our knowledge on their habitats in our first blog post.
+
+#+BEGIN_SRC sh
+$ hugo new posts/where_to_find_them.md
+#+END_SRC
+
+The =posts= directory will be nested under =contents= in the project root. Fill
+this file with whatever pleases you. The important thing is the front
+matter. That's the bit in the =---= block at the top of the file. By default,
+Hugo will use the =title= for the post's title (say what?) and the name of the
+file for its URL path. It's important that =title= is set.
+
+If you're wondering what dictates that front matter, that's the archetype! Hugo
+allows you to [[https://gohugo.io/content-management/archetypes/][define your own archetypes]] to streamline adding the content you
+wish to provide. The default archetype suffices for a simple blog.
+
+Nesting the new post under the =posts= directory will also nest it in the URL.
+With that in mind, it makes sense to have a =posts= page on the site. We need to
+create a new file for that.
+
+#+BEGIN_SRC sh
+$ echo '---\ntitle: Posts\n---' > content/posts/_index.md
+#+END_SRC
+
+Each [[https://gohugo.io/content-management/sections/][section]], or distinct part of our site, can contain a =_index.md= file that
+represents the section itself rather than its children, like posts do.  The
+value we give to =title= here will be what's shown on the section page and in
+the navigation bar. One more change: add =sectionPagesMenu = "main"= to
+=config.toml=. The value you pass here should be the name of your menu, which
+could be different for your chosen theme. For Minimo, it is =main=.
+
+Start the server again and see our new navigation menu and post rendered. The
+=-D= flag here indicates we want to render draft posts in addition to regular
+ones.
+
+#+BEGIN_SRC sh
+$ hugo server -D
+#+END_SRC
+
+Let's personalise the theme a bit. Minimo gives you a very easy way to override
+the CSS with the =customCSS= key in =config.toml=. You can read about a specific
+use case [[https://discourse.gohugo.io/t/minimo-css-customization/7173/4][here]], where the accent colour is changed.
+
+Changing layout content is down to Hugo, so it should be independent of the
+theme. Say we want to add an additional line to the footer of our site. Simply
+add files to the =layout= directory. They must be the same name as the ones your
+theme uses. For Minimo, this meant [[https://github.com/kwyse/personal-website/blob/41e3702fa15589739e22f64870acb9c19e9a7322/layouts/partials/footer/attribution.html][adding a footer partial]] for the new content,
+as well as [[https://github.com/kwyse/personal-website/blob/41e3702fa15589739e22f64870acb9c19e9a7322/layouts/partials/footer.html][overriding the existing footer]]. You can read more about Hugo's
+solution for customising your theme [[https://gohugo.io/themes/customizing/][here]].
+
+Thus far, the only thing that tripped me up was Minimo requiring that one
+=recentPostsLength= key to have a value. Hugo itself has been completely
+transparent in what it's doing. If you look at the folder structure of our
+project, you'll see every file we've added has a known purpose. If we want to
+make adjustments to common configuration options, =config.toml= is a good place
+to start. If we want to override specific parts of our theme, we just provide
+the override in the =layouts= directory. The organisation of our site content
+will correspond to the folder structure inside the =content= directory. So far,
+it's all very intuitive!
+
+*** Deploying
+I promised we'd deploy this so the whole world would know where to hunt for wild
+baguettes. Hugo has a [[https://gohugo.io/hosting-and-deployment/deployment-with-nanobox/][good guide]] on [[https://nanobox.io/][Nanobox]] deployment. I hadn't heard of
+Nanobox before so I did some digging. Essentially they provide a managed Docker
+container for you. They are not a cloud provider and rely on you having an
+account with a service such as AWS or DigitalOcean.  Once you link the accounts,
+Nanobox will take care of deployments to the hosts of the cloud
+provider. Nanobox itself is completely free on the basic plan. Given one of the
+goals of this project was to streamline the process of actually /blogging/, this
+sounded like the perfect solution.
+
+I'll be using DigitalOcean here because I already had an account. Follow the
+[[https://docs.nanobox.io/providers/hosting-accounts/digitalocean/][Nanobox guide]] to generate a DigitalOcean key and give Nanobox read/write access
+to your account. Then launch the new app.
+
+You'll then need to [[https://docs.nanobox.io/install/][install]] the Nanobox CLI locally. Nanobox needs two files for
+us to tell it how to run our Hugo project: [[https://github.com/kwyse/personal-website/blob/65791863bff9abfd4c6e430ca38d601c90d9b61c/boxfile.yml][=boxfile.yml=]], which tells Nanobox
+what commands to run, and [[https://github.com/kwyse/personal-website/blob/65791863bff9abfd4c6e430ca38d601c90d9b61c/install.sh][=install.sh=]], which is called by =boxfile.yml= and
+actually installs Hugo inside the container. Add these files to your project,
+then tell Nanobox to deploy!
+
+#+BEGIN_SRC sh
+$ nanobox remote add <nanobox-app-name> $ nanobox deploy
+#+END_SRC
+
+Visit your Nanobox portal and find a link that takes you to the deployed site!
+Too easy!
+
+The next logical step is to set up a domain name for your site. I use [[https://www.namecheap.com/][NameCheap]]
+and have been very happy with their service. The prices are competitive and they
+provide a very intuitive dashboard for adding DNS records.
+
+*** Next steps
+There's *loads* of places we could go from here. If you want your site to get
+even marginal traffic, definitely get a domain name for it.  You'll probably
+then want to look into adding TLS to your site. Even if you only serve static
+content, it's always a [[https://security.stackexchange.com/questions/142496/which-security-measures-make-sense-for-a-static-web-site][good idea]] to enable it. After that, you can check out the
+depths of [[https://gohugo.io/documentation/][Hugo's documentation]]. We've barely scratched the surface of what it's
+capable of.
+
+This will probably be the path that I take. I'm impressed with how easy the
+whole experience was, primarily due to the solid documentation and usability of
+Hugo. Hopefully you'll see more content on here soon!
+** Hugo, Two Weeks In                                              :blogging:
+   SCHEDULED: <2018-01-11 Thu>
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: hugo-two-weeks-in
+   :END:
+
+My [[/posts/hail-hugo][last post]] about Hugo focused on getting it set up. It finished with a few
+ideas on improvements. Maybe you've noticed a few implemented since then =]
+
+*** One-liner improvements
+Some of these were very simple to add. The theme I'm using, [[https://minimo.netlify.com/][Minimo]], supports
+adding a reading time to posts with one addition to =config.toml=.
+
+#+BEGIN_SRC
+showReadingTime = true
+#+END_SRC
+
+It's a small addition yet adds noted value for the reader.
+
+The next change instead provides insight for the sight maintainer:
+
+#+BEGIN_SRC
+googleAnalytics = "[your Google Analytics tracking ID]"
+#+END_SRC
+
+Once your site starts getting some traffic, [[https://analytics.google.com/][Google Analytics]] can help you create
+more targeted content.
+
+I've also enabled my RSS feed to display the full contents of an article rather
+than just the summary. You can do that by overriding the default =rss.xml= file
+(add your own =layouts/_default/rss.xml= and it will take precedence) and
+changing
+
+#+BEGIN_SRC
+<description>{{ .Summary | html }}</description>
+#+END_SRC
+
+to
+
+#+BEGIN_SRC
+<description>{{ .Content | html }}</description>
+#+END_SRC
+
+Kudos to Brian Wisti for his [[https://randomgeekery.org/2017/09/15/full-content-hugo-feeds/][post]] on this technique.
+
+The final quick addition is taxonomies. I've started a series called /This Week
+I Discovered/ where, each week, I plan to discuss something cool I found in the
+last seven days. These posts should naturally be grouped together. Hugo calls
+such a grouping a [[https://gohugo.io/content-management/taxonomies/][/taxonomy/]]. Two taxonomies are provided for us: /categories/
+and /tags/, but we can easily add our own as well, such as a /series/ taxonomy.
+
+Enabling a taxonomy requires the name of it to be included in at least one
+post's front matter:
+
+#+BEGIN_SRC
+series: ["This Week I Discovered"]
+#+END_SRC
+
+*** Somewhat effortful improvements
+Adding a comments section could have been easy. Hugo supports [[https://disqus.com/][Disqus]] comments
+out of the box. In your =config.toml=, simply add:
+
+#+BEGIN_SRC
+disqusShortname = "[your Disqus short name]"
+#+END_SRC
+
+I ended up going this route, but there are alternatives.  [[https://staticman.net/][Staticman]], for
+example, doesn't require the comments to be stored by a third-party. It's much
+more appropriate for a static-content site. Staticman listens for incoming
+=POST= requests that such a site would generate and then creates a pull request
+to the repository with the comment contents. It can be configured to merge the
+PRs immediately or delegate to the repository owner, which provides comment
+moderation. It's a really nice idea.
+
+The problem is that it the comments form does not look that great in Minimo. I
+spent some time tweaking it but form design is not my forte.  I'd like to move
+to Staticman in the future if a designer will alleviate me of that burden ;)
+Suffice to say, the comments section took some time to investigate and play
+around with.
+
+The biggest pain point was TLS, and it could have been so easy! The lesson here
+is to always read the documentation. Each day, I would spend a bit of time
+trying to find out why my site was so slow to initially load. The first
+incarnation of this site didn't have this problem, and was hosted on the same
+DigitalOcean setup, so I ruled that out. It seemed like a DNS lookup issue,
+because performance was good once the site was loaded, but I couldn't tell if
+this was on Namecheap's side or something I had misconfigured with Nanobox given
+it was my first time using it.
+
+The investigation led me discovering that [[https://blog.josephscott.org/2011/10/14/timing-details-with-curl/][cURL can provide timings]]! There's also
+an [[https://github.com/mat/dotfiles/blob/master/bin/curlt][awesome little script]] to save you from having to type out the long
+version. It confirmed immediately that the issue was indeed DNS lookup. I took a
+closer look at my Namecheap DNS configuration and found that I was redirecting
+traffic to the TLS version of the site. Nginx, running inside my Nanobox, wasn't
+playing nice with this setup. Then I took another look at the [[https://github.com/nanobox-io/nanobox-engine-static/blob/master/README.md][README]] for the
+Nanobox static site engine and saw that forcing HTTPS was supported at this
+level!
+
+#+BEGIN_SRC
+force_https: true
+#+END_SRC
+
+Well I felt silly, but now the whole site is TLS enabled and loading within a
+few hundred milliseconds. Much better than the ~75 seconds it was previously
+taking!
+
+The final task, and arguably the one with the biggest benefit, was to set up
+automated deployments when pushing to GitHub. If you have a Travis CI account
+and continuous integration enabled for the repository, simply add a
+=.travis.yml= file with the following:
+
+#+BEGIN_SRC
+sudo: required
+install: sudo bash -c "$(curl -fsSL https://s3.amazonaws.com/tools.nanobox.io/bootstrap/ci.sh)"
+
+script:
+  - nanobox remote add [your Nanobox project name]
+  - nanobox deploy
+#+END_SRC
+
+Travis CI configuration files can be customised much more than this, but it
+suffices for the simple use case. Now the site will automatically deploy itself
+whenever pushing!
+
+*** Endless possibilities
+One can never be truly done with a project like this. Outside of creating
+content, there's always ways to improve the site itself. I think the main points
+are covered now, but hopefully this is only the start of side projects for this
+side project.
+
+* This Week I Discovered                                              :@twid:
+** This Week I Discovered: OpenMW                               :twid:gaming:
+   SCHEDULED: <2017-12-31 Sun>
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: twid-open-mw
+   :END:
+
+Two weeks back I installed Gentoo with the intention to use it as my primary
+desktop. Naturally I need games to play. My go-to benchmark for the state of
+Linux gaming has always been the [[https://appdb.winehq.org/][Wine Application Database]], so I checked it for
+a game I knew I could sink countless hours into.
+
+Well it turns out the [[https://appdb.winehq.org/objectManager.php?sClass=application&iId=3150][results]] for Oblivion are not too promising, especially for
+Steam. Maybe Morrowind fairs better?  [[https://appdb.winehq.org/objectManager.php?sClass=application&iId=1015][Yes]], but there are still issues. But the
+description holds a gem: a Linux-native alternative called [[https://openmw.org/en/][OpenMW]].
+
+If you want a video summary, check out [[https://www.youtube.com/watch?v=g2PKBD0D9Gw][the FAQ video]]. It's quite dated but still
+shown prominently on the official site and gives a good overview of the project.
+
+Essentially, OpenMW is an open source reimplementation of the game engine for
+Morrowind. It's not a different game because it still relies on assets from the
+original. You can't /play/ Morrowind through it without actually owning a copy
+of Morrowind, or at the very least having access to the game's data files.
+
+*** Trying it out
+
+A TES game running natively on Linux? Sign me up. It even has an official Gentoo
+[[https://packages.gentoo.org/packages/games-engines/openmw][ebuild]]!  Getting it running was remarkably simple. The package includes a wizard
+that will guide you through retrieving the data files from the original game. I
+have a physical copy but Steam and GOG versions are also supported. It launched
+without a hitch.
+
+Playing it was a different story... Straight of the boat, I was hitting between
+four and ten FPS. Of course it wouldn't be that easy! I couldn't find anything
+Gentoo-specific but the general consensus online was to make sure that your GPU
+drivers were up to date. I had only installed my OS in the last two weeks so I
+knew that couldn't have been the issue.
+
+Turns out it was! OpenMW doesn't seem to play nice with the [[https://wiki.gentoo.org/wiki/Nouveau][=nouveau=]]
+drivers. These are open source NVIDIA drivers that are installed by default when
+running through the Gentoo handbook. Gentoo has a [[https://wiki.gentoo.org/wiki/NVidia/nvidia-drivers][guide]] on replacing the
+=nouveau= drivers with the proprietary =nvidia= ones.
+
+After rebuilding my kernel and a few package builds (and rebuilds) later, I had
+booted into a new =nvidia=-driven X session. Everything seemed to be working
+except for when I did the test the guide recommends: running =glxinfo=, which
+kept failing. This command is meant to say that direct rendering is
+enabled. Guess that means it's not enabled? Fortunately there's a
+troubleshooting section for that issue.  You need to disable the =Direct
+Rendering Manager= in the kernel. After doing that and rebuilding the kernel,
+which took quite a while considering only one option was disabled, a lot of
+warnings came up. The advice online was to ensure that the =Direct Rendering
+Manager= was enabled... :(
+
+Despite that, I pushed on and tried OpenMW again. Lo and behold 280 FPS!  That
+will do.
+
+*** New toys
+Everything seems to be running smoothly despite those warnings, but time will
+tell how long that lasts. At least it always teaches you something ;)
+
+OpenMW is still not at v1 yet but it's a very mature project. It's also not the
+only project of this nature. Some others include:
+
+- [[https://openrct2.org/][OpenRCT2]] - for RollerCoaster Tycoon 2
+- [[https://www.openttd.org/en/][OpenTTD]] - for Transport Tycoon Deluxe
+- [[http://openage.sft.mx/][openage]] - for Age of Empires
+- [[http://www.openra.net/][OpenRA]] - for Command & Conquer
+
+Many years of my childhood were spent with RCT and RCT2 so I couldn't help but
+try out OpenRCT2. Like OpenMW, it has an official Gentoo [[https://packages.gentoo.org/packages/games-simulation/openrct2][package]] and a [[https://openrct2.website/getting-started/][getting
+started]] guide that will set you up. Ten minutes later I was back in Magic
+Mountain, but with a day and night cycle! As a bonus, there's an [[https://github.com/OpenRCT2/OpenRCT2/wiki/Loading-RCT1-scenarios-and-data][option]] to point
+to RCT data files and play scenarios from the original game.
+
+The sentiment behind these projects is beautiful. Not only do they allow us to
+preserve these wonderful games and keep them playable for everyone, but they
+open them up to younger players by adding features that are simply expected
+today, like widescreen support. Given their timeless gameplay, I expect that
+they will always have a community of players, and that is a very good thing.
+** This Week I Discovered: RSS                                :twid:blogging:
+   SCHEDULED: <2018-01-07 Sun>
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: twid-rss
+   :END:
+
+This is actually a rediscovery. A colleague was telling me about [[https://feedly.com/][Feedly]] back in
+2013 when I was scrambling around in my first job. I had narrower interests that
+were sufficiently sated with GameTrailers.com and other video-heavy
+publications. Times have changed! My interests are broader. Commutes (often
+without Internet access) are the best times to peruse news. I want to give
+priority to news targeted at my interests rather than news discovery. And given
+the additional web presence you have when you start a blog, I'm keener to see
+what others are up to as well =]
+
+RSS is perfect for all of this. It's a web syndication format that the vast
+majority of content publishers and blogs support. They provide a URL that gives
+access to a feed of their content in a client of your choice.
+
+Most clients these days are smart enough to detect the content format.  For
+example, Feedly doubles as a podcast player. CLI RSS readers like [[https://newsboat.org/][Newsboat]] and
+[[https://codezen.org/canto-ng/][Canto]] facilitate opening an article in a browser for content that contains more
+than plain text. Most are very flexible, supporting things like keyword filters
+and changing the order feeds are displayed.
+
+The key thing is that you control the content you want to see. I went through
+the phase of using social media for updates. The feeds are endless. The content
+is tailored to you based on some initial preferences you supply and then the
+algorithm takes over. Most articles will at least contain something
+interesting. In a few, you may learn something of value. But it's not efficient.
+
+I moved on Hacker News next, which I know /many/ people find perfectly
+sufficient, but it's also an endless feed. I found myself sifting down into the
+triple digits on some commutes trying to find something to distract me. It made
+me realise that I was spending as much time, if not more, searching for content
+rather than learning from it.
+
+Now I have a just a few feeds set up in Feedly. I can fine tune it to sources
+that I find interesting. That's an ongoing process and one that is far from
+being optimal, but it means that when I check Feedly there's a much higher
+chance I'll learn rather than sift. I've chosen feeds that post a maximum of a
+few times per day so that I can look forward to a steady stream of new content
+every morning without getting overwhelmed.  This may become too frequent as I
+discover more feeds, and I'll readjust then if necessary. Having that level of
+control is a real asset. Once I've read through everything, I feel confident
+that I've "caught up". I can then focus on other things, like creating content
+myself!
+
+It's not a perfect setup. There are topics out there that could be my next
+passion but are completely off my radar, hidden on the other side of the
+Internet. Locating such topics is hard, but prove incredibly fruitful when you
+do! For that reason, I still check Hacker News occasionally, but limit myself to
+the top stories. There's feeds specifically tailored for top Hacker News stories
+that could prove to be a great compromise.
+
+I'm still on the hunt for feeds. Some that have proved worthwhile subscriptions
+in the last week are the [[https://blog.trello.com/][Trello blog]], various [[https://www.gamasutra.com/blogs/][Gamasutra blogs]], [[https://opensource.com/][Opensource.com]]
+and, of course, [[https://this-week-in-rust.org/][This Week in Rust]]! Here's to discovering what else is out there.
+** This Week I Discovered: Vim Minimalism                        :twid:tools:
+   SCHEDULED: <2018-01-14 Sun>
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: twid-vim-minimalism
+   :END:
+
+Last month marked four years since I started my [[https://github.com/kwyse/dotfiles][dotfiles]] repository on GitHub.
+Now it's in a state of disrepair! I had no idea that I hadn't made a single
+commit to it throughout 2017. I did though, I just didn't push them. There are
+local changes on every computer that I work with. Some were the results of
+experiments I later forgot about and others were quickly-needed hacks that I
+didn't find time to refactor and stabilise.  Now it's time to clean it up.
+
+I came across a [[https://www.youtube.com/watch?v=XA2WjJbmmoM][video]] which explains some lesser-known Vim tips. With just a few
+lines of Vimscript, you can moderately match the functionality of some common
+Vim plugins.
+
+The first tip is to add =**= to the search path when using Vim's =find=
+command. This gives behaviour similar to a fuzzy finder but with the built-in,
+kind-of awkward-for-long-lists wildmenu. I think this has to potential to be
+used instead of a fuzzy finder for small code bases that have short-ish file
+names. If you're working with a monolith, maybe not.  Fuzzy finding with the
+first letter of each camel-cased word in a class name can be really helpful for
+monoliths.
+
+The second tip is explaining Vim's built in /ctags/ integration for
+jump-to-definition functionality. Code completion is covered separately in the
+video but ctags supports this as well. Unfortunately it seems like most effort
+in this space is now being dedicated towards [[https://microsoft.github.io/language-server-protocol/][language server protocols]]. The [[https://github.com/rust-lang-nursery/rls][Rust
+Language Server]] is an implementation of the protocol and has [[https://www.ncameron.org/blog/what-the-rls-can-do/][support]] from the
+core team.
+
+Build integration is explained with Vim's =makeprg= configuration variable. This
+is the external program called when invoking =make= from inside Vim. For simple
+cases it's perfectly sufficient. The video goes on further to explain how to
+integrate marked errors with Vim's quickfix list so that you can easily navigate
+them. In general, this needs to be done on a per-language basis, so I agree with
+the speaker that plugins are useful here.
+
+Personally, I've never seen the need for snippets. Maybe I'm just using the
+wrong languages.
+
+That leaves file browsing. The speaker talks about /netrw/, Vim's built-in file
+browser. Unfortunately, netrw isn't the most stable piece of software.  [[https://www.reddit.com/r/vim/comments/22ztqp/why_does_nerdtree_exist_whats_wrong_with_netrw/?st=jcetivby&sh=95ada33e][This]]
+Reddit thread talks about some of the alternatives.  [[https://github.com/scrooloose/nerdtree][NERDTree]] is the most
+frequently recommended and the most popular "project draw"-type plugin.  Such
+plugins are an ongoing point of contention within the community, with those that
+want to make Vim IDE-like and those that say this is unidiomatic and that Vim
+should stick to traditional Unix philosophy: do one thing and do it well. For
+Vim, that's editing text. As such, simpler alternatives have been created like
+[[https://github.com/jeetsukumaran/vim-filebeagle][FileBeagle]] and [[https://github.com/justinmk/vim-dirvish][vim-dirvish]].
+
+*** Deciding what Vim should be
+
+If there's [[https://josephg.com/blog/3-tribes/][three camps of coders]], you can bet there's be multiple views on
+idiomatic Vim configurations. Arguing about it online is all well and good to
+see different opinions and help you decide which camp you sit in. Vim, along
+with its plugin ecosystem, is completely open and that means you can configure
+out however you please.
+
+For me, I want Vim to be /fast/. Thinking back on my usage in the last four
+years, I'm comfortable falling back into the terminal. I used /very/ few of the
+plugins I had installed to their full potential. And yet, seeing that delay when
+opening Vim over and over again /would/ agitate me.
+
+Realising that removes the need for many plugins. Most of us probably use Git
+everyday. Tim Pope's [[https://github.com/tpope/vim-fugitive][fugitive.vim]] tops many "must-have Vim plugins" lists. The
+problem is that the time you spend interacting with Git is not that much
+compared to the time spent reading and writing code. I interact with Git a few
+times per day on average, maybe ten times, but I'm editing code far more
+frequently than that.  Enabling it inside Vim seems unnecessary. Sure it might
+be helpful to see which branch you're on, but do you change branches that
+frequently?  It could be useful to see the modifications in the sidebar like
+[[https://github.com/airblade/vim-gitgutter][vim-gitgutter]] offers, but how often do you actually make decisions based on
+that?
+
+Instead, I think it makes more sense to use a dedicated tool like [[https://jonas.github.io/tig/][tig]]. You can
+think of this like the mode-based philosophy of Vim, but more meta. We were in
+/editing/ mode and now we're in /review/ mode, where we check our changes before
+committing them. This is the workflow I was already using without realising it,
+so it's a natural fit.
+
+We can take this further. During the orientation of learning a new
+codebase, exploring with a file browser is useful. Once you're familiar
+with the codebase though, you'll often just want to jump to specific
+files. You have a mental map of the codebase in your head. Why include a
+file browser then? Instead, we can again use an external tool like
+[[https://ranger.github.io/][ranger]]!
+
+It's likely there are other phases in our workflows that we can delegate to a
+specialised tool. Both tig and ranger have Vim integrations available and
+delegating to them when they are needed feels natural. It keeps Vim snappy and
+focussed on what it's good at.
+
+*** Less plugins, more configuration
+
+Plugins are designed to be applicable to as many people as possible.  They will
+support use cases you may never need. Hence I am also trying to instead take
+ideas from the plugins I like and configure them inside Vim myself. It's a great
+way to learn Vimscript, offers me tailored control on the behaviour, and makes
+sure that every time I benchmark Vim's startup time I know why it's behaving the
+way it is.
+
+[[https://pragprog.com/book/modvim/modern-vim][Modern Vim]] is due for release next month. I /loved/ Drew Neil's previous book,
+[[https://pragprog.com/book/dnvim2/practical-vim-second-edition][Practical Vim]]. Having read it when I'd been using Vim for only a few months,
+much of it went over my head, but it convinced me that the methodology works. I
+will tinker with my configuration for now in the hopes that Modern Vim will soon
+enlighten me much like Practical Vim did before it.
+
+** This Week I Discovered: Tmux                                  :twid:tools:
+   SCHEDULED: <2018-01-21 Sun>
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: twid-tmux
+   :END:
+
+Tmux seems like a natural progression from last week's [[/posts/twid-vim-minimalism][Vim Minimalism]], right?
+It's associated with the typical Vim power user setup. I remember playing with
+it back when I first started using Vim as well. The problem I had was /why/. Vim
+already has panes, what many other applications would call split windows. And if
+you use a tiling window manager like [[https://i3wm.org/][i3]], you have panes at the application level
+as well.
+
+[[https://github.com/tmux/tmux/wiki][Tmux]] fills in the middle ground, operating at the shell session level. When you
+launch =tmux= in a shell session, it will spin up the tmux /server/, launch the
+/client/, and put you in a /session/ with one /window/ and one /pane/. You can
+spawn as many sessions as you want, detaching and re-attaching among them. They
+are independent of each other. Each window belongs to a session and acts similar
+to tabs in other applications. Each pane belongs to a window a controls a
+particular part of the screen. Like sessions, you can spawn as many windows and
+panes as you wish, rearrange them, and move them to other sessions and windows
+respectively.
+
+Why is this useful? Organisation. A key difference between my first trial with
+tmux some years ago and this past week is that I now have a job and work more in
+the shell. Yes, you can achieve this with a tiling window manager, or even
+inside terminals themselves. Both [[https://www.iterm2.com/][iTerm2]] on OS X and [[https://gnometerminator.blogspot.co.uk/p/introduction.html][Terminator]] support panes
+and tabs. But tmux is cross-platform, and configuration portability is a big
+boon if you work on multiple machines.
+
+*** Making it work for you
+And configurable it is! Read through the man page and you'll see all the
+possibilities. Look online and you'll see all the people taking advantage of
+that. Perhaps too far sometimes. Vanilla tmux can be unwieldy, but with only a
+few modifications it can feel very comfortable.
+
+The most obvious modification is to change the prefix key. This is the key you
+need to tap before most tmux keyboard shortcuts, to prevent conflicts with child
+processes. By default it's mapped to =Ctrl-B=. Many recommend mapping it to
+=Ctrl-A=, which matches the prefix key for [[https://www.gnu.org/software/screen/][GNU Screen]], a much older terminal
+multiplexer. I don't recommend this because it conflicts with Vim's number
+incrementation. Maybe that's okay because it's not the most common of
+keystrokes, but [[http://vim.wikia.com/wiki/Unused_keys][=Ctrl-S= is free]]! Given it's just one more key over I think this
+binding makes far more sense. Time will tell.
+
+If you're playing around with your config, adding a mapping that calls
+=source-file= with your config as an argument is invaluable so that you can
+quickly test out changes. Adding more vi-like pane-selection mappings is useful,
+as is more vi-like copy-mode behaviour like explained [[https://sanctum.geek.nz/arabesque/vi-mode-in-tmux/][here]].  A particularly
+great mapping is window reordering. I'm surprised this isn't in more configs
+online because it's insanely good! I found it in [[https://superuser.com/a/552493][this answer on superuser]], but
+tweaked it so that it supports repeated keys and forces you to use the prefix
+key.
+
+#+BEGIN_SRC tmux
+bind-key -r S-Left swap-window -t -
+bind-key -r S-Right swap-window -t +
+#+END_SRC
+
+Otherwise I try to keep other mappings and remappings to a minimum. Many suggest
+to remap the window split commands, like remapping a horizontal split from
+=<prefix>%= to =<prefix>|=, but I find the visual association unnecessary. I've
+only been using tmux for a week and have already gotten used to the default.
+
+In a similar vain, I've kept my status bar minimal. It only contains the session
+name and the window list. The current window is highlighted and activity in an
+inactive window causes the window index display to change colour. It's clean and
+out of the way.
+
+The remainder of my config is specifying consistent colours across the status
+bar, pane borders, pane information display and clock. Yes, you can press
+=<prefix> T= to get a full-pane clock display! Another reason it doesn't need to
+be in the status bar. Enabling =renumber-windows= is useful if you have large
+sessions with short-lived windows. Changing =base-index= and =pane-base-index=
+to 1 will make it easier to select them with the number keys, rather than
+reaching over for =0=. I've also set the status bar to appear to top because it
+can get pretty cluttered down south when vim is also running.
+
+*** Notice your habits
+
+Keegan Lowenstein wrote a great [[https://blog.bugsnag.com/tmux-and-vim/][blog post]] on Vim integration with tmux. One the
+tools he mentioned is [[https://github.com/benmills/vimux][vimux]], a Vim plugin that allows you to interact with tmux
+from inside Vim. This is next on my list of things to play around with. Vim
+already has pretty good shell integration, so I'm sceptical, but his example of
+the edit-test-repeat loop and how vimux can help with it is pretty convincing.
+
+If you have a similar workflow that is as common, then by all means you should
+make it easier to perform. Tools like vimux can help, as can a better
+understanding of tmux. Maybe down the road you notice it would be great to
+always have on-screen vision on the output of a particular shell process. Tmux
+supports this out of the box and you can easily add that to the status bar.
+
+The week wasn't entirely smooth sailing. I've had trouble getting user-defined
+options working. These are options that are prefixed with =@=. I want to keep my
+colour scheme consistent in the file so declaring a custom option would be
+ideal. It could also be interesting to only show the status bar when the prefix
+key is pressed, and make it vanish again when the subsequent key is
+pressed. This seems pretty difficult with tmux alone, but I'm sure it's possible
+through shell scripting.  After all, the status bar can be toggled in this way.
+
+It can pay off in the long run to keep the configs for new tools small to begin
+with. Only use what you know will give you benefit and add more as time goes by
+and you discover new things. It's much easier to maintain when you've added
+every line for a reason!
+
+/Closing tip/: use =<prefix> Z=! This /zooms/ the active pane to take up the
+full size of its containing window. Use the same binding to revert the original
+layout. It's great for temporarily getting the big picture if you're working on
+a smaller screen.
+
+** This Week I Discovered: CliftonStrengths                    :twid:reading:
+   SCHEDULED: <2018-01-28 Sun>
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: twid-clifton-strenths
+   :END:
+
+I came across [[https://www.ted.com/talks/scott_dinsmore_how_to_find_work_you_love][this talk]] by Scott Dinsmore. It's geared towards those who feel
+trapped trapped in their current circumstances, yet my main take-away was his
+recommendation on StrengthsFinder 2.0, now called CliftonStrengths. I took the
+plunge and bought it since this isn't the first time it's been recommended.
+
+The book itself is only half of what you're getting as the back sleeve includes
+a code you can use to take the online assessment. It will tell you your top five
+strengths, of 34, that were devised by this system after you answer 177
+Likert-type questions. Rather than mitigating your weaknesses---which the book
+claims modern society promotes---you can purportedly get a better return on
+investment for your time by focusing on improving these strength traits.
+
+The book includes a useful analogy. If you spend a lot of time (say a /10/ in
+effort) honing a skill you have little talent in (say a /3/), then you're
+effectively as skilled as someone who puts in little effort (a /3/), but has
+natural talent (a /10/). That is, the relationship is commutative. To get the
+biggest returns, you need /both/ talent and effort investment. Hence, it
+suggests you should focus on what you're already good at.
+
+*** The themes
+The 34 themes aren't things like analytic ability, strength with numbers, or
+drawing skill. The book claims these are inherently learned skills that require
+knowledge and practice. Instead these themes are /consistency/, /discipline/,
+/empathy/, /focus/, and /ideadation/.  /Communication/, /positivity/ and
+/self-assurance/. /Harmony/ and /responsibility/. They operate on a higher
+level.
+
+Each theme has a detailed description, a list of action points to take away, and
+how to work with people who possess them. However, the book recommends that you
+first take the online assessment before reading the theme descriptions, perhaps
+not to influence you.
+
+*** The online assessment
+I was convinced, and keen to take the assessment, but the excitement didn't
+last. It is hard to maintain focus for 177 questions, especially because you are
+timed and only given a maximum of 20 seconds for each.  The whole thing took a
+little under an hour to complete.
+
+The questions themselves are odd. They are not along the spectrum of /strongly
+agree/ to /strongly disagree/. Instead both sides of the spectrum are /strongly
+agree/, with two different phrases on each side.  This wouldn't be an issue if
+the statements were opposites, and in some cases they are, but /most are
+not/. Often the statements were completely unrelated. If I disagreed with both,
+then I could simply select /neutral/, but that only happened once. Much more
+often was the case where I agreed with both statements on the scale, in which
+case I had to pick whichever I felt stronger about, but that is difficult when
+they are unrelated topics, when you only have 20 seconds to answer, and when
+you've already answered dozens of questions like that already.
+
+Safe to say, I was discouraged upon completing the test. I wasn't sure on what
+exactly it was assessing. My results only confirmed that. My top five theme
+descriptions had familiarity, but I would only consider one of them to be
+strength. Another I would consider to be a weakness, determined from my own
+introspection and feedback I've had in the past.
+
+*** Improving my mental models
+I read somewhere before that reading needn't be about remembering facts and
+methodologies, but instead to adjust our mental models of how things work. I
+took the opportunity to finish the book, reading through all 34 themes. Some of
+them resonated with me far more than the five I was given.
+
+Therein lies the value for me. It's given me awareness of traits I never thought
+were an asset, and a few ideas on how to leverage them. No online assessment
+will be able to know you like you know yourself, but that doesn't invalidate the
+premise behind the classifications.
+
+As I write this, I'm in the process of going through all 34 themes and, one by
+one, writing a paragraph on how I think the theme applies to me based on
+evidence of past actions and behaviour. Then I am grading this applicability to
+me on a five-point scale. The final ordering should give me a roadmap for the
+strengths I have the greatest potential to develop.
+
+** This Week I Discovered: Vasovagal Syncope                  :twid:wellness:
+   SCHEDULED: <2018-02-04 Sun>
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: twid-vasovagal-syncope
+   :END:
+
+I sprained my ankle during the week before last. Walking was painful for the
+subsequent few days but it was manageable. The pain was moderate but
+tolerable. Then this past Tuesday I fainted! And it's related.
+
+The medical professionals tell me that I'm completely healthy, and what happened
+to me is a case of /vasovagal syncope/.  [[https://www.mayoclinic.org/diseases-conditions/vasovagal-syncope/symptoms-causes/syc-20350527][Vasovagal syncope]] is fainting because
+of your body overreacting to certain triggers. One of these triggers is pain,
+and it needn't even be severe pain!
+
+In my case, it happened about 20 minutes after I woke up. The first time I put
+weight on my ankle every morning still hurts, but on that morning it caused me
+to feel nauseas, faint---luckily only into a table, and the only damage is a
+little scratch on my neck---and come-to in a cold sweat.
+
+The cause is a lowered heart rate and blood pressure that lasts only a few
+seconds, but this is enough to stop feeding oxygen to your brain and cause you
+to black-out. You can prevent it by lying down immediately, so that blood can
+reach your brain more easily.
+
+This is the first time I've fainted and, whilst a little scary, was educational
+more than anything else. It's fascinating to know how your body responds to
+certain predicaments, and how you can respond to those responses when they're
+not ideal.
+
+* Software Development                                             :@softdev:
+** Grokking Entity-Component-Systems                        :softdev:gamedev:
+   SCHEDULED: <2018-01-03 Wed>
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: grokking-entity-component-systems
+   :END:
+
+I've spent many commutes in the last few months learning the intricacies of
+[[https://github.com/slide-rs/specs][Specs]], an entity-component-system (ECS) written in Rust and, to be more broad,
+ECSs in general. ECSs have proved to be a much deeper topic than I had initially
+anticipated. Now I'd like to explain my findings in order to solidify that
+knowledge.
+
+ECSs are a decoupling pattern. They're most frequently seen in game development
+where we often have many similar yet distinct types of /game objects/. Games are
+effectively giant state machines and it can be hard to create an object-oriented
+hierarchy that represents this. ECSs instead implore the use of data-driven
+programming, with components representing the data to be acted on, systems
+acting on those components to mutate them, and entities linking components for
+each game object.
+
+*** High level design
+There isn't clear consensus on /how/ one should go about building an
+ECS. They're enough of a high-level concept that implementation details can be
+optimised to a particular use case. But there are clear themes, which I've
+included here, as well as design decisions that I found particularly
+interesting.
+
+The first revelation is that entities needn't be fat. Entities represent a game
+object, like the player. You may think a /player/ object must be complex,
+composed of many other objects like hardware input, a hit box for collision
+detection, and a sprite. Not so. Instead it can be just a unique ID.
+
+As for these other objects that compose a player, they are components.  Ideally,
+components should only contain primitive types. It is vital that we are able to
+retrieve the component instance for a particular component and for a particular
+entity efficiently (/O(1)/), because these operations will make up most of the
+game loop, as you'll see shortly. We accomplish the first part by storing each
+type of component in a different collection. For example, all positions for all
+entities will be stored in one collection and all sprites will be stored in
+another. How the second requirement is fulfilled depends on the underlying
+storage medium.
+
+For a map data structure, it's simple because lookup for a given ID (the entity
+ID) will always be amortized to constant time complexity. But maps have
+overhead. For example, the hashing function must be ran on every insertion and
+lookup for hash maps.
+
+For arrays, we could insert the entity at an index that matches its ID.  The
+problem here is that the array must be as large as the largest entity ID. This
+brings a distinction between /hot/ components which we'll likely have many of,
+like entity positions, and /cold/ components which we may only have a few of,
+like the keyboard input context. In general, arrays are a better storage medium
+for hot components and maps are better for cold components, though other data
+structures exist and may suit your particular use case more. This binary
+division may also not create enough granularity for your use case.
+
+Efficient lookup is vital because we will need to iterate through these
+collections in our systems. We could have a /MovementSystem/ that adjusts an
+entity's position based on its velocity. This system must iterate through all
+components in the velocities collection (probably an array because we would
+expect there to be many entities that have a velocity component) and join on the
+indexes that also exist in the positions collection. Ideally the API should
+seamlessly expose this join, because it's generic across all systems and all
+components. All the system cares about is being provided components that it
+needs to act upon that belong to the same entity. This keeps the system
+small. It should only include the logic to mutate a position given a velocity.
+
+Structuring the code this way gives a clear decoupling benefit. What may not be
+as clear is the performance benefit. Remember that components should ideally
+only contain primitive types, and appropriately abstracted components should be
+as small as possible. This means their collections should also be small in terms
+of memory. We can then take advantage of the CPU caches. If our position
+component is simply a coordinate with two 64-bit floating point components, an
+/x/ component and a /y/ component, we could have as many as a few thousand
+position components and still fit comfortably in the L1 cache, not to mention
+the L2 and L3 caches for more realistic collection sizes.
+
+*** A Rust implementation with Specs
+
+Specs relies on another crate called [[https://github.com/slide-rs/shred][=shred=]], used for shared resource
+dispatching. This in turn relies on a crate called [[https://github.com/chris-morgan/mopa][=mopa=]]. Let's start there and
+work our way backwards.
+
+=mopa=, or /My Own Personal Any/, allows you to covert an object that implements
+a certain trait into the concrete object, known as downcasting. This emulates
+downcasting on the [[https://doc.rust-lang.org/std/any/trait.Any.html][=Any=]] trait in the Rust standard library.
+
+=shred= uses this for storing arbitrarily-typed structs. What we were calling a
+component above, =shred= calls a /resource/. Its =Resource= trait is implemented
+for all types that adhere to Rust's borrowing model, all those that implement
+=Any + Send + Sync=, but this =Any= is =mopa='s =Any=, not the standard library
+=Any=, which means we can only downcast our own =Resource= s, but that's all we
+need. You can see this in the [[https://github.com/slide-rs/shred/blob/master/src/res/mod.rs][=res=]] module of =shred=.
+
+A neat optimisation is that =Resource= s are stored in a =FnvHashMap=.  This uses
+the /FNV/ hashing algorithm instead of the default /SipHash/ algorithm. The
+former is faster when using smaller keys, but is less secure. This is perfectly
+acceptable in this instance because our keys are just unsigned integers (wrapped
+in [[https://doc.rust-lang.org/std/any/struct.TypeId.html][=std::any::TypeId=]], itself wrapped in =shred='s =ResourceId=). Benchmarks can
+be found [[http://cglab.ca/~abeinges/blah/hash-rs/][here]].
+
+=shred= revolves around its =Fetch= and =FetchMut= structs. These are
+effectively wrappers for [[https://doc.rust-lang.org/std/cell/struct.Ref.html][=Ref=]] and [[https://doc.rust-lang.org/std/cell/struct.RefMut.html][=RefMut=]] from the standard library,
+respectively. =Ref= and =RefMut= are in turn the wrappers for objects contained
+within a [[https://doc.rust-lang.org/std/cell/struct.RefCell.html][=RefCell=]] when it is /borrowed/.
+
+=RefCell=s are used when we want to enforce Rust's borrowing rules at runtime
+rather than compile time. These rules, at their core, are that we can only have
+one mutable reference to an object at a time, or multiple immutable references
+to it. As such, we can have only have one =FetchMut= reference to a resource at
+a time, or multiple =Fetch= ones.  When we want to read a component, we specify
+a system with a =Fetch= of that same type. We do the same for components we want
+to modify, but use =FetchMut= for those instead.
+
+A really ergonomic feature of this API is that you declare the components a
+system corresponds to with a tuple. This allows you to include as many read or
+write resources in a system as you want...  almost. There's a [[https://github.com/slide-rs/shred/blob/master/src/system.rs#L215][=hard limit=]] of
+26, though systems should never reach close to that number in practice.
+
+That's the crux of how =shred= is working under the hood. Check the project's
+[[https://github.com/slide-rs/shred/blob/master/README.md][README]] for example usage.
+
+Specs fine tunes this model specifically for ECSs. Its API uses terminology
+that's more familiar. All structs that our systems want to work on must
+implement the =Component= trait. The tuple that defines the components our
+systems work on accepts =ReadStorage= and =WriteStorage= types instead of
+=Fetch= and =FetchMut=. It also introduces different storage strategies like
+=VecStorage= and =HashMapStorage=, with the same nuances described in the
+previous section.
+
+*** Demonstration
+Theory only goes so far. We want a result. Let's follow along with the examples
+above. We'll create an ECS that modifies an entity's position according to it's
+velocity. Rather than just show numbers being affected, let's actually show the
+entity moving across the screen. We'll use SDL2 for events, rendering and window
+management.
+
+The following application was built with these crates:
+
+- sdl2 (0.31.0)
+- specs (0.10.0)
+- specs-derive (0.1.0)
+
+First we declare out components. This includes a sprite component that wraps
+SDL2's =Rect= struct. SDL2 makes it easy to render =Rect=s to screen.
+
+#+BEGIN_SRC rust
+#[derive(Component)]
+struct Position {
+    x: f64,
+    y: f64,
+}
+
+#[derive(Component)]
+struct Velocity {
+    x: f64,
+    y: f64,
+}
+
+
+#[derive(Component)]
+struct Sprite(Rect);
+#+END_SRC
+
+Then we declare out systems. The first one is to update the position of an
+entity given its velocity.
+
+#+BEGIN_SRC rust
+struct MovementSystem;
+
+impl<'a> System<'a> for MovementSystem {
+    type SystemData = (
+        Fetch<'a, Duration>,
+        ReadStorage<'a, Velocity>,
+        WriteStorage<'a, Position>
+    );
+
+    fn run(&mut self, data: Self::SystemData) {
+        let (dt, velocities, mut positions) = data;
+
+        for (vel, pos) in (&velocities, &mut positions).join() {
+            pos.x += vel.x * dt.subsec_nanos() as f64 / 1_000_000_000.0;
+            pos.y += vel.y * dt.subsec_nanos() as f64 / 1_000_000_000.0;
+        }
+    }
+}
+#+END_SRC
+
+This matches the logic described prior. The only difference is that we also
+include a /delta time/ input value. This represents the amount of time that has
+passed from one frame to the next. We need this because we don't have control on
+exactly when our function will be called again. We can aim for a target, say, 60
+times per second, but we'll never hit that exactly. It may only be a few
+milliseconds off here and there, but that adds up the longer the game is
+running. Pretty quickly we would have vastly inaccurate positions if you don't
+scale them like this!  [[https://gafferongames.com/post/integration_basics/][Integration Basics]] by Glenn Fiedler explains why this
+happens.
+
+The other system we need converts logical world coordinates to screen
+coordinates.
+
+#+BEGIN_SRC rust
+struct RenderSystem;
+
+impl<'a> System<'a> for RenderSystem {
+    type SystemData = (ReadStorage<'a, Position>, WriteStorage<'a, Sprite>);
+
+    fn run(&mut self, data: Self::SystemData) {
+        let (positions, mut sprites) = data;
+
+        for (pos, sprite) in (&positions, &mut sprites).join() {
+            sprite.0.set_x((pos.x * PIXELS_PER_UNIT) as i32);
+            sprite.0.set_y((pos.y * PIXELS_PER_UNIT) as i32);
+        }
+    }
+}
+#+END_SRC
+
+Using logical world units for an entity's position frees us from the details of
+our rendering process. When it comes to rendering, we simply scale the position
+by a constant factor to get screen coordinates, which is used by our sprite for
+rendering.
+
+Almost there. We now need to hook this all up to the =World=, which manages the
+entities.
+
+#+BEGIN_SRC rust
+let mut world = World::new();
+world.add_resource(Duration::new(0, 0));
+world.register::<Position>();
+world.register::<Velocity>();
+world.register::<Sprite>();
+
+let initial_pos = Position { x: 2.0, y: 2.0 };
+let initial_vel = Velocity { x: 1.0, y: 0.0 };
+let sprite = Sprite(Rect::new(
+        (initial_pos.x * PIXELS_PER_UNIT) as i32,
+        (initial_pos.y * PIXELS_PER_UNIT) as i32,
+        32,
+        32
+));
+world.create_entity()
+    .with(initial_pos)
+    .with(initial_vel)
+    .with(sprite)
+    .build();
+
+let mut dispatcher = DispatcherBuilder::new()
+    .add(MovementSystem, "movement_system", &[])
+    .add(RenderSystem, "render_system", &["movement_system"])
+    .build();
+#+END_SRC
+
+It's then just one line to update all of our entities.
+
+#+BEGIN_SRC rust
+dispatcher.dispatch(&mut world.res);
+#+END_SRC
+
+Of course, we need some additional infrastructure around this. The above line
+should belong in the application run loop. That loop should also contain input
+handling and rendering to a hardware context.
+
+You may be able to implement those as systems as well, but at some point you
+will hit a boundary where the objects are too large. This will often be with
+input and output. Rendering to screen is a complex process, and should probably
+be done outside of the ECS. This demonstrates that ECSs are not appropriate for
+the entire application, particularly on the boundaries, but still very useful
+for internal logic that we have full control over.
+
+If you would like to learn the details of run loops, check out [[https://gafferongames.com/post/fix_your_timestep/][Fix Your
+Timestep!]] It's probably the most quoted article on the subject and does a fine
+job explaining the various approaches.
+
+*** Results
+[[https://gist.github.com/kwyse/1d6be3de1c95d05502e10b6dba3cc6be][Gist of the source code]]
+
+The above includes the simplest kind of run loop with a fixed time step of
+1/60th of a second. The results are hopefully a white square moving across a
+black abyss.
+
+[[/images/grokking_ecs_result.gif]]
+
+There are many ways to improve this. You could use a more sophisticated run loop
+that can handle variable time steps. Or you could use the parallel iterators
+offered by Specs to improve performance. It's probably a good idea to better
+define the boundaries of our ECS explicitly as well. Modularise all of that and
+you have the beginnings of a game!
+** On Fundamentals                                                  :softdev:
+   SCHEDULED: <2018-03-28 Wed>
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: on-fundamentals
+   :END:
+
+A recent vacation gave me time to catch up on my backlog of books.  [[http://www.stopguessingbook.com/][/Stop
+Guessing/]], by Nat Greene, was my first target. It's a book about the tendency to
+guess solutions when faced with hard problems, and instead proposes a rigorous,
+fact-backed and systematic approach to problem solving. There is a chapter
+dedicated to understanding the fundamentals of the problem space that was
+particularly poignant to me.
+
+If we define a hard problem as simply something that is resistant to guesses,
+impactful and yet hard to isolate and reproduce, then they're not uncommon in
+the life of a software developer. But computers are deterministic. They
+shouldn't possess these qualities, and indeed they don't, but software does. I
+think one reason for this is the easiness of adopting a given abstraction.
+
+Abstraction is a pillar of computer science. You're taught it from your first
+foray into the field, and many of the mechanisms that feel natural to us support
+it, from dependency managers to the humble function. It's necessary because
+cognitive load without it would simply be too great.  But with this
+proliferation, where is the guarantee that we're using /good/ abstractions?
+
+You need to have trust that you are. You trust that a vendor package, a piece of
+hardware, or a third-party service doesn't have a security vulnerability, or
+illicit data collection, or even just poor performance. You do this because it's
+impractical to build a product from first principles. By giving up control,
+you're getting encapsulated units of value in return. It's a compromise that the
+modern world is built on, but I'm not sure that it's always fully appreciated.
+
+By losing that control, you relinquish understanding of the underlying
+system. You make decisions based on inferred facts rather than reality.  To
+bring order, out come dogmatic processes on coding style, design patterns,
+architectural patterns, usage practices; all themselves further abstractions on
+underlying principles that are effectively static.
+
+*** Trends as a solar system
+The JavaScript ecosystem is known for framework proliferation. It's often noted
+how hard it is to keep up with the latest and greatest, but I wonder how much of
+this is self-imposed.
+
+Imagine a star with two planets orbiting it. Most of us in industry reside on
+the outer planet. We work with higher level abstractions, and we travel great
+distances to keep up with the latest trends. These trends come back around, but
+our solar cycle is so long that we struggle to remember the lesson learnt from
+old cycles, and we must relearn.
+
+The inner planet is the residence of lower-level abstractions. They too have a
+cycle, but a much shorter one, and can build on their knowledge because their
+solar cycle is much less.
+
+And then you have the star, representing the underlying mathematics, eternal and
+everlasting. This state changes very slowly, only when new fundamentals are
+discovered, but we don't lose knowledge. The star only ever grows.
+
+*** To build, or to understand
+There is a clear dilemma here. If a solution is sufficiently abstracted to
+remove surface-level problems, and is easy enough to integrate, how can it make
+business sense to forgo that solution and build another one from first
+principles?
+
+In many (all?) situations, it can't, but we don't live in this two-planet
+system. We have the freedom to choose the level of abstraction that we feel is
+appropriate.
+
+Instead of always grabbing for the quick solution, I think it's vital to
+understand what is lost. On one extreme, we have a perfectly-packaged solution
+that precisely meets out needs, /at the current time/.  Maintenance and
+extensibility is another story. At the other extreme, we have a solution from
+first principles, probably too expensive beyond measure and one that wouldn't be
+completed within our lifetimes, but one that everyone could understand given
+they all had knowledge of the fundamentals, the pieces that are common to all
+because they're so simple.
+
+Think carefully about where you want your project to sit on that spectrum.
+
+*** Learn, then understand, then build
+Whilst the ideal may be impossible to achieve, I think striving for it is still
+worth while. Thinking of it in terms of "relative" fundamentals, or
+de-abstracting insofar as practical, may be helpful. By educating yourself on
+the fundamentals, you're in a better position to make decisions for the layers
+on top of it. Your design will take advantage of the underlying processes.
+
+This will be time-consuming. The abstractions are there for a reason.  But
+mastery of any field requires a deep understanding of its building blocks. And
+because of the way computer science has developed over the decades, resources
+are numerous.
+
+I recently acquired a copy of [[https://www-cs-faculty.stanford.edu/~knuth/taocp.html][/The Art of Computer Programming/]], a book on
+classical computer science. It still sells well to this day, despite being first
+published in the 1960s! I think that's a testament to the fact that the
+fundamentals are timeless, and that they're worth learning. I'm taking my time
+with it, reading it alongside complimentary material. Regardless of your chosen
+passion, you can always obtain a deeper understanding of its component
+parts. And so far for me, doing that has been a real pleasure.
+
+* Wellness                                                        :@wellness:
+** Five Month's Into the Hacker's Diet                             :wellness:
+   SCHEDULED: <2018-01-25 Thu>
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: five-months-into-hackers-diet
+   :END:
+
+I've always had weight problems. Only in recent years has it gotten under
+control and landed me comfortably in the overweight category, like I was last
+summer. It wasn't life threatening but it wasn't ideal either. For the most part
+it was stable, and I was stable living with it. Yet it only took one comment
+from a work colleague, one with harmless intention, to change my mind on that.
+
+Sometime in early August, I same across the [[http://www.fourmilab.ch/hackdiet/][Hacker's Diet]] and finished it within
+a week or two. You can find the full text available online. The book is directed
+towards engineers and approaches the human body like a machine, one with inputs
+and outputs. A machine that you can tune to get the results you want. It's quite
+contrary to other diet books that suggest slow and methodical lifestyle
+changes. Instead it asks you to measure everything, monitor consistently, and
+reassess constantly with the information you have. It's a feedback loop that, so
+far, has been effective.
+
+*** The Eat Watch
+The eat watch is the centrepiece introduced in the book. The premise is that
+some of us are predispositioned to eat more (or less) than our body needs
+because we don't receive the "full" (or "hungry") signal in time, or at all. The
+eat watch is an imaginary accessory that lights up when you should eat and turns
+off when you shouldn't. Hence, you're relying on your watch rather than your
+body for the information.
+
+In reality, the eat watch manifests itself in calorie counting and eating
+prepared meals. The goal is to count everything. As noted in the book, eating a
+few slices of cheese in the evenings can amount to a weight gain of 0.6
+kilograms per month. Being aware of seemingly-inconsequential snack-eating is
+very powerful. If you monitor /everything/ then you don't need to think about if
+you're overeating or undereating.
+
+I monitored calorie intake with prepared meals. Thankfully I don't get bored of
+eating the same food day in and day out. If you do, that's okay too. You just
+need to be aware of the calorie contents of the different meals. Averaging them
+over the weak may help ease calculations. All you need are the daily totals of
+your calorie intake, and weekly if you want to plot trends.
+
+*** Burning fat by undereating
+This is controversial. Every single friend, family member and
+physician/nutritionist/personal trainer I have ever spoken to has recommended
+against this. They say that going under your recommended calorie intake by any
+significant amount will force your body into "starvation mode" and that once you
+stop you will put all the weight back on, because your metabolism will be so
+slow. On top of that, you'll be miserable, unproductive at work, always tired,
+and unable to get results from exercise.
+
+I have found most of this to be untrue. Let me clarify what my significant
+amount was. I'm a 179cm-tall 24-year-old male. From online research, talks with
+nutritionists, and my own experimentation, I should be eating around 2400
+calories per day to maintain my weight. Instead, I was 1600 calories some days
+and 1200 calories other days, by skipping dinner, during the peak of this diet.
+
+This, in my opinion, is the best lesson in this book. I never would have dared
+attempt a calorie deficit that large prior to reading it. The experience was not
+nearly as bad as people suggest. I was not miserable, because I was working
+towards a goal that was important to me, and I was never at risk of feeling
+guilty from eating. I didn't feel less productive at work and nobody every
+confronted me about it. I was no more tired than usual, sometimes less so, which
+I put down to not feeling as bloated.
+
+Maintaining your metabolism is tricky and you need to be careful.  Thankfully
+the book introduces a plan for that as well.
+
+*** The Five Basic Exercises
+Back in the 1950s, the Royal Canadian Air Force developed a training regime for
+pilots stationed on remote air bases that wouldn't have had access to gym
+equipment. The regime needed to rely exclusively on bodyweight exercises and be
+able to keep someone in optimal condition in minimal workout time. The regime
+was called /5BX/ and you can find the plan [[http://fit450.com/HTML/5BX_Intro.html][online]].
+
+The book contains its own plan modelled after 5BX, but I decided to stick with
+the original. I think the details of the plan are less important than just
+/doing exercise regularly/, preferably everyday. 5BX can be completed in 11
+minutes. I did it every morning just after waking up. On top of that, I went to
+the gym on Saturdays and Sundays and do cardio and weights. With that level of
+activity, my metabolism had a hard time slowing down.
+
+*** Results
+The best test for a slow metabolism is the holiday season! I stopped heading to
+the gym around mid-December, but I continued with my 5BX workout everyday. And I
+was eating whatever I wanted. Granted, I wasn't reckless, and rarely went over
+3000 calories on a given day, but I stopped following my eating plan and relaxed
+my constraints on the types of food I was allowed. Cake, crumble and cranberry
+sauce were all on the table.
+
+This was a conscious choice. When I started the plan back in August, I was about
+87 kilograms. I wanted to be 72 kilograms, which seemed like a good weight for
+my height and build. I decided to aim for that by Christmas. I was aware that
+this goal was ridiculously ambitious but worked towards it anyway. I needed to
+lose 15 kilograms and that would give me about 15 weeks to do it. One kilogram
+of body fat is equivalent to 7700 calories, meaning I would need to have a daily
+calorie deficit of 1100 calories, so a daily calorie intake of 1300 calories on
+average.  If I had a perfect run, that is certainly possible to hit.
+
+[[/images/hackers_diet_five_months.png]]
+
+I didn't hit it, but I made a big dent. This is a plot of my progress.  The blue
+line is my actual weight as recorded every morning. I started the eating plan in
+mid-August and started weight measurements on the 27th of August. The two
+periods of flat recordings in late September and late November are when I was on
+vacation and didn't have access to a weighing scale. The red line is an
+exponentially smoothed moving average with 10% smoothing. Provided the red line
+is declining, weight is decreasing. The red line helps smooth out the variance
+present in daily weight measurements and is meant to represent the true weight.
+
+My weight certainly went up in December, but the amount was marginal.  Once
+January came around, I quickly recovered from it. I'm confident that the weight
+increase was down to increased food intake, not a change in my metabolism. I
+started back at the gym on weekends in early January and was able to perform at
+the same level on weights, and near the same level on cardio. I certainly felt
+my chest got weaker over the holiday period because I wasn't running, but don't
+think I lost much muscle mass. I put that down to 5BX, which in many ways saved
+Christmas!
+
+*** Losing that final third
+Maybe I should be 72 kilograms, maybe not. I still think there is potential in
+this plan, but I am now firmly in the period of diminishing returns. My BMI
+shifted from the middle of the /overweight/ category to the upper part of the
+/healthy/ weight category during this chapter of the journey so I definitely
+consider it a success and perhaps even complete.
+
+Perhaps for the first time, weight is not the goal. I have began looking into
+body weight strength training in greater depth. 5BX gave me a different way to
+measure strength training that I didn't have before, namely the number of reps I
+can do. It's a different mindset to using exercise machines where the weight can
+be arbitrarily adjusted to be challenging. Sure it feels good to be able to
+chest press more weight, but being able to do just one more press-up has given
+me more satisfaction.
+
+The recent [[https://www.humblebundle.com/books/work-it-out-books][Work It Out]] Humble Bundle contains a lot of food for
+thought. Included were a few body weight strength training books, diet books and
+mindfulness books. I've began reading /Body Weight Strength Training/, which
+contains a workout plan in a similar vain to /5BX/ but across 40 different
+exercises. I've spent the last few weeks getting used to them all. Now that I'm
+a healthy weight, I want to focus on building functional strength rather than
+weight loss. There is a lot to think about where to go from here, but I'm happy
+about the progress made thus far.
+
+* Reading                                                          :@reading:
+** Book Recommendation: Programming Rust
+   SCHEDULED: <2018-02-18 Sun>
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: book-recommendation-programming-rust
+   :END:
+
+Most of us can agree that Rust's learning curve is steep. I've been using it for
+hobby projects for the last few years but I'm still hesitant to use it when I'm
+constrained /by a deadline/, because of the upfront cost in development
+time. And that's frustrating, because I really believe that the benefits it
+offers outweigh that.
+
+[[http://shop.oreilly.com/product/0636920040385.do][/Programming Rust/]] is included in the latest Humble /Functional Programming/
+[[https://www.humblebundle.com/books/functional-programming-books][book bundle]]. Take a look on [[https://www.amazon.com/product-reviews/1491927283/ref=cm_cr_dp_d_cmps_btm?ie=UTF8&reviewerType=all_reviews][Amazon]] and you'll see it's getting some pretty rave
+reviews. It's the first book that's come my way focused on Rust end-to-end.
+
+Personally, I find reading a book like this from cover to cover the best way to
+really /learn/ a language. You need to put it into practice with projects, of
+course, but projects don't teach you idioms, best practices, optimisation areas,
+and language-specific quirks that you should be aware of. Neither does using the
+language day in and day out at work, necessarily. This knowledge comes from
+experts.
+
+Just like [[https://en.wikipedia.org/wiki/The_C_Programming_Language][/K&R/]], /C++: The Complete Reference/, /Java: The Complete Reference/,
+and /Programming Ruby/ before it gave me insight into their respective
+languages, I'm hopeful /Programming Rust/ can continue the trend.
+
+*** Initial impression
+So far it's exceeded expectations! The book is broken down into four sections:
+
+1. Fundamentals: an overview of the language and details of the borrow checker
+2. Language constructs: expressions, error handling, and the module system
+3. Traits and generics
+4. Advanced and use case-specific Rust: IO, concurrency, and =unsafe= code
+
+I've completed the first section, comprising five chapters. The last two
+chapters are about ownership and references respective. They offer the best
+explanations of both topics I've come across.
+
+The ownership chapter explains Rust's move semantics. Comparisons to C++ and
+Python give reasons for why Rust's approach was chosen and the benefits of each
+approach, but also how to recreate the other two in Rust should you need to.
+
+The references chapter explains lifetimes and the rules the borrow checker
+enforces, and repeats them in different scenarios so that they sink in. But by
+far the most valuable part of this chapter are the diagrams explaining how
+references are laid out in memory. They won't come as a shock, as the memory
+model is intuitive and what you would expect, but seeing them illustrates /why/
+the borrow checker complains when it does. These diagrams have been the
+highlight of the book thus far.
+
+I'm satisfied that my understanding of Rust has already increased dramatically
+as a result of reading the first section. Given that the second section is
+mostly what the [[https://doc.rust-lang.org/book/][official book]] in the Rust documentation covers, I skipped
+it---for now---and went straight to section three. Traits are everywhere in
+Rust, yet they don't get extensive explanation in the official book. I'm glad to
+see that an entire section was dedicated to them in /Programming Rust/.
+
+Unfortunately, some things are still skimmed over. For instance, the
+relationship between trait objects and static methods is mentioned but not
+elaborated upon. The book mentions the details are tedious, and implies they are
+of little consequence, but it left me wondering.  Perhaps I will have a clearer
+picture on this intricacy at the end of the book. Perhaps details are included
+in the section I skipped over, or elaborated upon later in the book, so I'm wary
+to consider this in actual criticism at this point.
+
+*** Where to go from here
+I definitely plan to finish the book. Reading it is a joy. It definitely helps
+if you go in with at least some Rust knowledge, because it ramps up quite
+quickly. If you're at the stage where you understand what Rust does but still
+struggle with the borrow checker and want to understand /why/ it does things,
+the book is targeted at you.
+
+The Humble Bundle is on for another eight days of writing. /Real World Haskell/
+and /Introducing Elixir/ are two other books I've heard good things about and
+keen to look into. They're also included in the bundle.  For $15, it's a no
+brainer!
+
+** Books of 2019                                                      :books:
+   SCHEDULED: <2019-12-29 Sun>
+   :PROPERTIES:
+   :EXPORT_DATE: 2019-12-29
+   :EXPORT_FILE_NAME: books-of-2019
+   :END:
+
+I was a gamer.  Words on a page did not enrapture me to the degree that
+interactive media did.  Symbiosis between the visual, aural, narrative, and
+interactive was beauty itself.
+
+That's not to say I didn't read.  Games have their fair share of text, but I had
+trouble maintaining focus when reading physical books.  In fact, the first five
+/Harry Potter/ books are the only fiction books I can recall reading in my life
+prior to graduating from university.  I read these when I was eleven, shortly
+before the sixth book came out, which I bought but never finished.
+
+Curiously, this lack of attention didn't translate to most other forms of
+reading.  Textbooks didn't pose a problem---they were even enjoyable---and I
+spent entire evenings getting lost on Wikipedia reading disjoint topics
+inapplicable to my life at the time, both real and fictitious.
+
+My aversion to books began bothering me more after university.  People would
+speak of the joy, heartbreak, escapism, feeling, and /meaning/ that they would
+find in books.  I wanted to know what that was like.
+
+I became aware of potential causes for a lack of focus when reading.  The desire
+to read a book "perfectly".  Reading OCD.  Justifying the time investment.
+Justifying the effort investment.  I tackled these mainly through forced
+exposure.
+
+/Game of Thrones/ had been causing a raucous for a few years.  I knew that the
+book was well regarded, even if it was the TV series that everyone seemed to be
+gaping over.  I gave it a shot, finished it, and enjoyed it.  This was in 2015,
+and through the remainder of that year and 2016 I read the next four books.
+
+A /reader/, I was not.  The hobby was still strictly on the sidelines.  But I
+was less afraid to pick up books now.  In 2017 I branched into science fiction
+with /Rendezvous with Rama/ and /Leviathan Wakes/.  In 2018, /Northern Lights/.
+That wall in my mind that represented book reading as an unpleasant and
+laborious activity---one that I had reinforced for many years---was slowly
+crumbling.
+
+But it was this year, in 2019, that it got wiped off of the map.
+
+*** The Rational Male, by /Rollo Tomassi/
+It's December 2018.  It's almost Christmas.  People are enjoying themselves.
+I'm in the pub.  I'm single.  My friend might have been single.  Sometimes it's
+hard to keep track. "Hey buddy, you should read /The Rational Male/, by Rollo
+Tomassi. It will /change your life/.  But be warned, go in with an open mind,
+for he has some strong opinions."  Oh please, they're just words and ideas about
+how to get women.  As if they're going to hurt me. Pfff.
+
+It's January 2019.  It's cold, I'm on my couch, and I'm reeling from what I just
+read. I just finished /The Rational Male/.
+
+If you look up reviews for /The Rational Male/, you will find it to a divisive
+book.  I believe I'm a member of the target audience.  With their voice, I can
+say it can also be a damaging book, if one lets it be.  For the following few
+weeks I trudged around in an apathetic haze, bewildered at what I had read,
+blurry-eyed from having my eyes ripped open and forced to view the truth of
+courtship, its games and its deception.  The overriding self-preservation all of
+its pawns feel as they spin their plates or dance their tongues in
+mock-flattery.  The knowledge that I had witnessed this /for years/ and had been
+interpreting it all wrong.  What else was there to do other than sit and bear
+the weight of the red pill?
+
+Then I remembered that this is an opinion of one man---or one community, if I'm
+being generous---and not objective truth.
+
+I didn't get anywhere after reading the book, but then again I didn't put what
+it had to say into practice.  And the book called me out on this.  Either one
+will take what it has to say and wield in the forthcoming slaughter, or one will
+"go their own way."  Either way, their eyes have been opened and they will never
+look at gender dynamics in the same away again.  In this, I think the book is
+correct.
+
+I went my own way, and my eyes were indeed opened.  I've sought the value in
+between the dogma, and it is there.  I identified with its notion of the
+/white-knight beta/.  I support its advocacy of ascertaining people's
+motivations and using their behaviour as the best measure for their intentions.
+But I now know of other books that teach these lessons more succinctly and with
+less bravado.
+
+*** The Subtle Knife, by /Philip Pullman/
+After /The Rational Male/, I wanted to crawl into a hole for a bit.  I looked
+back on /Northern Lights/ fondly and so I had no qualms pursuing the next book
+the /His Dark Materials/ series, /The Subtle Knife/.
+
+This book grows in scope with the addition of a new protagonist.  Pullman's
+unshackled remarks on religious subjugation left me with the slightest
+discomfort in /Northern Lights/, despite my whole-hearted support for his
+sentiment.  I was happy to see it fleshed out further in this book.
+
+*** Ego is the Enemy, by /Ryan Holiday/
+Evidently I still needed some answers that /The Rational Male/ didn't give me.
+It did, however, make numerous references to /The 48 Laws of Power/, by Robert
+Greene, and through researching that I discovered Ryan Holiday, who Greene
+mentored.  /Ego is the Enemy/ was a small and approachable book that changed
+everything.
+
+If /The Rational Male/ showed the ugly side of modern life, /Ego is the Enemy/
+gave me new hope.  A stark difference is its focus on the self.
+Self-improvement, self-benchmarking, self-restraint, and self-love.
+
+It's a book filled with wisdom.  For those left wanting more, Holiday directs us
+to his [[https://ryanholiday.net/blog/][blog]]. There are articles on [[https://ryanholiday.net/how-to-read-more-a-lot-more/][reading more]], [[https://thoughtcatalog.com/ryan-holiday/2013/04/read-to-lead-how-to-digest-books-above-your-level/][reading above your level]], and
+introduced me to the idea of a [[https://thoughtcatalog.com/ryan-holiday/2013/08/how-and-why-to-keep-a-commonplace-book/][commonplace book]].  This final gem is what made
+reading practical for me.  I began taking notes in the books I was reading and
+underlining phrases I found interesting.  I wrote the definitions of words I
+didn't know in the margins.  Once I finished a book, I compiled the notes,
+highlights, and definitions into a compendium for future reference.
+
+Suddenly reading a book, any book, became a tangible way to assimilate
+information.  There was a process in place.  I no longer worried that my eyes
+were reading the letters but that my brain wasn't incorporating the
+information.  My notes were proof of comprehension.
+
+*** Sapiens, by /Yuval Noah Harari/
+I wanted a popular science book that I could sink my teeth into.  One that, once
+finished, would leave me with new ideas I could refer back to, a wider
+vocabulary, and an enriched perspective of the world.  /Sapiens/ had been making
+the rounds in the office for a period in my last job and seemed like a good fit.
+
+It certainly was.  It was filled to the brim with nuggets like:
+
+- Humans are born underdeveloped compared to other animals and this enables more
+  tailored socialisation.
+- [[https://en.wikipedia.org/wiki/Dunbar's_number][Dunbar's number]], a suggested cognitive limit for the number of stable social
+  relationships one can form.
+- The [[https://en.wikipedia.org/wiki/Original_affluent_society][Original Affluent Society]], highlighting how ancient foragers ate wholesome
+  and varied diets, worked short hours and had rare exposure to infectious
+  disease, to contrast with the idea of humanity's supposed increasing prosperity.
+- Wheat is a remarkably successful species from an evolutionary perspective.
+  Cattle too, even if their existence is often short and miserable.
+- Money is essentially a means of establishing mutual trust among strangers.
+- Nothing is "unnatural" if considered from a biological perspective.
+- Knowledge is that which empowers, not that which is true, since truth is often
+  subjective.
+- Supposedly long-standing practices are surprisingly temporary.  Today's
+  consumerism and self-indulgent marketing would have been considered abhorrent
+  not all that long ago.
+
+Perception plays a key theme in this book and is something I find referenced to
+in books throughout the year.
+
+*** Caliban's War, by /James S. A. Corey/
+Far be it from me to say you can't find wisdom in fiction.  There are a few
+interesting themes here.  Post-scarcity, we may move away from the haves and
+have-nots, to the engaged and the apathetic. Cascading failures in software
+aren't going away and still happen in the far future, because any such system is
+intrinsicly subjected to catastrophe.  And that's okay, because catastrophe is
+the prelude for what comes next: renewal.
+
+I was disappointed with the story. It didn't have the set pieces like the first
+book and I missed Miller.  His contrast with Holden was an asset to the first
+book. I wasn't left with a desire to read further into the series.
+
+/Yes, I know the ending should have made me happy, but it wasn't enough./
+
+*** The Amber Spyglass, by /Philip Pullman/
+So let's try the third book of a series I had thoroughly enjoyed.
+
+/The Amber Spyglass/ was the best of the trilogy in a trilogy of good books.
+There was elation and despair, interesting side characters, a grand evolution of
+the mythos, and a fitting finale.  There were also ideas to ponder, on how to
+make up one's own mind on one's purpose, and on the value of suffering.
+
+/The Book of Dust/ is high on my list.
+
+*** Altered Carbon, by /Richard K. Morgan/
+Reading in the first-person takes getting used to.  So does detective fiction.
+Oh, it's also my first cyberpunk book.  This book struck many firsts and hence I
+have little to compare it with.  In places, the book was difficult to get
+through.  I did enjoy it and plan to read the next in the series, but I will
+explore other domains of science fiction first.
+
+*** The Chimp Paradox, by /Dr Steve Peters/
+A work colleague recommended /The Chimp Paradox/ to me after our numerous
+discussions on the role of perceptions on interpersonal relationships.
+
+The book proposes that these perceptions are manifested from two opposing
+entities within one's mind.  The /Chimp/ is the emotional, instinctual, insecure
+interpreter of feelings and operates on body language and social ques.
+The /Human/ is the rational, cognitive, communicative practitioner of
+practicalities.  Much of the book explains how to manage one's Chimp through
+nurturing it, distracting it, letting it have its way in a controlled
+environment, and using irrefutable facts that it cannot argue with to convince
+it of inconvenient truths.
+
+There are a host of supporting characters like /The Computer/, /Gremlins/, and
+/Goblins/ to further help make psychological processes more relatable.
+Archetypal mindsets like that of /Snow White/ and the /Alpha Wolf/ are described
+to give anchoring.  A framework for having difficult conversations is included.
+The nature of stress, both ad-hoc and chronic, is explored.  It ends with
+analysing how to define one's happiness and success.
+
+The book insisted on keeping things at a high level and the science behind its
+assertions is relegated to one of the appendices. Its model is useful but it
+left me longing for a richer examination of these topics.
+
+*** How Not to Die, by /Michael Gregor, MD/
+This was a big one.  I spent numerous journeys on the bus to and from work
+plodding through /How Not to Die/.  Often is was tiresome, often downright
+repetitive, but well worth it once I reached the end because it changed so much
+for me.
+
+/How Not do Die/, supported by over one thousand references in its bibliography,
+goes into the causes, symptoms, mitigations, and methods of prevention for some
+of the most common diseases in the Western world.  The typical offenders, such
+as diabetes and high blood pressure, are present but it also covers suicidal
+depression and iatrogenic causes.  That is, diseases caused by medical
+professionals themselves, typically from mistakes or questionable practices.
+
+And that's only the first half of the book.  The second half explores Gregor's
+/Daily Dozen/ dietary guidelines. How many portions of legumes should one eat
+per day, and how large should one portion be?  Are some root vegetables better
+than others?  Are some greens dangerous if eaten in large amounts or day-in and
+day-out?  Gregor goes into intricate detail on this and more and includes the
+references to back up his assertions.
+
+He also recommends ninety minutes of lighter exercise or forty minutes of
+heavier exercise /daily/.  I miss the reading sessions from my commute, now that
+I walk to and from work, but feel better because of it.  The book made
+vegetarianism practical for me, and on many days I even manage vaganism.  His
+approach to incremental changes to diet, rather than going cold-turkey, has my
+full support.
+
+*** Man's Search for Meaning, by /Viktor E. Frankl/
+A different work colleague surprised me when he brought this in one day for me
+to read.  This was just before a vacation to Iceland and the book was my feed
+throughout.
+
+/Man's Search for Meaning/ is a beautiful book.  It's a poignant and candid
+characterisation of embracing one's suffering and turning it into strength.
+Frankl gives sound arguments for his conclusions, drawn from his own
+experiences.  I would relish the chance to delve into this man's mind once again
+and plan to acquire my own copy of the book.
+
+*** Harry Potter and the Philosopher's Stone, by /J. K. Rowling/
+Detective mysteries in the far future, mind models, nutritional primers, and
+experiences from Holocaust victims had left me yearning for some single-minded
+fantasy.  The edition sold in Tesco had gorgeous cover art and all seven books
+were only £24.50.  Why not?
+
+The book had starker dark undertones than I remembered from when I last read it
+about fifteen years ago.  Many of the characters, even the supposedly "good"
+ones, are portrayed as tragic and dour figures.  I'm keen to see if the
+remaining books differ from my memory of them when I get round to reading them.
+
+*** The Inner Life of Animals, by /Peter Wohlleben/
+I saw a copy of /The Inner Life of Animals/ for £3, so again I thought I might
+as well.
+
+This book is far more anecdotal than scientific.  Wohlleben's stories, whilst
+charming, lack a central narrative.  I didn't have a direction of where the book
+was heading.  It felt like a haphazard collection of thoughts.  I still found
+value in his tales, particularly since I just need to step outside to enter his
+world, but I'm not enthused to read Wohlleben's earlier and highly regarded /The
+Inner Life of Trees/.
+
+*** The Spy and the Traitor, by /Ben Macintyre/
+In one word: fascinating.  Macintyre does a sensational job of weaving the
+tangled tale for our KGB spy turned MI6 agent, Oleg Gordievsky, into satiating
+drama.
+
+Beginning with his early life, Gordievsky experiences conflicting idealogies in
+his own home, some clear and some in the shadows.  Through events like the
+Prague Spring, he eventually jumps ship and, as a result, plays a crucial role
+in improving diplomatic relations between East and West through his influence on
+both sides.  But he's found out and forced to make a daring escape from Moscow,
+through Finland, into Norway, and finally to London.
+
+One of the finest qualities of the book is its pacing.  I was enthralled from
+start to finish.  The narrative is supported with remarks from Gordievsky
+himself and those close to him, such as his wife, his mentors and friends within
+the KGB, and the MI6 team that supported him prior to his public defection.
+Upon finishing, I immediately went looking for another Macintyre book to add to
+my list.
+
+*** Unnatural Causes, by /Dr Richard Shepherd/
+This book captivated me for many of the same reasons that /The Spy and the
+Traitor/ did.  A memoir from Shepherd's fledgling enthusiasm to become his
+childhood hero, his experiences in court, at crime scenes, and of course in the
+mortuary, through to his experiences in major disasters and balancing his family
+life, to culminating in his struggles with PTSD.
+
+Chapter after chapter demonstrates his dedication to his field.  There are
+numerous references to the malleable nature of truth and justice and his own
+journey to come to terms with this.  I admire his honesty when writing about
+difficult subjects, even when they affected him personally.
+
+*** Favourite quotes
+In an effort to create my own commonplace book, here are some of my favourite
+quotes from the books of this year.
+
+#+BEGIN_QUOTE
+The are no gods in the universe, no nations, no money, no human rights, no laws
+and no justice outside the common imagination of human beings.
+
+--- Yuval Noah Harari
+#+END_QUOTE
+
+On the surface, this can sound downright brutal and borne of a cold, analytical
+mind.  Yet I find this to be a liberating idea.  None of the things mentioned
+are objective givens and hence should not be taken for granted.  That's not to
+say that they don't exist, but their existence is limited to a subjective and
+bounded context shared by like-minded individuals.  That empowers those
+individuals to create those things as they see fit. They're in control. That is
+a good thing.
+
+#+BEGIN_QUOTE
+There is no way out of the imagined order. When we break down our prison walls
+and run towards freedom, we are in fact running into the more spacious exercise
+yard of a bigger prison.
+
+--- Yuval Noah Harari
+#+END_QUOTE
+
+However, that control is still shared among society as a whole.  Individuals are
+still subjugated to its rules.  I don't necessarily see the implied negative of
+a bigger prison.  A prison that is so large that you can't see its perimeter may
+still be a prison, but does that really matter?
+
+#+BEGIN_QUOTE
+Biology enables, culture forbids.
+
+--- Yuval Noah Harari
+#+END_QUOTE
+
+Likewise, I find it a liberating idea that nature itself is an enabler.  It is
+humans that impose the constraints, and for good reason, because without
+constraints we couldn't have order.
+
+#+BEGIN_QUOTE
+If the mind of a person is free of all craving, no god can make him
+miserable. Conversly, once craving arises in a person's mind, all the gods in
+the universe cannot save him from suffering.
+
+--- Yuval Noah Harari
+#+END_QUOTE
+
+This idea needn't be applied just to gods.  Any relationship that sees one party
+craving something that the party has the power to provide could see a similar
+dynamic.  The lesson, I believe, is to control craving or least satiate it
+through your own means.  Make your wants independent of others.
+
+#+BEGIN_QUOTE
+So why study history? Unlike physics or economics, history is not a means for
+making accurate predictions. We study history not to know the future but to
+widen our horizons, to understand that our present situation is neither natural
+nor inevitable, and that we consequently have many more possibilities before us
+than we imagine. For example, studying how Europeans came to dominate Africans
+enables us to realise that there is nothing natural or inevitable about the
+racial hierarchy, and that the world might well be arranged differently.
+
+--- Yuval Noah Harari
+#+END_QUOTE
+
+An important reminder for a software engineer like me to widen his horizons.
+
+#+BEGIN_QUOTE
+... [European empires] wielded so much power and changed the world to such an
+extent that perhaps they cannot be simply labelled as good or evil. They created
+the world as we know it, including the idealogies we use in order to judge them.
+
+--- Yuval Noah Harari
+#+END_QUOTE
+
+This again goes back to perception and the temporal nature of it. Being mindful
+of how you arrived at the judgement you are passing can help determine if that
+judgement is fair or even applicable.
+
+#+BEGIN_QUOTE
+Nothing in the comfortable lives of the urban middle class can approach the wild
+excitement and sheer joy experienced by a forager band on a successful mammoth
+hunt.
+
+--- Yuval Noah Harari
+#+END_QUOTE
+
+This can't be proved nor disproved.  The more important point is that the life
+you find yourself in may not be entirely aligned with your nature, and it's a
+fruitful journey to explore other avenues in an effort to attain that alignment.
+
+#+BEGIN_QUOTE
+Is there anything more dangerous than dissatisfied and irresponsible gods who
+don't know what they want?
+
+--- Yuval Noah Harari
+#+END_QUOTE
+
+Harari was referring to humans here, particularly as our technological prowess
+grows alongside the discord of our intentions.  It's solemn rhetoric for one
+possible future.
+
+#+BEGIN_QUOTE
+To do something the first time was an exploration. To do it again was to take
+all the things they had learned, and refine, improve, perfect.
+
+--- Praxidike Meng
+#+END_QUOTE
+
+This highlights the almost-therapeutic respite found in repetition.
+
+#+BEGIN_QUOTE
+And that's what led some of us to give our lives, and others to spend years in
+solitary prayer, while all the joy of life was going to waste around us, and we
+never knew.
+
+--- Unnamed soldier in the Land of the Dead
+#+END_QUOTE
+
+How easy it is to submit to the expectations of others.  If instead, one took
+responsibility for their time here, they may have more confrontation and more
+uncertainty, but they wouldn't share the regret of this solider.
+
+#+BEGIN_QUOTE
+I'd made myself believe that I was fine and happy and fulfilled on my own
+without the love of anyone else. Being in love was like China: you knew it was
+there, and no doubt it was very interesting, and some people went there, but I
+never would. I'd spend all my life without ever going to China, but it wouldn't
+matter, because there was all the rest of the world to visit.
+
+--- Mary Malone
+#+END_QUOTE
+
+There is the belief of one's sovereignty in happiness and whether this can be
+achieved in isolation.  Those without the means to go to China are confronted
+with this fact and must come to terms with it.  It's helpful to remember that
+going to China is one path of many, one destination of many, but it's a
+destination put on a grand pedestal these days.  Remember that the other
+destinations are still there. Even if they are not as popular to most people,
+they may still hold meaning.
+
+#+BEGIN_QUOTE
+"Grace attained [from conscious understanding and a lifetime of effort] is deeper
+and fuller than grace that comes freely.
+
+--- Xaphania
+#+END_QUOTE
+
+Reward comes through work and the reward is the journey, not the result.
+
+#+BEGIN_QUOTE
+Building the kingdom of heaven here and now requires one to be "cheerful and
+kind and curious and brave and patient, and [one must] study and think, and work
+hard.
+
+--- Lyra Belacqua
+#+END_QUOTE
+
+One can chose to wait for their kingdom of heaven until their next job, or once
+they move to another country, or after they retire, or after they die.  Or they
+could build it here and now.  It's a choice.
+** Taking Escapism for Granted                                        :books:
+   SCHEDULED: <2019-12-31 Tue>
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: taking-escapism-for-granted
+   :END:
+
+My last post levelled more criticism than merit to Rollo Tomassi's book /The
+Rational Male/.  But writing it prompted me to consider if the book's bombast
+was his own or used more for purposes of sensationalism.
+
+I watched part [[https://youtu.be/wJAtv6N6yxk?t=2296][this AMA]] from him and his comments on escapism got me thinking.
+In my world---my work and social circles---it's considered a perfectly valid
+activity to engage in and often.  But why is this the case?  Why is one in a
+position where reality is less favourable?  Can this be changed?
+
+Tomassi frames it as a question of where is more interesting: reality or your
+fantasies.  "Where would you rather be?"  Even those predisposed to fantasy may
+have, through circumstances at the time, lived more in the moment for periods of
+their lives.  Is it feasible to make that the norm?
+
+So for those of us perhaps so inclined to escape into our heads on a whim,
+consider an alternative.  Making a conscious effort to build a more interesting
+external world could prove fruitful.
+
+* Footnotes
+* COMMENT Local Variables                                           :ARCHIVE:
+# Local Variables
+# eval: (org-hugo-auto-export-mode)
+# End:
+# Local Variables:
+# eval: (org-hugo-auto-export-mode)
+# End:
+# Local Variables:
+# eval: (org-hugo-auto-export-mode)
+# End:
