@@ -21,11 +21,11 @@ jobs:
     - name: Test emacs
       run: emacs --version
 
-    - name: Inspect agenda files
-      run: emacs ./posts.org --batch -L ./ox-hugo -l ox-hugo.el --eval='org-agenda-files' --kill
-
     - name: Clone Org-mode exporter
       run: git clone https://github.com/kaushalmodi/ox-hugo.git ox-hugo
+
+    - name: Inspect agenda files
+      run: emacs ./posts.org --batch -L ./ox-hugo -l ox-hugo.el --eval='org-agenda-files' --kill
 
     - name: Export Org file to Markdown
       run: emacs ./posts.org --batch -L ./ox-hugo -l ox-hugo.el --eval='(progn (setq org-agenda-files nil) (org-hugo-export-wim-to-md t))' --kill
