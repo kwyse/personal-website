@@ -21,6 +21,9 @@ jobs:
     - name: Test emacs
       run: emacs --version
 
+    - name: Inspect agenda files
+      run: emacs ./posts.org --batch -L ./ox-hugo -l ox-hugo.el --eval='org-agenda-files' --kill
+
     - name: Clone Org-mode exporter
       run: git clone https://github.com/kaushalmodi/ox-hugo.git ox-hugo
 
