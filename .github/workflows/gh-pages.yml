@@ -13,22 +13,16 @@ jobs:
       with:
         submodules: true
 
+    - name: Clone Org-mode exporter
+      run: git clone https://github.com/kaushalmodi/ox-hugo.git ox-hugo
+
     - name: Setup emacs
       uses: purcell/setup-emacs@master
       with:
         version: 26.3
 
-    - name: Test emacs
-      run: emacs --version
-
-    - name: Clone Org-mode exporter
-      run: git clone https://github.com/kaushalmodi/ox-hugo.git ox-hugo
-
-    - name: Inspect agenda files
-      run: emacs ./posts.org --batch -L ./ox-hugo -l ox-hugo.el --eval='org-agenda-files' --kill
-
     - name: Export Org file to Markdown
-      run: emacs ./posts.org --batch -L ./ox-hugo -l ox-hugo.el --eval='(progn (setq org-agenda-files (list (buffer-file-name))) (org-hugo-export-wim-to-md t))' --kill
+      run: emacs ./posts.org --batch -L ./ox-hugo -l ox-hugo.el --eval='(org-hugo-export-wim-to-md t)' --kill
 
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2
