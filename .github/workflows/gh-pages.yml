@@ -13,6 +13,11 @@ jobs:
       with:
         submodules: true
 
+    - name: Setup emacs
+      uses: purcell/setup-emacs@master
+      with:
+        version: 26.3
+
     - name: Test emacs
       run: emacs --version
 
