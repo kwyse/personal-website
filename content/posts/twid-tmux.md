@@ -45,7 +45,7 @@ processes. By default it's mapped to `Ctrl-B`. Many recommend mapping it to
 `Ctrl-A`, which matches the prefix key for [GNU Screen](https://www.gnu.org/software/screen/), a much older terminal
 multiplexer. I don't recommend this because it conflicts with Vim's number
 incrementation. Maybe that's okay because it's not the most common of
-keystrokes, but [`Ctrl-S` is free](http://vim.wikia.com/wiki/Unused%5Fkeys)! Given it's just one more key over I think this
+keystrokes, but [`Ctrl-S` is free](http://vim.wikia.com/wiki/Unused_keys)! Given it's just one more key over I think this
 binding makes far more sense. Time will tell.
 
 If you're playing around with your config, adding a mapping that calls

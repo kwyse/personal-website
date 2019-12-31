@@ -44,7 +44,7 @@ Personally, I've never seen the need for snippets. Maybe I'm just using the
 wrong languages.
 
 That leaves file browsing. The speaker talks about _netrw_, Vim's built-in file
-browser. Unfortunately, netrw isn't the most stable piece of software.  [This](https://www.reddit.com/r/vim/comments/22ztqp/why%5Fdoes%5Fnerdtree%5Fexist%5Fwhats%5Fwrong%5Fwith%5Fnetrw/?st=jcetivby&sh=95ada33e)
+browser. Unfortunately, netrw isn't the most stable piece of software.  [This](https://www.reddit.com/r/vim/comments/22ztqp/why_does_nerdtree_exist_whats_wrong_with_netrw/?st=jcetivby&sh=95ada33e)
 Reddit thread talks about some of the alternatives.  [NERDTree](https://github.com/scrooloose/nerdtree) is the most
 frequently recommended and the most popular "project draw"-type plugin.  Such
 plugins are an ongoing point of contention within the community, with those that

@@ -3,6 +3,7 @@ title = "Five Month's Into the Hacker's Diet"
 author = ["Krishan Wyse"]
 publishDate = 2018-01-25T00:00:00+00:00
 tags = ["wellness"]
+categories = ["wellness"]
 draft = false
 +++
 
@@ -79,7 +80,7 @@ Back in the 1950s, the Royal Canadian Air Force developed a training regime for
 pilots stationed on remote air bases that wouldn't have had access to gym
 equipment. The regime needed to rely exclusively on bodyweight exercises and be
 able to keep someone in optimal condition in minimal workout time. The regime
-was called _5BX_ and you can find the plan [online](http://fit450.com/HTML/5BX%5FIntro.html).
+was called _5BX_ and you can find the plan [online](http://fit450.com/HTML/5BX_Intro.html).
 
 The book contains its own plan modelled after 5BX, but I decided to stick with
 the original. I think the details of the plan are less important than just
@@ -107,7 +108,7 @@ of body fat is equivalent to 7700 calories, meaning I would need to have a daily
 calorie deficit of 1100 calories, so a daily calorie intake of 1300 calories on
 average.  If I had a perfect run, that is certainly possible to hit.
 
-{{< figure src="/images/hackers_diet_five_months.png" >}}
+{{<figure src="/images/hackers_diet_five_months.png">}}
 
 I didn't hit it, but I made a big dent. This is a plot of my progress.  The blue
 line is my actual weight as recorded every morning. I started the eating plan in

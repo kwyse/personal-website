@@ -13,7 +13,7 @@ time. And that's frustrating, because I really believe that the benefits it
 offers outweigh that.
 
 [_Programming Rust_](http://shop.oreilly.com/product/0636920040385.do) is included in the latest Humble _Functional Programming_
-[book bundle](https://www.humblebundle.com/books/functional-programming-books). Take a look on [Amazon](https://www.amazon.com/product-reviews/1491927283/ref=cm%5Fcr%5Fdp%5Fd%5Fcmps%5Fbtm?ie=UTF8&reviewerType=all%5Freviews) and you'll see it's getting some pretty rave
+[book bundle](https://www.humblebundle.com/books/functional-programming-books). Take a look on [Amazon](https://www.amazon.com/product-reviews/1491927283/ref=cm_cr_dp_d_cmps_btm?ie=UTF8&reviewerType=all_reviews) and you'll see it's getting some pretty rave
 reviews. It's the first book that's come my way focused on Rust end-to-end.
 
 Personally, I find reading a book like this from cover to cover the best way to
@@ -23,7 +23,7 @@ and language-specific quirks that you should be aware of. Neither does using the
 language day in and day out at work, necessarily. This knowledge comes from
 experts.
 
-Just like [_K&R_](https://en.wikipedia.org/wiki/The%5FC%5FProgramming%5FLanguage), _C++: The Complete Reference_, _Java: The Complete Reference_,
+Just like [_K&R_](https://en.wikipedia.org/wiki/The_C_Programming_Language), _C++: The Complete Reference_, _Java: The Complete Reference_,
 and _Programming Ruby_ before it gave me insight into their respective
 languages, I'm hopeful _Programming Rust_ can continue the trend.
 

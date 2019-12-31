@@ -8,7 +8,7 @@ categories = ["reading"]
 draft = false
 +++
 
-I was a gamer.  _Was_.  Words on a page did not enrapture me to the degree that
+I was a gamer.  Words on a page did not enrapture me to the degree that
 interactive media did.  Symbiosis between the visual, aural, narrative, and
 interactive was beauty itself.
 
@@ -137,9 +137,9 @@ It certainly was.  It was filled to the brim with nuggets like:
 
 -   Humans are born underdeveloped compared to other animals and this enables more
     tailored socialisation.
--   [Dunbar's number](https://en.wikipedia.org/wiki/Dunbar's%5Fnumber), a suggested cognitive limit for the number of stable social
+-   [Dunbar's number](https://en.wikipedia.org/wiki/Dunbar's_number), a suggested cognitive limit for the number of stable social
     relationships one can form.
--   The [Original Affluent Society](https://en.wikipedia.org/wiki/Original%5Faffluent%5Fsociety), highlighting how ancient foragers ate wholesome
+-   The [Original Affluent Society](https://en.wikipedia.org/wiki/Original_affluent_society), highlighting how ancient foragers ate wholesome
     and varied diets, worked short hours and had rare exposure to infectious
     disease, to contrast with the idea of humanity's supposed increasing prosperity.
 -   Wheat is a remarkably successful species from an evolutionary perspective.
@@ -319,7 +319,7 @@ life, to culminating in his struggles with PTSD.
 Chapter after chapter demonstrates his dedication to his field.  There are
 numerous references to the malleable nature of truth and justice and his own
 journey to come to terms with this.  I admire his honesty when writing about
-difficult subjects, even when it was about him personally.
+difficult subjects, even when they affected him personally.
 
 
 ## Favourite quotes {#favourite-quotes}

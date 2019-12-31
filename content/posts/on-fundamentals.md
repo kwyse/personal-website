@@ -3,6 +3,7 @@ title = "On Fundamentals"
 author = ["Krishan Wyse"]
 publishDate = 2018-03-28T00:00:00+01:00
 tags = ["softdev"]
+categories = ["softdev"]
 draft = false
 +++
 

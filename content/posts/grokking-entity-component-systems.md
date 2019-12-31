@@ -3,6 +3,7 @@ title = "Grokking Entity-Component-Systems"
 author = ["Krishan Wyse"]
 publishDate = 2018-01-03T00:00:00+00:00
 tags = ["softdev", "gamedev"]
+categories = ["softdev"]
 draft = false
 +++
 
@@ -177,18 +178,18 @@ struct MovementSystem;
 
 impl<'a> System<'a> for MovementSystem {
     type SystemData = (
-        Fetch<'a, Duration>,
-        ReadStorage<'a, Velocity>,
-        WriteStorage<'a, Position>
+	Fetch<'a, Duration>,
+	ReadStorage<'a, Velocity>,
+	WriteStorage<'a, Position>
     );
 
     fn run(&mut self, data: Self::SystemData) {
-        let (dt, velocities, mut positions) = data;
+	let (dt, velocities, mut positions) = data;
 
-        for (vel, pos) in (&velocities, &mut positions).join() {
-            pos.x += vel.x * dt.subsec_nanos() as f64 / 1_000_000_000.0;
-            pos.y += vel.y * dt.subsec_nanos() as f64 / 1_000_000_000.0;
-        }
+	for (vel, pos) in (&velocities, &mut positions).join() {
+	    pos.x += vel.x * dt.subsec_nanos() as f64 / 1_000_000_000.0;
+	    pos.y += vel.y * dt.subsec_nanos() as f64 / 1_000_000_000.0;
+	}
     }
 }
 ```
@@ -200,7 +201,7 @@ exactly when our function will be called again. We can aim for a target, say, 60
 times per second, but we'll never hit that exactly. It may only be a few
 milliseconds off here and there, but that adds up the longer the game is
 running. Pretty quickly we would have vastly inaccurate positions if you don't
-scale them like this!  [Integration Basics](https://gafferongames.com/post/integration%5Fbasics/) by Glenn Fiedler explains why this
+scale them like this!  [Integration Basics](https://gafferongames.com/post/integration_basics/) by Glenn Fiedler explains why this
 happens.
 
 The other system we need converts logical world coordinates to screen
@@ -213,12 +214,12 @@ impl<'a> System<'a> for RenderSystem {
     type SystemData = (ReadStorage<'a, Position>, WriteStorage<'a, Sprite>);
 
     fn run(&mut self, data: Self::SystemData) {
-        let (positions, mut sprites) = data;
+	let (positions, mut sprites) = data;
 
-        for (pos, sprite) in (&positions, &mut sprites).join() {
-            sprite.0.set_x((pos.x * PIXELS_PER_UNIT) as i32);
-            sprite.0.set_y((pos.y * PIXELS_PER_UNIT) as i32);
-        }
+	for (pos, sprite) in (&positions, &mut sprites).join() {
+	    sprite.0.set_x((pos.x * PIXELS_PER_UNIT) as i32);
+	    sprite.0.set_y((pos.y * PIXELS_PER_UNIT) as i32);
+	}
     }
 }
 ```
@@ -241,10 +242,10 @@ world.register::<Sprite>();
 let initial_pos = Position { x: 2.0, y: 2.0 };
 let initial_vel = Velocity { x: 1.0, y: 0.0 };
 let sprite = Sprite(Rect::new(
-        (initial_pos.x * PIXELS_PER_UNIT) as i32,
-        (initial_pos.y * PIXELS_PER_UNIT) as i32,
-        32,
-        32
+	(initial_pos.x * PIXELS_PER_UNIT) as i32,
+	(initial_pos.y * PIXELS_PER_UNIT) as i32,
+	32,
+	32
 ));
 world.create_entity()
     .with(initial_pos)
@@ -276,7 +277,7 @@ the entire application, particularly on the boundaries, but still very useful
 for internal logic that we have full control over.
 
 If you would like to learn the details of run loops, check out [Fix Your
-Timestep!](https://gafferongames.com/post/fix%5Fyour%5Ftimestep/) It's probably the most quoted article on the subject and does a fine
+Timestep!](https://gafferongames.com/post/fix_your_timestep/) It's probably the most quoted article on the subject and does a fine
 job explaining the various approaches.
 
 
@@ -288,7 +289,7 @@ The above includes the simplest kind of run loop with a fixed time step of
 1/60th of a second. The results are hopefully a white square moving across a
 black abyss.
 
-{{< figure src="/images/grokking_ecs_result.gif" >}}
+{{<figure src="/images/grokking_ecs_result.gif">}}
 
 There are many ways to improve this. You could use a more sophisticated run loop
 that can handle variable time steps. Or you could use the parallel iterators

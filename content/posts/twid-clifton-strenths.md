@@ -7,7 +7,7 @@ categories = ["twid"]
 draft = false
 +++
 
-I came across [this talk](https://www.ted.com/talks/scott%5Fdinsmore%5Fhow%5Fto%5Ffind%5Fwork%5Fyou%5Flove) by Scott Dinsmore. It's geared towards those who feel
+I came across [this talk](https://www.ted.com/talks/scott_dinsmore_how_to_find_work_you_love) by Scott Dinsmore. It's geared towards those who feel
 trapped trapped in their current circumstances, yet my main take-away was his
 recommendation on StrengthsFinder 2.0, now called CliftonStrengths. I took the
 plunge and bought it since this isn't the first time it's been recommended.
