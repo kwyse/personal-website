@@ -323,6 +323,42 @@ One can never be truly done with a project like this. Outside of creating
 content, there's always ways to improve the site itself. I think the main points
 are covered now, but hopefully this is only the start of side projects for this
 side project.
+** Deploying an ox-hugo blog with GitHub Actions           :blogging:softdev:
+   SCHEDULED: <2020-01-03 Fri>
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: deploying-ox-hugo-blog-with-github-actions
+   :END:
+
+The blogging flow [[https://ox-hugo.scripter.co/doc/blogging-flow/][provided]] by ox-hugo suggests that Markdown files should be
+committed to the source repository along with the Org file.  I didn't want to do
+that because the Markdown files are effectively a build artefact.  I also
+couldn't find any information on how to integrate ox-hugo's export functionality
+with a continuous integration service.
+
+Fortunately, it's quite simple to do with GitHub Actions.  After following the
+instructions for the [[https://github.com/marketplace/actions/hugo-setup][hugo-setup]] Action ([[https://github.com/peaceiris/actions-hugo/blob/d006b81d1845f59bb755a221aff0b61bbff15375/README.md][these]] at the time of writing), we must
+then export the Org file as part of the workflow.  [[https://github.com/marketplace/actions/set-up-emacs][set-up-emacs]] will install
+emacs and Org.  [[https://github.com/kaushalmodi/ox-hugo][ox-hugo]] must be cloned separately.  Add a step to the job:
+
+#+BEGIN_SRC yaml
+- name: Clone Org-mode exporter
+  run: git clone https://github.com/kaushalmodi/ox-hugo.git ox-hugo
+#+END_SRC
+
+Then add another step to call the export function:
+
+#+BEGIN_SRC yaml
+- name: Export Org file to Markdown
+  run: emacs ./posts.org --batch -L ./ox-hugo -l ox-hugo.el --eval='(org-hugo-export-wim-to-md t)' --kill
+#+END_SRC
+
+This is assuming that the Org file containing the posts is =posts.org= and
+located in the root of the repository.  This will export all applicable
+subtrees.  The first argument to =org-hugo-export-wim-to-md= controls that
+behaviour.
+
+That's it!  You can view my [[https://github.com/kwyse/kwyse.github.io/blob/5bac2286c9ad84a411b8ac73da12e1f80b6e7c5f/.github/workflows/gh-pages.yml][workflow file]] to see how it looked just after this
+change was made.
 
 * This Week I Discovered                                              :@twid:
 ** This Week I Discovered: OpenMW                               :twid:gaming:
