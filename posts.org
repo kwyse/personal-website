@@ -330,10 +330,10 @@ side project.
    :END:
 
 The blogging flow [[https://ox-hugo.scripter.co/doc/blogging-flow/][provided]] by ox-hugo suggests that Markdown files should be
-committed to the source repository along with the Org file.  I didn't want to do
-that because the Markdown files are effectively a build artefact.  I also
-couldn't find any information on how to integrate ox-hugo's export functionality
-with a continuous integration service.
+committed to the source repository along with the Org file.  I'm reluctant to do
+that because the Markdown files are effectively a build artefact in this flow.
+I also couldn't find any information on how to integrate ox-hugo's export
+functionality with a continuous integration service.
 
 Fortunately, it's quite simple to do with GitHub Actions.  After following the
 instructions for the [[https://github.com/marketplace/actions/hugo-setup][hugo-setup]] Action ([[https://github.com/peaceiris/actions-hugo/blob/d006b81d1845f59bb755a221aff0b61bbff15375/README.md][these]] at the time of writing), we must
