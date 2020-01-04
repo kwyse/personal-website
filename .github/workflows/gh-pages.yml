@@ -32,6 +32,9 @@ jobs:
     - name: Build
       run: hugo --minify --theme=hermit
 
+    - name: Copy CNAME entry
+      run: cp ./CNAME ./public/
+
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v2
       env:
