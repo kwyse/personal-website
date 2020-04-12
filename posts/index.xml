@@ -84,8 +84,7 @@ executed without installation on the local machine.</p>
 <li><code>settings.gradle</code></li>
 <li><code>app/build.gradle</code></li>
 </ul>
-<h3 id="react-native-java-boilerplate">React Native Java boilerplate</h3>
-<p>The first class, <code>MainActivity</code>, has little boilerplate needed.</p>
+<p>The first Java class, <code>MainActivity</code>, has little boilerplate needed.</p>
 <div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.myminimalapp</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">com.facebook.react.ReactActivity</span><span class="o">;</span>
