@@ -1325,9 +1325,7 @@ executed without installation on the local machine.
 - ~settings.gradle~
 - ~app/build.gradle~
 
-**** React Native Java boilerplate
-
-The first class, ~MainActivity~, has little boilerplate needed.
+The first Java class, ~MainActivity~, has little boilerplate needed.
 
 #+begin_src java
 package com.myminimalapp;
