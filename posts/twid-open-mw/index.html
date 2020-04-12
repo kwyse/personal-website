@@ -6,35 +6,35 @@ desktop. Naturally I need games to play. My go-to benchmark for the state of
 Linux gaming has always been the <a href=https://appdb.winehq.org/>Wine Application Database</a>, so I checked it for
 a game I knew I could sink countless hours into.</p><p>Well it turns out the <a href="https://appdb.winehq.org/objectManager.php?sClass=application&iId=3150">results</a> for Oblivion are not too promising, especially for
 Steam. Maybe Morrowind fairs better? <a href="https://appdb.winehq.org/objectManager.php?sClass=application&iId=1015">Yes</a>, but there are still issues. But the
-description holds a gem: a Linux-native alternative called <a href=https://openmw.org/en/>OpenMW</a>.</p><p>If you want a video summary, check out <a href="https://www.youtube.com/watch?v=g2PKBD0D9Gw">the FAQ video</a>. It's quite dated but still
+description holds a gem: a Linux-native alternative called <a href=https://openmw.org/en/>OpenMW</a>.</p><p>If you want a video summary, check out <a href="https://www.youtube.com/watch?v=g2PKBD0D9Gw">the FAQ video</a>. It&rsquo;s quite dated but still
 shown prominently on the official site and gives a good overview of the project.</p><p>Essentially, OpenMW is an open source reimplementation of the game engine for
-Morrowind. It's not a different game because it still relies on assets from the
-original. You can't <em>play</em> Morrowind through it without actually owning a copy
-of Morrowind, or at the very least having access to the game's data files.</p><h2 id=trying-it-out>Trying it out<a href=#trying-it-out class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>A TES game running natively on Linux? Sign me up. It even has an official Gentoo
+Morrowind. It&rsquo;s not a different game because it still relies on assets from the
+original. You can&rsquo;t <em>play</em> Morrowind through it without actually owning a copy
+of Morrowind, or at the very least having access to the game&rsquo;s data files.</p><h2 id=trying-it-out>Trying it out<a href=#trying-it-out class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>A TES game running natively on Linux? Sign me up. It even has an official Gentoo
 <a href=https://packages.gentoo.org/packages/games-engines/openmw>ebuild</a>! Getting it running was remarkably simple. The package includes a wizard
 that will guide you through retrieving the data files from the original game. I
 have a physical copy but Steam and GOG versions are also supported. It launched
 without a hitch.</p><p>Playing it was a different story&mldr; Straight of the boat, I was hitting between
-four and ten FPS. Of course it wouldn't be that easy! I couldn't find anything
+four and ten FPS. Of course it wouldn&rsquo;t be that easy! I couldn&rsquo;t find anything
 Gentoo-specific but the general consensus online was to make sure that your GPU
 drivers were up to date. I had only installed my OS in the last two weeks so I
-knew that couldn't have been the issue.</p><p>Turns out it was! OpenMW doesn't seem to play nice with the <a href=https://wiki.gentoo.org/wiki/Nouveau><code>nouveau</code></a>
+knew that couldn&rsquo;t have been the issue.</p><p>Turns out it was! OpenMW doesn&rsquo;t seem to play nice with the <a href=https://wiki.gentoo.org/wiki/Nouveau><code>nouveau</code></a>
 drivers. These are open source NVIDIA drivers that are installed by default when
 running through the Gentoo handbook. Gentoo has a <a href=https://wiki.gentoo.org/wiki/NVidia/nvidia-drivers>guide</a> on replacing the
 <code>nouveau</code> drivers with the proprietary <code>nvidia</code> ones.</p><p>After rebuilding my kernel and a few package builds (and rebuilds) later, I had
 booted into a new <code>nvidia</code>-driven X session. Everything seemed to be working
 except for when I did the test the guide recommends: running <code>glxinfo</code>, which
 kept failing. This command is meant to say that direct rendering is
-enabled. Guess that means it's not enabled? Fortunately there's a
+enabled. Guess that means it&rsquo;s not enabled? Fortunately there&rsquo;s a
 troubleshooting section for that issue. You need to disable the <code>Direct Rendering Manager</code> in the kernel. After doing that and rebuilding the kernel,
 which took quite a while considering only one option was disabled, a lot of
 warnings came up. The advice online was to ensure that the <code>Direct Rendering Manager</code> was enabled&mldr; :(</p><p>Despite that, I pushed on and tried OpenMW again. Lo and behold 280 FPS! That
 will do.</p><h2 id=new-toys>New toys<a href=#new-toys class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>Everything seems to be running smoothly despite those warnings, but time will
-tell how long that lasts. At least it always teaches you something ;)</p><p>OpenMW is still not at v1 yet but it's a very mature project. It's also not the
-only project of this nature. Some others include:</p><ul><li><a href=https://openrct2.org/>OpenRCT2</a> - for RollerCoaster Tycoon 2</li><li><a href=https://www.openttd.org/en/>OpenTTD</a> - for Transport Tycoon Deluxe</li><li><a href=http://openage.sft.mx/>openage</a> - for Age of Empires</li><li><a href=http://www.openra.net/>OpenRA</a> - for Command & Conquer</li></ul><p>Many years of my childhood were spent with RCT and RCT2 so I couldn't help but
+tell how long that lasts. At least it always teaches you something ;)</p><p>OpenMW is still not at v1 yet but it&rsquo;s a very mature project. It&rsquo;s also not the
+only project of this nature. Some others include:</p><ul><li><a href=https://openrct2.org/>OpenRCT2</a> - for RollerCoaster Tycoon 2</li><li><a href=https://www.openttd.org/en/>OpenTTD</a> - for Transport Tycoon Deluxe</li><li><a href=http://openage.sft.mx/>openage</a> - for Age of Empires</li><li><a href=http://www.openra.net/>OpenRA</a> - for Command & Conquer</li></ul><p>Many years of my childhood were spent with RCT and RCT2 so I couldn&rsquo;t help but
 try out OpenRCT2. Like OpenMW, it has an official Gentoo <a href=https://packages.gentoo.org/packages/games-simulation/openrct2>package</a> and a <a href=https://openrct2.website/getting-started/>getting
 started</a> guide that will set you up. Ten minutes later I was back in Magic
-Mountain, but with a day and night cycle! As a bonus, there's an <a href=https://github.com/OpenRCT2/OpenRCT2/wiki/Loading-RCT1-scenarios-and-data>option</a> to point
+Mountain, but with a day and night cycle! As a bonus, there&rsquo;s an <a href=https://github.com/OpenRCT2/OpenRCT2/wiki/Loading-RCT1-scenarios-and-data>option</a> to point
 to RCT data files and play scenarios from the original game.</p><p>The sentiment behind these projects is beautiful. Not only do they allow us to
 preserve these wonderful games and keep them playable for everyone, but they
 open them up to younger players by adding features that are simply expected

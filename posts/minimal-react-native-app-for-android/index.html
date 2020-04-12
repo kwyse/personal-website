@@ -1,0 +1,200 @@
+<!doctype html><html lang=en-gb><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><meta itemprop=name content="A Minimal React Native App for Android"><meta itemprop=description content="Generators that build seed applications for you from templates appear to be the norm among front-end ecosystems. A recent foray into app develop prompted me to check out React Native. Right from the start, the documentation recommends creating a project from a generator — and the project it creates is big. It then doesn&rsquo;t go on to explain what each of the individual files are doing.
+I&rsquo;m not a fan of this approach."><meta itemprop=datePublished content="2020-04-12T00:00:00+00:00"><meta itemprop=dateModified content="2020-04-12T00:00:00+00:00"><meta itemprop=wordCount content="1088"><meta itemprop=keywords content="softdev,appdev,"><meta property="og:title" content="A Minimal React Native App for Android"><meta property="og:description" content="Generators that build seed applications for you from templates appear to be the norm among front-end ecosystems. A recent foray into app develop prompted me to check out React Native. Right from the start, the documentation recommends creating a project from a generator — and the project it creates is big. It then doesn&rsquo;t go on to explain what each of the individual files are doing.
+I&rsquo;m not a fan of this approach."><meta property="og:type" content="article"><meta property="og:url" content="https://www.kwyse.com/posts/minimal-react-native-app-for-android/"><meta property="article:published_time" content="2020-04-12T00:00:00+00:00"><meta property="article:modified_time" content="2020-04-12T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="A Minimal React Native App for Android"><meta name=twitter:description content="Generators that build seed applications for you from templates appear to be the norm among front-end ecosystems. A recent foray into app develop prompted me to check out React Native. Right from the start, the documentation recommends creating a project from a generator — and the project it creates is big. It then doesn&rsquo;t go on to explain what each of the individual files are doing.
+I&rsquo;m not a fan of this approach."><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.svg color><link rel="shortcut icon" href=/favicon.ico><title>A Minimal React Native App for Android</title><link rel=stylesheet href=https://www.kwyse.com/css/style.min.657bcb7af31123e4156b1a3d2ff60a636717e54ead74f882136b5114cf72b55e.css integrity="sha256-ZXvLevMRI+QVaxo9L/YKY2cX5U6tdPiCE2tRFM9ytV4=" crossorigin=anonymous></head><body id=page><header id=site-header class="animated slideInUp faster"><div class="hdr-wrapper section-inner"><div class=hdr-left><div class=site-branding><a href=https://www.kwyse.com/>The Blog of Krishan Wyse</a></div><nav class="site-nav hide-in-mobile"><a href=https://www.kwyse.com/posts/>Posts</a></nav></div><div class="hdr-right hdr-icons"><span class="hdr-social hide-in-mobile"><a href=https://github.com/kwyse/ target=_blank rel="noopener me" title=Github><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77a5.44 5.44.0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg></a><a href=https://www.linkedin.com/in/krishanwyse/ target=_blank rel="noopener me" title=Linkedin><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a></span><button id=menu-btn class=hdr-btn title=Menu><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button></div></div></header><div id=mobile-menu class="animated fast"><ul><li><a href=https://www.kwyse.com/posts/>Posts</a></li></ul></div><main class="site-main section-inner animated fadeIn faster"><article class=thin><header class=post-header><div class=post-meta><span>12 Apr 2020</span></div><h1>A Minimal React Native App for Android</h1></header><div class=content><p>Generators that build seed applications for you from templates appear to be the
+norm among front-end ecosystems. A recent foray into app develop prompted me to
+check out React Native. Right from the start, the documentation recommends
+creating a project from a generator — and the project it creates is big. It
+then doesn&rsquo;t go on to explain what each of the individual files are doing.</p><p>I&rsquo;m not a fan of this approach. I decided to create a new project from scratch
+and try to get it working in an Android emulator. This post follows that
+journey.</p><p>This app will not be ready for production. It is intended to be the starting
+point from which you can add what you need, when you need it. The goal here is
+to get something running.</p><h2 id=creating-a-react-native-application>Creating a React Native application<a href=#creating-a-react-native-application class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>A minimal React Native application is simple. The hard part was getting it
+running on Android, but we will get to that later. The React Native application
+itself is just four files:</p><ul><li><code>App.json</code></li><li><code>app.js</code></li><li><code>index.js</code></li><li><code>package.json</code></li></ul><p>Starting with <code>package.json</code>, since that manages the packages, include React and
+React Native, and with appropriate versions:</p><div class=highlight><pre class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+  <span class=nt>&#34;dependencies&#34;</span><span class=p>:</span> <span class=p>{</span>
+    <span class=nt>&#34;react&#34;</span><span class=p>:</span> <span class=s2>&#34;16.11&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;react-native&#34;</span><span class=p>:</span> <span class=s2>&#34;0.62&#34;</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+</code></pre></div><p>The two files above it are necessary just to get things working. <code>index.js</code>
+must register the application:</p><div class=highlight><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kr>import</span> <span class=p>{</span> <span class=nx>AppRegistry</span> <span class=p>}</span> <span class=nx>from</span> <span class=s1>&#39;react-native&#39;</span><span class=p>;</span>
+<span class=kr>import</span> <span class=nx>App</span> <span class=nx>from</span> <span class=s1>&#39;./App&#39;</span><span class=p>;</span>
+<span class=kr>import</span> <span class=p>{</span> <span class=nx>name</span> <span class=nx>as</span> <span class=nx>appName</span> <span class=p>}</span> <span class=nx>from</span> <span class=s1>&#39;./app.json&#39;</span><span class=p>;</span>
+
+<span class=nx>AppRegistry</span><span class=p>.</span><span class=nx>registerComponent</span><span class=p>(</span><span class=nx>appName</span><span class=p>,</span> <span class=p>()</span> <span class=p>=&gt;</span> <span class=nx>App</span><span class=p>);</span>
+</code></pre></div><p><code>app.json</code> need only include the name of the application:</p><div class=highlight><pre class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+  <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;MyMinimalApp&#34;</span>
+<span class=p>}</span>
+</code></pre></div><p>The final file is the interesting one. This is where the layout logic lives.</p><div class=highlight><pre class=chroma><code class=language-jsx data-lang=jsx><span class=kr>import</span> <span class=nx>React</span> <span class=nx>from</span> <span class=s1>&#39;react&#39;</span><span class=p>;</span>
+<span class=kr>import</span> <span class=p>{</span> <span class=nx>Text</span><span class=p>,</span> <span class=nx>View</span> <span class=p>}</span> <span class=nx>from</span> <span class=s1>&#39;react-native&#39;</span><span class=p>;</span>
+
+<span class=kr>export</span> <span class=k>default</span> <span class=kd>function</span> <span class=nx>App</span><span class=p>()</span> <span class=p>{</span>
+  <span class=k>return</span> <span class=p>(</span>
+    <span class=p>&lt;</span><span class=nt>View</span> <span class=na>style</span><span class=o>=</span><span class=p>{{</span>
+	<span class=nx>flex</span><span class=o>:</span> <span class=mi>1</span><span class=p>,</span>
+	<span class=nx>alignItems</span><span class=o>:</span> <span class=s1>&#39;center&#39;</span><span class=p>,</span>
+	<span class=nx>justifyContent</span><span class=o>:</span> <span class=s1>&#39;center&#39;</span>
+    <span class=p>}}&gt;</span>
+      <span class=p>&lt;</span><span class=nt>Text</span><span class=p>&gt;</span><span class=nx>Hello</span><span class=p>,</span> <span class=nx>world</span><span class=o>!</span><span class=p>&lt;/</span><span class=nt>Text</span><span class=p>&gt;</span>
+    <span class=p>&lt;/</span><span class=nt>View</span><span class=p>&gt;</span>
+  <span class=p>);</span>
+<span class=p>}</span>
+</code></pre></div><p>If you&rsquo;re curious about the odd HTML-like syntax, that&rsquo;s <a href=https://reactjs.org/docs/jsx-in-depth.html>JSX</a>. JSX simply
+provides syntactic sugar to covert those tags into Javascript functions. If
+you&rsquo;re curious about the meanings of the tags themselves, check out the <a href=https://reactnative.dev/docs/components-and-apis>API
+docs</a>.</p><h2 id=creating-the-android-component>Creating the Android component<a href=#creating-the-android-component class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>In order to run this on Android, a valid Android project must be created in a
+sub-directory called <code>android</code> in the root of the project. A valid Android
+project is composed of numerous files.</p><p>First we have the core Java files that comprise of the application itself.</p><ul><li><code>app/src/main/java/com/myminimalapp/MainActivity.java</code></li><li><code>app/src/main/java/com/myminimalapp/MainApplication.java</code></li></ul><p>We also have the Android manifest file used by the build tools and the Android
+operating system, as well as the styles file used to declare the app theme in
+the manifest.</p><ul><li><code>app/src/main/AndroidManifest.xml</code></li><li><code>app/src/main/res/values/styles.xml</code></li></ul><p>And finally, we have the Gradle files used to build the project. I&rsquo;ve only
+included the Unix-specific <code>gradlew</code> file here, but on Windows you would have a
+<code>gradlew.bat</code> file. These files serve as wrappers for Gradle so that it can be
+executed without installation on the local machine.</p><ul><li><code>build.gradle</code></li><li><code>gradlew</code></li><li><code>settings.gradle</code></li><li><code>app/build.gradle</code></li></ul><h3 id=react-native-java-boilerplate>React Native Java boilerplate<a href=#react-native-java-boilerplate class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><p>The first class, <code>MainActivity</code>, has little boilerplate needed.</p><div class=highlight><pre class=chroma><code class=language-java data-lang=java><span class=kn>package</span> <span class=nn>com.myminimalapp</span><span class=o>;</span>
+
+<span class=kn>import</span> <span class=nn>com.facebook.react.ReactActivity</span><span class=o>;</span>
+
+<span class=kd>public</span> <span class=kd>class</span> <span class=nc>MainActivity</span> <span class=kd>extends</span> <span class=n>ReactActivity</span> <span class=o>{</span>
+    <span class=nd>@Override</span>
+    <span class=kd>protected</span> <span class=n>String</span> <span class=nf>getMainComponentName</span><span class=o>()</span> <span class=o>{</span>
+	<span class=k>return</span> <span class=s>&#34;MyMinimalApp&#34;</span><span class=o>;</span>
+    <span class=o>}</span>
+<span class=o>}</span>
+</code></pre></div><p>The name of the main component of the application must be stated so that React
+Native knows which component it must render.</p><p>The second Java file, <code>MainApplication</code>, must implement the one method of
+<code>ReactApplication</code>.</p><div class=highlight><pre class=chroma><code class=language-java data-lang=java><span class=kn>package</span> <span class=nn>com.myminimalapp</span><span class=o>;</span>
+
+<span class=kn>import</span> <span class=nn>android.app.Application</span><span class=o>;</span>
+<span class=kn>import</span> <span class=nn>com.facebook.react.PackageList</span><span class=o>;</span>
+<span class=kn>import</span> <span class=nn>com.facebook.react.ReactApplication</span><span class=o>;</span>
+<span class=kn>import</span> <span class=nn>com.facebook.react.ReactNativeHost</span><span class=o>;</span>
+<span class=kn>import</span> <span class=nn>com.facebook.react.ReactPackage</span><span class=o>;</span>
+
+<span class=kn>import</span> <span class=nn>java.util.List</span><span class=o>;</span>
+
+<span class=kd>public</span> <span class=kd>class</span> <span class=nc>MainApplication</span> <span class=kd>extends</span> <span class=n>Application</span> <span class=kd>implements</span> <span class=n>ReactApplication</span> <span class=o>{</span>
+    <span class=nd>@Override</span>
+    <span class=kd>public</span> <span class=n>ReactNativeHost</span> <span class=nf>getReactNativeHost</span><span class=o>()</span> <span class=o>{</span>
+	<span class=k>return</span> <span class=k>new</span> <span class=n>ReactNativeHost</span><span class=o>(</span><span class=k>this</span><span class=o>)</span> <span class=o>{</span>
+	    <span class=nd>@Override</span>
+	    <span class=kd>public</span> <span class=kt>boolean</span> <span class=nf>getUseDeveloperSupport</span><span class=o>()</span> <span class=o>{</span>
+		<span class=k>return</span> <span class=n>BuildConfig</span><span class=o>.</span><span class=na>DEBUG</span><span class=o>;</span>
+	    <span class=o>}</span>
+
+	    <span class=nd>@Override</span>
+	    <span class=kd>protected</span> <span class=n>List</span><span class=o>&lt;</span><span class=n>ReactPackage</span><span class=o>&gt;</span> <span class=nf>getPackages</span><span class=o>()</span> <span class=o>{</span>
+		<span class=k>return</span> <span class=k>new</span> <span class=n>PackageList</span><span class=o>(</span><span class=k>this</span><span class=o>).</span><span class=na>getPackages</span><span class=o>();</span>
+	    <span class=o>}</span>
+
+	    <span class=nd>@Override</span>
+	    <span class=kd>protected</span> <span class=n>String</span> <span class=nf>getJSMainModuleName</span><span class=o>()</span> <span class=o>{</span>
+		<span class=k>return</span> <span class=s>&#34;index&#34;</span><span class=o>;</span>
+	    <span class=o>}</span>
+	<span class=o>};</span>
+    <span class=o>}</span>
+<span class=o>}</span>
+</code></pre></div><p><code>ReactNativeHost</code> has two abstract methods that must be implemented. The final
+method, <code>getJSMainModuleName()</code>, must be overridden so that the correct
+Javascript file is executed on startup.</p><div class=highlight><pre class=chroma><code class=language-xml data-lang=xml><span class=nt>&lt;manifest</span> <span class=na>xmlns:android=</span><span class=s>&#34;http://schemas.android.com/apk/res/android&#34;</span>
+    <span class=na>package=</span><span class=s>&#34;com.myminimalapp&#34;</span><span class=nt>&gt;</span>
+  <span class=nt>&lt;uses-permission</span> <span class=na>android:name=</span><span class=s>&#34;android.permission.INTERNET&#34;</span> <span class=nt>/&gt;</span>
+  <span class=nt>&lt;application</span>
+    <span class=na>android:name=</span><span class=s>&#34;.MainApplication&#34;</span>
+    <span class=na>android:usesCleartextTraffic=</span><span class=s>&#34;true&#34;</span>
+    <span class=na>android:theme=</span><span class=s>&#34;@style/AppTheme&#34;</span><span class=nt>&gt;</span>
+    <span class=nt>&lt;activity</span>
+      <span class=na>android:name=</span><span class=s>&#34;.MainActivity&#34;</span>
+      <span class=na>android:windowSoftInputMode=</span><span class=s>&#34;adjustResize&#34;</span><span class=nt>&gt;</span>
+      <span class=nt>&lt;intent-filter&gt;</span>
+	<span class=nt>&lt;action</span> <span class=na>android:name=</span><span class=s>&#34;android.intent.action.MAIN&#34;</span> <span class=nt>/&gt;</span>
+      <span class=nt>&lt;/intent-filter&gt;</span>
+    <span class=nt>&lt;/activity&gt;</span>
+  <span class=nt>&lt;/application&gt;</span>
+<span class=nt>&lt;/manifest&gt;</span>
+</code></pre></div><p><code>AndroidManifest.xml</code> points to our <code>MainActivity</code> and <code>MainApplication</code>
+classes, sets the app theme, declares necessary permissions, and specifies the
+core behaviour on startup. <code>android:usesCleartextTraffic</code> is necessary
+<a href=https://stackoverflow.com/a/56808180>starting from Android API level 28</a>.</p><p>The app theme is declared in <code>styles.xml</code>.</p><div class=highlight><pre class=chroma><code class=language-xml data-lang=xml><span class=nt>&lt;resources&gt;</span>
+  <span class=nt>&lt;style</span> <span class=na>name=</span><span class=s>&#34;AppTheme&#34;</span> <span class=na>parent=</span><span class=s>&#34;Theme.AppCompat.Light.NoActionBar&#34;</span><span class=nt>&gt;&lt;/style&gt;</span>
+<span class=nt>&lt;/resources&gt;</span>
+</code></pre></div><p>With that, the final step is to flesh our the build system. <code>gradlew</code> is a
+file generated by invoking Gradle inside the project.</p><div class=highlight><pre class=chroma><code class=language-shell data-lang=shell>$ gradle wrapper
+</code></pre></div><p>This will also generate a <code>gradlew.bat</code> executable for use on Windows.
+<code>settings.gradle</code> declares the nested <code>app</code> project inside the Android project.</p><div class=highlight><pre class=chroma><code class=language-groovy data-lang=groovy><span class=n>include</span> <span class=s1>&#39;:app&#39;</span>
+</code></pre></div><p>The two <code>build.gradle</code> files are all that&rsquo;s left.</p><div class=highlight><pre class=chroma><code class=language-groovy data-lang=groovy><span class=n>buildscript</span> <span class=o>{</span>
+    <span class=n>ext</span> <span class=o>{</span>
+	<span class=n>buildToolsVersion</span> <span class=o>=</span> <span class=s2>&#34;28.0.3&#34;</span>
+	<span class=n>minSdkVersion</span> <span class=o>=</span> <span class=mi>16</span>
+	<span class=n>compileSdkVersion</span> <span class=o>=</span> <span class=mi>28</span>
+	<span class=n>targetSdkVersion</span> <span class=o>=</span> <span class=mi>28</span>
+    <span class=o>}</span>
+
+    <span class=n>repositories</span> <span class=o>{</span>
+	<span class=n>google</span><span class=o>()</span>
+	<span class=n>jcenter</span><span class=o>()</span>
+    <span class=o>}</span>
+
+    <span class=n>dependencies</span> <span class=o>{</span>
+	<span class=n>classpath</span><span class=o>(</span><span class=s2>&#34;com.android.tools.build:gradle:3.5.2&#34;</span><span class=o>)</span>
+    <span class=o>}</span>
+<span class=o>}</span>
+
+<span class=n>allprojects</span> <span class=o>{</span>
+    <span class=n>repositories</span> <span class=o>{</span>
+	<span class=n>mavenLocal</span><span class=o>()</span>
+
+	<span class=n>maven</span> <span class=o>{</span>
+	    <span class=n>url</span><span class=o>(</span><span class=s2>&#34;$rootDir/../node_modules/react-native/android&#34;</span><span class=o>)</span>
+	<span class=o>}</span>
+
+	<span class=n>maven</span> <span class=o>{</span>
+	    <span class=n>url</span><span class=o>(</span><span class=s2>&#34;$rootDir/../node_modules/jsc-android/dist&#34;</span><span class=o>)</span>
+	<span class=o>}</span>
+
+	<span class=n>google</span><span class=o>()</span>
+	<span class=n>jcenter</span><span class=o>()</span>
+    <span class=o>}</span>
+<span class=o>}</span>
+</code></pre></div><p>This is the root <code>build.gradle</code> file. It declares the Android API versions to
+use and necessary dependencies.</p><p>The one inside <code>app</code> is more complex.</p><div class=highlight><pre class=chroma><code class=language-groovy data-lang=groovy><span class=n>apply</span> <span class=nl>plugin:</span> <span class=s2>&#34;com.android.application&#34;</span>
+
+<span class=n>apply</span> <span class=nl>from:</span> <span class=s2>&#34;../../node_modules/react-native/react.gradle&#34;</span>
+
+<span class=n>android</span> <span class=o>{</span>
+    <span class=n>compileSdkVersion</span> <span class=n>rootProject</span><span class=o>.</span><span class=na>ext</span><span class=o>.</span><span class=na>compileSdkVersion</span>
+
+    <span class=n>compileOptions</span> <span class=o>{</span>
+	<span class=n>sourceCompatibility</span> <span class=n>JavaVersion</span><span class=o>.</span><span class=na>VERSION_1_8</span>
+	<span class=n>targetCompatibility</span> <span class=n>JavaVersion</span><span class=o>.</span><span class=na>VERSION_1_8</span>
+    <span class=o>}</span>
+
+    <span class=n>defaultConfig</span> <span class=o>{</span>
+	<span class=n>applicationId</span> <span class=s2>&#34;com.myminimalapp&#34;</span>
+	<span class=n>minSdkVersion</span> <span class=n>rootProject</span><span class=o>.</span><span class=na>ext</span><span class=o>.</span><span class=na>minSdkVersion</span>
+	<span class=n>targetSdkVersion</span> <span class=n>rootProject</span><span class=o>.</span><span class=na>ext</span><span class=o>.</span><span class=na>targetSdkVersion</span>
+	<span class=n>versionCode</span> <span class=mi>1</span>
+	<span class=n>versionName</span> <span class=s2>&#34;1.0&#34;</span>
+    <span class=o>}</span>
+<span class=o>}</span>
+
+<span class=n>dependencies</span> <span class=o>{</span>
+    <span class=n>implementation</span> <span class=nf>fileTree</span><span class=o>(</span><span class=nl>dir:</span> <span class=s2>&#34;libs&#34;</span><span class=o>,</span> <span class=nl>include:</span> <span class=o>[</span><span class=s2>&#34;*.jar&#34;</span><span class=o>])</span>
+    <span class=n>implementation</span> <span class=s2>&#34;com.facebook.react:react-native:+&#34;</span>
+    <span class=n>implementation</span> <span class=s2>&#34;org.webkit:android-jsc:+&#34;</span>
+<span class=o>}</span>
+
+<span class=n>apply</span> <span class=nl>from:</span> <span class=n>file</span><span class=o>(</span><span class=s2>&#34;../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle&#34;</span><span class=o>);</span> <span class=n>applyNativeModulesAppBuildGradle</span><span class=o>(</span><span class=n>project</span><span class=o>)</span>
+</code></pre></div><p>Where we can, we import the values used in the root <code>build.gradle</code> file.
+Otherwise, this file is again about declaring dependencies.</p><h2 id=running-the-app>Running the app<a href=#running-the-app class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>Before you can see this app running on an emulator, you&rsquo;ll need to set up your
+local environment:</p><ul><li><a href=https://nodejs.dev/how-to-install-nodejs>Install Node.js</a></li><li><a href=https://reactnative.dev/docs/environment-setup>Set up an Android development environment</a></li></ul><p>From the root project directory (<em>not</em> the Android project directory), start the
+Metro bundler.</p><div class=highlight><pre class=chroma><code class=language-shell data-lang=shell>$ npx react-native start
+</code></pre></div><p>Then, start the Android component.</p><div class=highlight><pre class=chroma><code class=language-shell data-lang=shell>$ npx react-native run-android
+</code></pre></div><p>You should then see the app load up in your emulator.</p><figure><img src=/images/minimal_react_native_android_app.png></figure><h2 id=where-to-go-from-here>Where to go from here<a href=#where-to-go-from-here class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>Most of this was learnt by taking apart a sample React Native project and seeing
+what I could get away with removing. Now it&rsquo;s time to add things back in.</p><p>Even if a snappy UI was added and the app did something useful, it wouldn&rsquo;t be
+ready to go onto the Play Store. There are steps that must be taken to get an
+app production ready, but there are numerous tutorials covering that process.
+Until we get to that point, we have a codebase where we know the purpose of
+every file in it. If we run into a problem down the road, we&rsquo;re more likely to
+know how to fix it because we built the application from the ground up. With
+the foundation in place, the rest of the journey is about incremental iteration.</p></div><hr class=post-end><footer class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://www.kwyse.com/tags/softdev>softdev</a></span><span class=tag><a href=https://www.kwyse.com/tags/appdev>appdev</a></span></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>1088 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2020-04-12</p></footer></article><div class="post-nav thin"><a class=prev-post href=https://www.kwyse.com/posts/deploying-ox-hugo-blog-with-github-actions/><span class=post-nav-label>Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><br><span>Deploying an ox-hugo blog with GitHub Actions</span></a></div><div id=comments class=thin></div></main><footer id=site-footer class="section-inner thin animated fadeIn faster"><p>&copy; 2017–2020 <a href=https://www.kwyse.com/>Krishan Wyse</a> &#183; <a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></p><p>Made with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> &#183; Theme <a href=https://github.com/Track3/hermit target=_blank rel=noopener>Hermit</a> &#183; <a href=https://www.kwyse.com/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a></p></footer><script src=https://www.kwyse.com/js/bundle.min.4a9a0ac3d2217822c7865b4161e6c2a71de1d70492264337755427898dd718f6.js integrity="sha256-SpoKw9IheCLHhltBYebCpx3h1wSSJkM3dVQniY3XGPY=" crossorigin=anonymous></script></body></html>

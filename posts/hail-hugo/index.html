@@ -4,10 +4,10 @@ failed because there was too much friction in actually <em>blogging</em>. It was
 behind NGINX. It was my first time using most of these technologies for anything
 serious. I learnt a lot about them in the course of building that blog but the
 fifth blog post never saw the light of day. Deployment was too manual and
-enhancements were a time sync. Ultimately it became a burden.</p><p>Enter static site generators. I know I'm late to the party, but at least I now
+enhancements were a time sync. Ultimately it became a burden.</p><p>Enter static site generators. I know I&rsquo;m late to the party, but at least I now
 comprehend the benefit ;) <a href=https://gohugo.io/>Hugo</a> is one such static site generator that seems
 <a href=https://github.com/gohugoio/hugo/stargazers>fairly popular</a>. And I can see why: it is <em>so</em> easy to get something up and
-running quickly. Here I'll show you how to go from running that initial
+running quickly. Here I&rsquo;ll show you how to go from running that initial
 scaffolding command to hitting [insert your domain name] and seeing it fully
 deployed.</p><p>One thing of note is exactly how much Hugo balances convention (or opinion)
 against configuration. Hugo touts configuration as one of its strengths and this
@@ -15,8 +15,8 @@ was an initial draw for me. I try to avoid heavily magic-laden frameworks like
 the plague. Sometimes that can go too far, when the desire to build everything
 from scratch is strong. So in an effort to find balance, I want to start with
 the absolute bare minimum and build up from there. We should not add anything
-that doesn't have an explicit and understood purpose. Thus far, Hugo has
-accommodated that, so let's begin.</p><h2 id=building-the-basics>Building the basics<a href=#building-the-basics class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>Hugo already has a great <a href=https://gohugo.io/getting-started/quick-start/>quick start</a> guide that we'll follow to begin with.</p><p>First install Hugo with your package manager of choice.</p><div class=highlight><pre class=chroma><code class=language-sh data-lang=sh><span class=c1># OS X buddies</span>
+that doesn&rsquo;t have an explicit and understood purpose. Thus far, Hugo has
+accommodated that, so let&rsquo;s begin.</p><h2 id=building-the-basics>Building the basics<a href=#building-the-basics class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>Hugo already has a great <a href=https://gohugo.io/getting-started/quick-start/>quick start</a> guide that we&rsquo;ll follow to begin with.</p><p>First install Hugo with your package manager of choice.</p><div class=highlight><pre class=chroma><code class=language-sh data-lang=sh><span class=c1># OS X buddies</span>
 $ brew install hugo
 
 <span class=c1># Arch compatriots</span>
@@ -25,11 +25,11 @@ $ sudo pacman --sync hugo
 <span class=c1># Gentoo and friends</span>
 $ sudo layman --add go-overlay
 $ sudo emerge --ask www-apps/hugo
-</code></pre></div><p>Let's create a skeleton site and add a theme. You can browse available themes
-<a href=https://themes.gohugo.io/>here</a>. I'll be using the
+</code></pre></div><p>Let&rsquo;s create a skeleton site and add a theme. You can browse available themes
+<a href=https://themes.gohugo.io/>here</a>. I&rsquo;ll be using the
 <a href=https://minimo.netlify.com/>Minimo</a> theme.</p><div class=highlight><pre class=chroma><code class=language-sh data-lang=sh>$ hugo new site wild-baguette $ <span class=nb>cd</span> wild-baguette $ git init $ git
 submodule add https://github.com/MunifTanjim/minimo themes/minimo
-</code></pre></div><p>This is <em>all</em> you need for a basic site without any content (yet). Let's pause
+</code></pre></div><p>This is <em>all</em> you need for a basic site without any content (yet). Let&rsquo;s pause
 here and check out the folder structure.</p><div class=highlight><pre class=chroma><code class=language-sh data-lang=sh>$ tree -I minimo <span class=c1># ignore the theme directory</span>
 .
 ├── archetypes
@@ -40,7 +40,7 @@ here and check out the folder structure.</p><div class=highlight><pre class=chro
 ├── layouts
 ├── static
 └── themes
-</code></pre></div><p>Excluding the theme, there's only two files! We'll cover <code>archtype=s in a moment when we add some content, but for now let's open up =config.toml</code>. You will
+</code></pre></div><p>Excluding the theme, there&rsquo;s only two files! We&rsquo;ll cover <code>archtype=s in a moment when we add some content, but for now let's open up =config.toml</code>. You will
 likely need to add options specific to the theme you chose. Most importantly,
 actually set the theme with the <code>theme</code> key! You can find out relevant options
 for the Minimo theme on <a href=https://github.com/kwyse/personal-website/blob/b00c1f66a4a30f260347a8507d479f0c9fde36f9/config.toml>this commit</a> I made for this site. Minimo has its own
@@ -48,51 +48,51 @@ comprehensive configuration <a href=https://themes.gohugo.io/theme/minimo/docs/e
 <code>recentPostsLength</code>. Forgetting to add this key will give you an error upon
 starting the server.</p><p>Fire up the Hugo server and navigate to the URL displayed in the output. You
 should see something beautiful. If not, ensure your configuration is correct.</p><div class=highlight><pre class=chroma><code class=language-sh data-lang=sh>$ hugo server
-</code></pre></div><h2 id=adding-content-and-customising>Adding content and customising<a href=#adding-content-and-customising class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>What good are wild baguettes if you can't find them? Being good citizens, we'll
+</code></pre></div><h2 id=adding-content-and-customising>Adding content and customising<a href=#adding-content-and-customising class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>What good are wild baguettes if you can&rsquo;t find them? Being good citizens, we&rsquo;ll
 share our knowledge on their habitats in our first blog post.</p><div class=highlight><pre class=chroma><code class=language-sh data-lang=sh>$ hugo new posts/where_to_find_them.md
 </code></pre></div><p>The <code>posts</code> directory will be nested under <code>contents</code> in the project root. Fill
 this file with whatever pleases you. The important thing is the front
-matter. That's the bit in the <code>---</code> block at the top of the file. By default,
-Hugo will use the <code>title</code> for the post's title (say what?) and the name of the
-file for its URL path. It's important that <code>title</code> is set.</p><p>If you're wondering what dictates that front matter, that's the archetype! Hugo
+matter. That&rsquo;s the bit in the <code>---</code> block at the top of the file. By default,
+Hugo will use the <code>title</code> for the post&rsquo;s title (say what?) and the name of the
+file for its URL path. It&rsquo;s important that <code>title</code> is set.</p><p>If you&rsquo;re wondering what dictates that front matter, that&rsquo;s the archetype! Hugo
 allows you to <a href=https://gohugo.io/content-management/archetypes/>define your own archetypes</a> to streamline adding the content you
 wish to provide. The default archetype suffices for a simple blog.</p><p>Nesting the new post under the <code>posts</code> directory will also nest it in the URL.
 With that in mind, it makes sense to have a <code>posts</code> page on the site. We need to
 create a new file for that.</p><div class=highlight><pre class=chroma><code class=language-sh data-lang=sh>$ <span class=nb>echo</span> <span class=s1>&#39;---\ntitle: Posts\n---&#39;</span> &gt; content/posts/_index.md
 </code></pre></div><p>Each <a href=https://gohugo.io/content-management/sections/>section</a>, or distinct part of our site, can contain a <code>_index.md</code> file that
 represents the section itself rather than its children, like posts do. The
-value we give to <code>title</code> here will be what's shown on the section page and in
+value we give to <code>title</code> here will be what&rsquo;s shown on the section page and in
 the navigation bar. One more change: add <code>sectionPagesMenu = "main"</code> to
 <code>config.toml</code>. The value you pass here should be the name of your menu, which
 could be different for your chosen theme. For Minimo, it is <code>main</code>.</p><p>Start the server again and see our new navigation menu and post rendered. The
 <code>-D</code> flag here indicates we want to render draft posts in addition to regular
 ones.</p><div class=highlight><pre class=chroma><code class=language-sh data-lang=sh>$ hugo server -D
-</code></pre></div><p>Let's personalise the theme a bit. Minimo gives you a very easy way to override
+</code></pre></div><p>Let&rsquo;s personalise the theme a bit. Minimo gives you a very easy way to override
 the CSS with the <code>customCSS</code> key in <code>config.toml</code>. You can read about a specific
 use case <a href=https://discourse.gohugo.io/t/minimo-css-customization/7173/4>here</a>, where the accent colour is changed.</p><p>Changing layout content is down to Hugo, so it should be independent of the
 theme. Say we want to add an additional line to the footer of our site. Simply
 add files to the <code>layout</code> directory. They must be the same name as the ones your
 theme uses. For Minimo, this meant <a href=https://github.com/kwyse/personal-website/blob/41e3702fa15589739e22f64870acb9c19e9a7322/layouts/partials/footer/attribution.html>adding a footer partial</a> for the new content,
-as well as <a href=https://github.com/kwyse/personal-website/blob/41e3702fa15589739e22f64870acb9c19e9a7322/layouts/partials/footer.html>overriding the existing footer</a>. You can read more about Hugo's
+as well as <a href=https://github.com/kwyse/personal-website/blob/41e3702fa15589739e22f64870acb9c19e9a7322/layouts/partials/footer.html>overriding the existing footer</a>. You can read more about Hugo&rsquo;s
 solution for customising your theme <a href=https://gohugo.io/themes/customizing/>here</a>.</p><p>Thus far, the only thing that tripped me up was Minimo requiring that one
 <code>recentPostsLength</code> key to have a value. Hugo itself has been completely
-transparent in what it's doing. If you look at the folder structure of our
-project, you'll see every file we've added has a known purpose. If we want to
+transparent in what it&rsquo;s doing. If you look at the folder structure of our
+project, you&rsquo;ll see every file we&rsquo;ve added has a known purpose. If we want to
 make adjustments to common configuration options, <code>config.toml</code> is a good place
 to start. If we want to override specific parts of our theme, we just provide
 the override in the <code>layouts</code> directory. The organisation of our site content
 will correspond to the folder structure inside the <code>content</code> directory. So far,
-it's all very intuitive!</p><h2 id=deploying>Deploying<a href=#deploying class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>I promised we'd deploy this so the whole world would know where to hunt for wild
-baguettes. Hugo has a <a href=https://gohugo.io/hosting-and-deployment/deployment-with-nanobox/>good guide</a> on <a href=https://nanobox.io/>Nanobox</a> deployment. I hadn't heard of
+it&rsquo;s all very intuitive!</p><h2 id=deploying>Deploying<a href=#deploying class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>I promised we&rsquo;d deploy this so the whole world would know where to hunt for wild
+baguettes. Hugo has a <a href=https://gohugo.io/hosting-and-deployment/deployment-with-nanobox/>good guide</a> on <a href=https://nanobox.io/>Nanobox</a> deployment. I hadn&rsquo;t heard of
 Nanobox before so I did some digging. Essentially they provide a managed Docker
 container for you. They are not a cloud provider and rely on you having an
 account with a service such as AWS or DigitalOcean. Once you link the accounts,
 Nanobox will take care of deployments to the hosts of the cloud
 provider. Nanobox itself is completely free on the basic plan. Given one of the
 goals of this project was to streamline the process of actually <em>blogging</em>, this
-sounded like the perfect solution.</p><p>I'll be using DigitalOcean here because I already had an account. Follow the
+sounded like the perfect solution.</p><p>I&rsquo;ll be using DigitalOcean here because I already had an account. Follow the
 <a href=https://docs.nanobox.io/providers/hosting-accounts/digitalocean/>Nanobox guide</a> to generate a DigitalOcean key and give Nanobox read/write access
-to your account. Then launch the new app.</p><p>You'll then need to <a href=https://docs.nanobox.io/install/>install</a> the Nanobox CLI locally. Nanobox needs two files for
+to your account. Then launch the new app.</p><p>You&rsquo;ll then need to <a href=https://docs.nanobox.io/install/>install</a> the Nanobox CLI locally. Nanobox needs two files for
 us to tell it how to run our Hugo project: <a href=https://github.com/kwyse/personal-website/blob/65791863bff9abfd4c6e430ca38d601c90d9b61c/boxfile.yml><code>boxfile.yml</code></a>, which tells Nanobox
 what commands to run, and <a href=https://github.com/kwyse/personal-website/blob/65791863bff9abfd4c6e430ca38d601c90d9b61c/install.sh><code>install.sh</code></a>, which is called by <code>boxfile.yml</code> and
 actually installs Hugo inside the container. Add these files to your project,
@@ -100,11 +100,11 @@ then tell Nanobox to deploy!</p><div class=highlight><pre class=chroma><code cla
 </code></pre></div><p>Visit your Nanobox portal and find a link that takes you to the deployed site!
 Too easy!</p><p>The next logical step is to set up a domain name for your site. I use <a href=https://www.namecheap.com/>NameCheap</a>
 and have been very happy with their service. The prices are competitive and they
-provide a very intuitive dashboard for adding DNS records.</p><h2 id=next-steps>Next steps<a href=#next-steps class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>There's <strong>loads</strong> of places we could go from here. If you want your site to get
-even marginal traffic, definitely get a domain name for it. You'll probably
+provide a very intuitive dashboard for adding DNS records.</p><h2 id=next-steps>Next steps<a href=#next-steps class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>There&rsquo;s <strong>loads</strong> of places we could go from here. If you want your site to get
+even marginal traffic, definitely get a domain name for it. You&rsquo;ll probably
 then want to look into adding TLS to your site. Even if you only serve static
-content, it's always a <a href=https://security.stackexchange.com/questions/142496/which-security-measures-make-sense-for-a-static-web-site>good idea</a> to enable it. After that, you can check out the
-depths of <a href=https://gohugo.io/documentation/>Hugo's documentation</a>. We've barely scratched the surface of what it's
-capable of.</p><p>This will probably be the path that I take. I'm impressed with how easy the
+content, it&rsquo;s always a <a href=https://security.stackexchange.com/questions/142496/which-security-measures-make-sense-for-a-static-web-site>good idea</a> to enable it. After that, you can check out the
+depths of <a href=https://gohugo.io/documentation/>Hugo&rsquo;s documentation</a>. We&rsquo;ve barely scratched the surface of what it&rsquo;s
+capable of.</p><p>This will probably be the path that I take. I&rsquo;m impressed with how easy the
 whole experience was, primarily due to the solid documentation and usability of
-Hugo. Hopefully you'll see more content on here soon!</p></div><hr class=post-end><footer class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://www.kwyse.com/tags/blogging>blogging</a></span></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>1434 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2017-12-28</p></footer></article><div class="post-nav thin"><a class=next-post href=https://www.kwyse.com/posts/twid-open-mw/><span class=post-nav-label><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>&nbsp;Newer</span><br><span>This Week I Discovered: OpenMW</span></a></div><div id=comments class=thin></div></main><footer id=site-footer class="section-inner thin animated fadeIn faster"><p>&copy; 2017–2020 <a href=https://www.kwyse.com/>Krishan Wyse</a> &#183; <a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></p><p>Made with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> &#183; Theme <a href=https://github.com/Track3/hermit target=_blank rel=noopener>Hermit</a> &#183; <a href=https://www.kwyse.com/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a></p></footer><script src=https://www.kwyse.com/js/bundle.min.4a9a0ac3d2217822c7865b4161e6c2a71de1d70492264337755427898dd718f6.js integrity="sha256-SpoKw9IheCLHhltBYebCpx3h1wSSJkM3dVQniY3XGPY=" crossorigin=anonymous></script></body></html>
+Hugo. Hopefully you&rsquo;ll see more content on here soon!</p></div><hr class=post-end><footer class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://www.kwyse.com/tags/blogging>blogging</a></span></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>1434 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2017-12-28</p></footer></article><div class="post-nav thin"><a class=next-post href=https://www.kwyse.com/posts/twid-open-mw/><span class=post-nav-label><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>&nbsp;Newer</span><br><span>This Week I Discovered: OpenMW</span></a></div><div id=comments class=thin></div></main><footer id=site-footer class="section-inner thin animated fadeIn faster"><p>&copy; 2017–2020 <a href=https://www.kwyse.com/>Krishan Wyse</a> &#183; <a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></p><p>Made with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> &#183; Theme <a href=https://github.com/Track3/hermit target=_blank rel=noopener>Hermit</a> &#183; <a href=https://www.kwyse.com/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a></p></footer><script src=https://www.kwyse.com/js/bundle.min.4a9a0ac3d2217822c7865b4161e6c2a71de1d70492264337755427898dd718f6.js integrity="sha256-SpoKw9IheCLHhltBYebCpx3h1wSSJkM3dVQniY3XGPY=" crossorigin=anonymous></script></body></html>
