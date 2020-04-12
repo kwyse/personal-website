@@ -1212,7 +1212,7 @@ with it, reading it alongside complimentary material. Regardless of your chosen
 passion, you can always obtain a deeper understanding of its component
 parts. And so far for me, doing that has been a real pleasure.
 ** A Minimal React Native App for Android                    :softdev:appdev:
-   SCHEDULED: <2020-04-11 Sat>
+   SCHEDULED: <2020-04-12 Sun>
    :PROPERTIES:
    :EXPORT_FILE_NAME: minimal-react-native-app-for-android
    :END:
