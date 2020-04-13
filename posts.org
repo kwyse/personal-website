@@ -1339,7 +1339,6 @@ public class MainActivity extends ReactActivity {
     }
 }
 #+end_src
-#+latex: \caption{Directory structure for Guile extension module}
 
 The name of the main component of the application must be stated so that React
 Native knows which component it must render.
