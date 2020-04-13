@@ -352,10 +352,10 @@ Then add another step to call the export function:
   run: emacs ./posts.org --batch -L ./ox-hugo -l ox-hugo.el --eval='(org-hugo-export-wim-to-md t)' --kill
 #+END_SRC
 
-This is assuming that the Org file containing the posts is =posts.org= and
-located in the root of the repository.  This will export all applicable
-subtrees.  The first argument to =org-hugo-export-wim-to-md= controls that
-behaviour.
+As written, we are assuming the Org file containing the posts is =posts.org= and
+located in the root of the repository.  All applicable subtrees are exported but
+the first argument to =org-hugo-export-wim-to-md= dictates that behaviour and
+can be changed.
 
 That's it!  You can view my [[https://github.com/kwyse/kwyse.github.io/blob/5bac2286c9ad84a411b8ac73da12e1f80b6e7c5f/.github/workflows/gh-pages.yml][workflow file]] to see how it looked just after this
 change was made.
