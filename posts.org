@@ -1540,7 +1540,7 @@ what I could get away with removing.  Now it's time to add things back in.
 
 Even if a snappy UI was added and the app did something useful, it wouldn't be
 ready to go onto the Play Store.  There are steps that must be taken to get an
-app production ready, but there are numerous tutorials covering that process.
+app production-ready, but there are numerous tutorials covering that process.
 Until we get to that point, we have a codebase where we know the purpose of
 every file in it.  If we run into a problem down the road, we're more likely to
 know how to fix it because we built the application from the ground up.  With
