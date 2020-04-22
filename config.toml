@@ -32,3 +32,13 @@ pygmentsUseClasses  = true
     name = "Posts"
     url = "posts/"
     weight = 10
+
+  [[menu.main]]
+    name = "Project Euler Solutions"
+    url = "euler-solutions/"
+    weight = 10
+
+  [[menu.main]]
+    name = "CV"
+    url = "cv/"
+    weight = 10
