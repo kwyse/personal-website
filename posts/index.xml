@@ -253,7 +253,7 @@ Metro bundler.</p>
 what I could get away with removing.  Now it&rsquo;s time to add things back in.</p>
 <p>Even if a snappy UI was added and the app did something useful, it wouldn&rsquo;t be
 ready to go onto the Play Store.  There are steps that must be taken to get an
-app production ready, but there are numerous tutorials covering that process.
+app production-ready, but there are numerous tutorials covering that process.
 Until we get to that point, we have a codebase where we know the purpose of
 every file in it.  If we run into a problem down the road, we&rsquo;re more likely to
 know how to fix it because we built the application from the ground up.  With
@@ -273,10 +273,10 @@ emacs and Org.  <a href="https://github.com/kaushalmodi/ox-hugo">ox-hugo</a> mus
 </span></code></pre></div><p>Then add another step to call the export function:</p>
 <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">- <span class="k">name</span><span class="p">:</span><span class="w"> </span>Export<span class="w"> </span>Org<span class="w"> </span>file<span class="w"> </span>to<span class="w"> </span>Markdown<span class="w">
 </span><span class="w">  </span><span class="k">run</span><span class="p">:</span><span class="w"> </span>emacs<span class="w"> </span>./posts.org<span class="w"> </span>--batch<span class="w"> </span>-L<span class="w"> </span>./ox-hugo<span class="w"> </span>-l<span class="w"> </span>ox-hugo.el<span class="w"> </span>--eval=<span class="s1">&#39;(org-hugo-export-wim-to-md t)&#39;</span><span class="w"> </span>--kill<span class="w">
-</span></code></pre></div><p>This is assuming that the Org file containing the posts is <code>posts.org</code> and
-located in the root of the repository.  This will export all applicable
-subtrees.  The first argument to <code>org-hugo-export-wim-to-md</code> controls that
-behaviour.</p>
+</span></code></pre></div><p>As written, we are assuming the Org file containing the posts is <code>posts.org</code> and
+located in the root of the repository.  All applicable subtrees are exported but
+the first argument to <code>org-hugo-export-wim-to-md</code> dictates that behaviour and
+can be changed.</p>
 <p>That&rsquo;s it!  You can view my <a href="https://github.com/kwyse/kwyse.github.io/blob/5bac2286c9ad84a411b8ac73da12e1f80b6e7c5f/.github/workflows/gh-pages.yml">workflow file</a> to see how it looked just after this
 change was made.</p>
 ]]></content></item><item><title>Taking Escapism for Granted</title><link>https://www.kwyse.com/posts/taking-escapism-for-granted/</link><pubDate>Tue, 31 Dec 2019 00:00:00 +0000</pubDate><guid>https://www.kwyse.com/posts/taking-escapism-for-granted/</guid><description>My last post levelled more criticism than merit to Rollo Tomassi&amp;rsquo;s book The Rational Male. But writing it prompted me to consider if the book&amp;rsquo;s bombast was his own or used more for purposes of sensationalism.
