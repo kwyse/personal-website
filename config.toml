@@ -20,6 +20,10 @@ pygmentsUseClasses  = true
   footerCopyright = ' &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a>'
 
   [[params.social]]
+    name = "twitter"
+    url = "https://twitter.com/KrishanWyse"
+
+  [[params.social]]
     name = "github"
     url = "https://github.com/kwyse/"
 
@@ -31,11 +35,6 @@ pygmentsUseClasses  = true
   [[menu.main]]
     name = "Posts"
     url = "posts/"
-    weight = 10
-
-  [[menu.main]]
-    name = "Project Euler Solutions"
-    url = "euler-solutions/"
     weight = 10
 
   [[menu.main]]
