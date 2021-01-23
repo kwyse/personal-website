@@ -268,11 +268,11 @@ functionality with a continuous integration service.</p>
 instructions for the <a href="https://github.com/marketplace/actions/hugo-setup">hugo-setup</a> Action (<a href="https://github.com/peaceiris/actions-hugo/blob/d006b81d1845f59bb755a221aff0b61bbff15375/README.md">these</a> at the time of writing), we must
 then export the Org file as part of the workflow.  <a href="https://github.com/marketplace/actions/set-up-emacs">set-up-emacs</a> will install
 emacs and Org.  <a href="https://github.com/kaushalmodi/ox-hugo">ox-hugo</a> must be cloned separately.  Add a step to the job:</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">- <span class="k">name</span><span class="p">:</span><span class="w"> </span>Clone<span class="w"> </span>Org-mode<span class="w"> </span>exporter<span class="w">
-</span><span class="w">  </span><span class="k">run</span><span class="p">:</span><span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https<span class="p">:</span>//github.com/kaushalmodi/ox-hugo.git<span class="w"> </span>ox-hugo<span class="w">
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Clone Org-mode exporter</span><span class="w">
+</span><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l">git clone https://github.com/kaushalmodi/ox-hugo.git ox-hugo</span><span class="w">
 </span></code></pre></div><p>Then add another step to call the export function:</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">- <span class="k">name</span><span class="p">:</span><span class="w"> </span>Export<span class="w"> </span>Org<span class="w"> </span>file<span class="w"> </span>to<span class="w"> </span>Markdown<span class="w">
-</span><span class="w">  </span><span class="k">run</span><span class="p">:</span><span class="w"> </span>emacs<span class="w"> </span>./posts.org<span class="w"> </span>--batch<span class="w"> </span>-L<span class="w"> </span>./ox-hugo<span class="w"> </span>-l<span class="w"> </span>ox-hugo.el<span class="w"> </span>--eval=<span class="s1">&#39;(org-hugo-export-wim-to-md t)&#39;</span><span class="w"> </span>--kill<span class="w">
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Export Org file to Markdown</span><span class="w">
+</span><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l">emacs ./posts.org --batch -L ./ox-hugo -l ox-hugo.el --eval=&#39;(org-hugo-export-wim-to-md t)&#39; --kill</span><span class="w">
 </span></code></pre></div><p>As written, we are assuming the Org file containing the posts is <code>posts.org</code> and
 located in the root of the repository.  All applicable subtrees are exported but
 the first argument to <code>org-hugo-export-wim-to-md</code> dictates that behaviour and
@@ -1372,14 +1372,14 @@ downcasting on the <a href="https://doc.rust-lang.org/std/any/trait.Any.html"><c
 <p><code>shred</code> uses this for storing arbitrarily-typed structs. What we were calling a
 component above, <code>shred</code> calls a <em>resource</em>. Its <code>Resource</code> trait is implemented
 for all types that adhere to Rust&rsquo;s borrowing model, all those that implement
-<code>Any + Send + Sync</code>, but this <code>Any</code> is <code>mopa</code>'s <code>Any</code>, not the standard library
+<code>Any + Send + Sync</code>, but this <code>Any</code> is <code>mopa</code>&rsquo;s <code>Any</code>, not the standard library
 <code>Any</code>, which means we can only downcast our own <code>Resource</code> s, but that&rsquo;s all we
 need. You can see this in the <a href="https://github.com/slide-rs/shred/blob/master/src/res/mod.rs"><code>res</code></a> module of <code>shred</code>.</p>
 <p>A neat optimisation is that <code>Resource</code> s are stored in a <code>FnvHashMap</code>.  This uses
 the <em>FNV</em> hashing algorithm instead of the default <em>SipHash</em> algorithm. The
 former is faster when using smaller keys, but is less secure. This is perfectly
 acceptable in this instance because our keys are just unsigned integers (wrapped
-in <a href="https://doc.rust-lang.org/std/any/struct.TypeId.html"><code>std::any::TypeId</code></a>, itself wrapped in <code>shred</code>'s <code>ResourceId</code>). Benchmarks can
+in <a href="https://doc.rust-lang.org/std/any/struct.TypeId.html"><code>std::any::TypeId</code></a>, itself wrapped in <code>shred</code>&rsquo;s <code>ResourceId</code>). Benchmarks can
 be found <a href="http://cglab.ca/~abeinges/blah/hash-rs/">here</a>.</p>
 <p><code>shred</code> revolves around its <code>Fetch</code> and <code>FetchMut</code> structs. These are
 effectively wrappers for <a href="https://doc.rust-lang.org/std/cell/struct.Ref.html"><code>Ref</code></a> and <a href="https://doc.rust-lang.org/std/cell/struct.RefMut.html"><code>RefMut</code></a> from the standard library,
